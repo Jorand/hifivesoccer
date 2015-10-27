@@ -3,4 +3,10 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="act_login_email">Adresse email</string>
+    <string name="act_login_password">Mot de passe</string>
+    <string name="act_login_button">Connexion</string>
+    <string name="act_login_subsribe_text">Inscrivez-vous sur Hi Five Soccer</string>
+    <string name="act_login_from_empty">Veuillez remplire tous les champs</string>
 </resources>
