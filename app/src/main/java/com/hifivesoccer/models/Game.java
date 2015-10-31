@@ -8,15 +8,10 @@ import java.util.Locale;
  */
 public class Game extends AppBaseModel {
     private Infos infos;
-
     private SimpleDateFormat date;
-
     private Place place;
-
     private float price;
-
     private Peoples peoples;
-
     private boolean privacy;
 
     public Infos getInfos() {
@@ -73,7 +68,6 @@ public class Game extends AppBaseModel {
 
     class Infos {
         private String title;
-
         private String description;
 
         public String getTitle() {
@@ -95,11 +89,8 @@ public class Game extends AppBaseModel {
 
     class Peoples {
         private User organizer;
-
         private User[] pending;
-
         private Attending attending;
-
         private User[] declined;
 
         public User getOrganizer() {
@@ -136,7 +127,6 @@ public class Game extends AppBaseModel {
 
         class Attending {
             private Team teamA;
-
             private Team teamB;
 
             public Team getTeamA() {

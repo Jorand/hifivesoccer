@@ -5,9 +5,7 @@ package com.hifivesoccer.models;
  */
 public class Message extends AppBaseModel {
     private Chat chat;
-
     private String message;
-
     private User author;
 
     public Chat getChat() {

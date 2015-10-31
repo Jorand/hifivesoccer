@@ -5,15 +5,10 @@ package com.hifivesoccer.models;
  */
 public class Place extends AppBaseModel {
     private String name;
-
     private String description;
-
     private String url;
-
     private Location location;
-
     private int fields;
-
     private User contact;
 
     public String getName() {
@@ -66,9 +61,7 @@ public class Place extends AppBaseModel {
 
     class Location {
         private String address;
-
         private long lat;
-
         private long lon;
 
         public String getAddress() {

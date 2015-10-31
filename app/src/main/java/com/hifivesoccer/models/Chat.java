@@ -5,11 +5,8 @@ package com.hifivesoccer.models;
  */
 public class Chat extends AppBaseModel {
     private Team[] teams;
-
     private User[] peoples;
-
     private Message[] messages;
-
     private Game game;
 
     public Team[] getTeams() {

@@ -5,9 +5,7 @@ package com.hifivesoccer.models;
  */
 public class Team extends AppBaseModel {
     private Infos infos;
-
     private User[] peoples;
-
     private Chat chat;
 
     public Infos getInfos() {
@@ -36,9 +34,7 @@ public class Team extends AppBaseModel {
 
     class Infos {
         private String name;
-
         private String description;
-
         private String area;
 
         public String getName() {

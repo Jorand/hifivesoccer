@@ -8,7 +8,6 @@ import java.util.Locale;
  */
 public class AppBaseModel {
     private String _id;
-
     private SimpleDateFormat createdAt;
 
     public String get_id() {

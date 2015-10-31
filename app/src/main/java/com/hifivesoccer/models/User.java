@@ -7,21 +7,13 @@ import java.util.Locale;
  * Created by hugohil on 31/10/15.
  */
 public class User extends AppBaseModel {
-
     private Profile profile;
-
     private Infos infos;
-
     private Statistics statistics;
-
     private User[] friends;
-
     private Team[] teams;
-
     private Game[] games;
-
     private Chat[] chats;
-
     private boolean isPrivate;
 
     public Profile getProfile() {
@@ -91,15 +83,10 @@ public class User extends AppBaseModel {
 
     class Profile {
         private String email;
-
         private String fname;
-
         private String lname;
-
         private String username;
-
         private SimpleDateFormat birthdate;
-
         private String picture;
 
         public String getEmail() {
@@ -158,7 +145,6 @@ public class User extends AppBaseModel {
     class Infos {
         class Favorites {
             private String position;
-
             private Place place;
 
             public String getPosition() {
@@ -181,9 +167,7 @@ public class User extends AppBaseModel {
         class Availability {
             class day {
                 private boolean available;
-
                 private SimpleDateFormat from;
-
                 private SimpleDateFormat to;
 
                 public boolean isAvailable() {
@@ -223,9 +207,7 @@ public class User extends AppBaseModel {
 
     class Statistics {
         private int games;
-
         private int goals;
-
         private int wins;
 
         public int getGames() {
@@ -255,7 +237,6 @@ public class User extends AppBaseModel {
 
     class Settings {
         private int notificationsLevel;
-
         private float maxDistance;
 
         public int getNotificationsLevel() {
