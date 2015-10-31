@@ -15,6 +15,7 @@ public class User extends AppBaseModel {
     private Game[] games;
     private Chat[] chats;
     private boolean isPrivate;
+    private Settings settings;
 
     public Profile getProfile() {
         return profile;
@@ -80,6 +81,14 @@ public class User extends AppBaseModel {
         this.chats = chats;
     }
 
+    public Settings getSettings() {
+        return settings;
+    }
+
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
+
 
     class Profile {
         private String email;
@@ -143,6 +152,25 @@ public class User extends AppBaseModel {
     }
 
     class Infos {
+        private Favorites favorites;
+        private Availability availability;
+
+        public Favorites getFavorites() {
+            return favorites;
+        }
+
+        public void setFavorites(Favorites favorites) {
+            this.favorites = favorites;
+        }
+
+        public Availability getAvailability() {
+            return availability;
+        }
+
+        public void setAvailability(Availability availability) {
+            this.availability = availability;
+        }
+
         class Favorites {
             private String position;
             private Place place;
@@ -165,7 +193,75 @@ public class User extends AppBaseModel {
         }
 
         class Availability {
-            class day {
+            /*
+                This is probably not the best way to instantiate days.
+                Suggestions welcome.
+             */
+            private Day monday;
+            private Day tuesday;
+            private Day wednesday;
+            private Day thursday;
+            private Day friday;
+            private Day saturday;
+            private Day sunday;
+
+            public Day getMonday() {
+                return monday;
+            }
+
+            public void setMonday(Day monday) {
+                this.monday = monday;
+            }
+
+            public Day getTuesday() {
+                return tuesday;
+            }
+
+            public void setTuesday(Day tuesday) {
+                this.tuesday = tuesday;
+            }
+
+            public Day getWednesday() {
+                return wednesday;
+            }
+
+            public void setWednesday(Day wednesday) {
+                this.wednesday = wednesday;
+            }
+
+            public Day getThursday() {
+                return thursday;
+            }
+
+            public void setThursday(Day thursday) {
+                this.thursday = thursday;
+            }
+
+            public Day getFriday() {
+                return friday;
+            }
+
+            public void setFriday(Day friday) {
+                this.friday = friday;
+            }
+
+            public Day getSaturday() {
+                return saturday;
+            }
+
+            public void setSaturday(Day saturday) {
+                this.saturday = saturday;
+            }
+
+            public Day getSunday() {
+                return sunday;
+            }
+
+            public void setSunday(Day sunday) {
+                this.sunday = sunday;
+            }
+
+            class Day {
                 private boolean available;
                 private SimpleDateFormat from;
                 private SimpleDateFormat to;
