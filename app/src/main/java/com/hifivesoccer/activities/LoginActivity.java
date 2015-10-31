@@ -1,13 +1,10 @@
-package com.hifivesoccer;
+package com.hifivesoccer.activities;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Menu;
@@ -19,14 +16,16 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.hifivesoccer.R;
+import com.hifivesoccer.utils.ServerHandler;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
+    private static final String TAG = LoginActivity.class.getSimpleName();
+
+    private final Context context = this;
+    private final ServerHandler server = ServerHandler.getInstance(context);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +38,18 @@ public class LoginActivity extends AppCompatActivity {
 
         EditText passwordField = (EditText) findViewById(R.id.act_login_password);
         passwordField.setTransformationMethod(new PasswordTransformationMethod());
-        
+
+//        server.getAllUsers(new ServerHandler.ResponseHandler() {
+//            @Override
+//            public void onSuccess(Object datas) {
+//                Log.d(TAG, datas.toString());
+//            }
+//
+//            @Override
+//            public void onError(String error) {
+//                Log.d(TAG, error);
+//            }
+//        });
     }
 
     @Override
