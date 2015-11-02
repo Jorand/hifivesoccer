@@ -33,6 +33,13 @@ public class SubscribeActivity extends AppActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscribe);
+
+        // Auto-complete suggestions user account emails
+        ArrayList<String> accountsEmails = getUserAccountEmail();
+        setAutoCompleteText(R.id.act_subscribe_email, accountsEmails);
+
+        EditText passwordField = (EditText) findViewById(R.id.act_subscribe_password);
+        passwordField.setTransformationMethod(new PasswordTransformationMethod());
     }
 
     public void toggleVisibility(View view) {
