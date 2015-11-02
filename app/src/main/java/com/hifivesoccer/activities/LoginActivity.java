@@ -4,8 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -13,6 +12,9 @@ import android.widget.Toast;
 
 import com.hifivesoccer.R;
 import com.hifivesoccer.utils.ServerHandler;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -33,22 +35,9 @@ public class LoginActivity extends AppActivity {
 
         EditText passwordField = (EditText) findViewById(R.id.act_login_password);
         passwordField.setTransformationMethod(new PasswordTransformationMethod());
-
-//        server.getAllUsers(new ServerHandler.ResponseHandler() {
-//            @Override
-//            public void onSuccess(Object datas) {
-//                Log.d(TAG, datas.toString());
-//            }
-//
-//            @Override
-//            public void onError(String error) {
-//                Log.d(TAG, error);
-//            }
-//        });
     }
 
     public void toggleVisibility(View view) {
-
         EditText editText = (EditText) findViewById(R.id.act_login_password);
         CheckBox checkBox = (CheckBox) findViewById(R.id.togglePasswordVisibility);
 

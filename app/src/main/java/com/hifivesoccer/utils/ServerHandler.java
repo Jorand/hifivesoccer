@@ -8,10 +8,13 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.apache.http.client.ResponseHandler;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * Created by hugohil on 31/10/15.
@@ -34,38 +37,80 @@ public class ServerHandler {
         return instance;
     }
 
+    public void authenticate(JSONObject json, final ResponseHandler handler){
+        this.postDatas("authenticate", json, handler);
+    }
+
     public void getAllChats(final ResponseHandler handler){
         this.getDatas("chats", handler);
+    }
+
+    public void getChat(String id, final ResponseHandler handler){
+        this.getData("chats", id, handler);
     }
 
     public void getAllGames(final ResponseHandler handler){
         this.getDatas("chats", handler);
     }
 
+    public void getGame(String id, final ResponseHandler handler){
+        this.getData("chats", id, handler);
+    }
+
     public void getAllMessages(final ResponseHandler handler){
         this.getDatas("messages", handler);
+    }
+
+    public void getAllsage(String id, final ResponseHandler handler){
+        this.getData("messages", id, handler);
     }
 
     public void getAllPlaces(final ResponseHandler handler){
         this.getDatas("places", handler);
     }
 
+    public void getAlace(String id, final ResponseHandler handler){
+        this.getData("places", id, handler);
+    }
+
     public void getAllTeams(final ResponseHandler handler){
         this.getDatas("teams", handler);
+    }
+
+    public void getTeam(String id, final ResponseHandler handler){
+        this.getData("teams", id, handler);
     }
 
     public void getAllUsers(final ResponseHandler handler){
         this.getDatas("users", handler);
     }
 
-    private void getDatas(String route, final ResponseHandler handler){
+    public void getUser(String id, final ResponseHandler handler){
+        this.getData("users", id, handler);
+    }
+
+    private void getData(String route, String id, final ResponseHandler handler){
+        String url = API_BASE_URL + route + '/' + id;
+        this.performRequest(url, Request.Method.GET, new JSONObject(), handler);
+    }
+
+    private void getDatas(String route,  final ResponseHandler handler){
         String url = API_BASE_URL + route;
+        this.performRequest(url, Request.Method.GET, new JSONObject(), handler);
+    }
+
+    private void postDatas(String route, JSONObject json, final ResponseHandler handler){
+        String url = API_BASE_URL + route;
+        this.performRequest(url, Request.Method.POST, json, handler);
+    }
+
+    private void performRequest (String url, int verb, JSONObject json, final ResponseHandler handler){
         RequestQueue requestQueue = Volley.newRequestQueue(this.context);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                url,
-                new Response.Listener<JSONArray>() {
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(
+                verb, url, json,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONArray response){
+                    public void onResponse(JSONObject response){
                         handler.onSuccess(response);
                     }
                 },
@@ -77,11 +122,11 @@ public class ServerHandler {
                     }
                 }
         );
-        requestQueue.add(jsonArrayRequest);
+        requestQueue.add(jsonRequest);
     }
 
     public interface ResponseHandler {
-        void onSuccess(Object datas);
+        void onSuccess(JSONObject response);
         void onError(String error);
     }
 }
