@@ -3,10 +3,20 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_login">Connexion</string>
     <string name="act_login_email">Adresse email</string>
     <string name="act_login_password">Mot de passe</string>
     <string name="act_login_button">Connexion</string>
     <string name="act_login_subsribe_text">Inscrivez-vous sur Hi Five Soccer</string>
-    <string name="act_login_from_empty">Veuillez remplire tous les champs</string>
+    <string name="from_empty">Veuillez remplire tous les champs</string>
+    <string name="title_activity_subscribe">Inscription</string>
+    <string name="act_subscribe_email">Adresse email</string>
+    <string name="act_subscribe_button">Valider l\'inscription</string>
+    <string name="act_login_password_confirmation">Confirmez votre mot de passe</string>
+    <string name="act_subscribe_login_text">Déjà un compte ? Inscrivez-vous</string>
+    <string name="error_offline">La connexion à internet n\'a pas pu être établie.</string>
+    <string name="dialog_exit_msg">Êtes vous certain(e) de vouloir vous déconnecter ?</string>
+    <string name="dialog_exit_title">Se déconnecter ?</string>
+    <string name="yes">Oui</string>
+    <string name="cancel">Non</string>
 </resources>

@@ -2,6 +2,7 @@
 <resources>
     <color name="primary">#4bb47d</color>
     <color name="primary_dark">#36825a</color>
-    <color name="accent">#ffffff</color>
+    <color name="accent">#4bb47d</color>
     <color name="white">#ffffff</color>
+    <color name="textview_bg">#f3f3f3</color>
 </resources>

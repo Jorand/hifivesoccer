@@ -25,6 +25,10 @@
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.Dark" >
         </activity>
+        <activity
+            android:name=".SubscribeActivity"
+            android:label="@string/title_activity_subscribe" >
+        </activity>
     </application>
 
 </manifest>

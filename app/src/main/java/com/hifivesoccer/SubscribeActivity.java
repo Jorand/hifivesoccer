@@ -1,36 +1,35 @@
 package com.hifivesoccer;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class LoginActivity extends AppActivity {
+public class SubscribeActivity extends AppActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
-        // Auto-complete suggestions user account emails
-        ArrayList<String> accountsEmails = getUserAccountEmail();
-        setAutoCompleteText(R.id.act_login_email, accountsEmails);
-
-        EditText passwordField = (EditText) findViewById(R.id.act_login_password);
-        passwordField.setTransformationMethod(new PasswordTransformationMethod());
-        
+        setContentView(R.layout.activity_subscribe);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
+        getMenuInflater().inflate(R.menu.menu_subscribe, menu);
         return true;
     }
 
@@ -49,14 +48,14 @@ public class LoginActivity extends AppActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onClickLogin(View view) {
+    public void onClickSubscribe(View view) {
 
-        final String email = getEditTextValue(R.id.act_login_email);
-        final String password = getEditTextValue(R.id.act_login_password);
+        final String email = getEditTextValue(R.id.act_subscribe_email);
+        final String password = getEditTextValue(R.id.act_subscribe_password);
 
         if (!email.isEmpty() && !password.isEmpty()) {
 
-            // login
+            // Subscibe
 
         } else {
             Toast toast = Toast.makeText(this, R.string.from_empty, Toast.LENGTH_SHORT);
@@ -65,9 +64,10 @@ public class LoginActivity extends AppActivity {
 
     }
 
-    public void onClickRegister(View view) {
+    public void onClickLogin(View view) {
 
-        Intent intent = new Intent(this, SubscribeActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+
     }
 }
