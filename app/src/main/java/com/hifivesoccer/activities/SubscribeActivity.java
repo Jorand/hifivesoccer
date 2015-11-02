@@ -1,22 +1,16 @@
-package com.hifivesoccer;
+package com.hifivesoccer.activities;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.hifivesoccer.R;
 
 public class SubscribeActivity extends AppActivity {
 
@@ -46,6 +40,24 @@ public class SubscribeActivity extends AppActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void toggleVisibility(View view) {
+
+        EditText editText = (EditText) findViewById(R.id.act_login_password);
+        CheckBox checkBox = (CheckBox) findViewById(R.id.togglePasswordVisibility);
+
+        int start = editText.getSelectionStart();
+        int end = editText.getSelectionEnd();
+
+        if (checkBox.isChecked()) {
+            editText.setTransformationMethod(null);
+        }
+        else {
+            editText.setTransformationMethod(new PasswordTransformationMethod());
+        }
+
+        editText.setSelection(start, end);
     }
 
     public void onClickSubscribe(View view) {

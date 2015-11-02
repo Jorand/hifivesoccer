@@ -7,12 +7,11 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.hifivesoccer.AppActivity;
 import com.hifivesoccer.R;
-import com.hifivesoccer.SubscribeActivity;
 import com.hifivesoccer.utils.ServerHandler;
 
 import java.util.ArrayList;
@@ -68,6 +67,24 @@ public class LoginActivity extends AppActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void toggleVisibility(View view) {
+
+        EditText editText = (EditText) findViewById(R.id.act_login_password);
+        CheckBox checkBox = (CheckBox) findViewById(R.id.togglePasswordVisibility);
+
+        int start = editText.getSelectionStart();
+        int end = editText.getSelectionEnd();
+
+        if (checkBox.isChecked()) {
+            editText.setTransformationMethod(null);
+        }
+        else {
+            editText.setTransformationMethod(new PasswordTransformationMethod());
+        }
+
+        editText.setSelection(start, end);
     }
 
     public void onClickLogin(View view) {

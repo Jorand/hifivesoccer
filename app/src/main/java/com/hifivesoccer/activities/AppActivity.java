@@ -1,4 +1,4 @@
-package com.hifivesoccer;
+package com.hifivesoccer.activities;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -15,6 +15,8 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+
+import com.hifivesoccer.R;
 
 import java.util.ArrayList;
 
