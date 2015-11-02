@@ -9,11 +9,11 @@ import android.view.ViewGroup;
 
 import com.hifivesoccer.R;
 
-public class Tab1 extends Fragment {
+public class MessagesTabActivity extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v =inflater.inflate(R.layout.tab_1,container,false);
+        View v =inflater.inflate(R.layout.tab_messages,container,false);
         return v;
     }
 }

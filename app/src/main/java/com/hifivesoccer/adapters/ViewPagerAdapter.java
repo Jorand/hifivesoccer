@@ -11,9 +11,9 @@ import android.text.SpannableString;
 import android.text.style.ImageSpan;
 
 import com.hifivesoccer.R;
-import com.hifivesoccer.fragments.Tab1;
-import com.hifivesoccer.fragments.Tab2;
-import com.hifivesoccer.fragments.Tab3;
+import com.hifivesoccer.fragments.MatchesTabActivity;
+import com.hifivesoccer.fragments.NotificationsTabActivity;
+import com.hifivesoccer.fragments.MessagesTabActivity;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -44,16 +44,16 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
         if(position == 0) // if the position is 0 we are returning the First tab
         {
-            Tab1 tab1 = new Tab1();
+            MatchesTabActivity tab1 = new MatchesTabActivity();
             return tab1;
         }
         else if (position == 1) {
-            Tab2 tab2 = new Tab2();
+            NotificationsTabActivity tab2 = new NotificationsTabActivity();
             return tab2;
         }
         else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
         {
-            Tab3 tab3 = new Tab3();
+            MessagesTabActivity tab3 = new MessagesTabActivity();
             return tab3;
         }
 
