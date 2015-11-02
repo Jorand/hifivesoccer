@@ -67,7 +67,6 @@
         android:gravity="center"
         android:textSize="16sp"
         android:layout_marginTop="24dp"
-        android:textColor="@color/white"
         android:text="@string/act_login_subsribe_text"
         android:textStyle="italic"
         android:onClick="onClickRegister"
