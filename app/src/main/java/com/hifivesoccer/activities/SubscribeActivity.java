@@ -1,5 +1,6 @@
 package com.hifivesoccer.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 
 import com.hifivesoccer.R;
 import com.hifivesoccer.utils.ServerHandler;
+import com.hifivesoccer.utils.SharedPref;
+import com.hifivesoccer.utils.Token;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,6 +72,20 @@ public class SubscribeActivity extends AppActivity {
                 @Override
                 public void onSuccess(JSONObject response) {
                     Log.d(TAG, response.toString());
+                    try {
+                        Token.getToken(response.getString("token"));
+                        try {
+                            SharedPref.setProfile((Activity) context, response.getString("user"));
+
+                            Intent intent = new Intent(context, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } catch (JSONException e){
+                            Log.e(TAG, e.toString());
+                        }
+                    } catch (JSONException e){
+                        Log.e(TAG, e.toString());
+                    }
                 }
 
                 @Override
