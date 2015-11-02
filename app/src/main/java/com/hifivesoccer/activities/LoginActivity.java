@@ -1,5 +1,6 @@
-package com.hifivesoccer;
+package com.hifivesoccer.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
@@ -9,9 +10,18 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.hifivesoccer.AppActivity;
+import com.hifivesoccer.R;
+import com.hifivesoccer.SubscribeActivity;
+import com.hifivesoccer.utils.ServerHandler;
+
 import java.util.ArrayList;
 
 public class LoginActivity extends AppActivity {
+    private static final String TAG = LoginActivity.class.getSimpleName();
+
+    private final Context context = this;
+    private final ServerHandler server = ServerHandler.getInstance(context);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +34,18 @@ public class LoginActivity extends AppActivity {
 
         EditText passwordField = (EditText) findViewById(R.id.act_login_password);
         passwordField.setTransformationMethod(new PasswordTransformationMethod());
-        
+
+//        server.getAllUsers(new ServerHandler.ResponseHandler() {
+//            @Override
+//            public void onSuccess(Object datas) {
+//                Log.d(TAG, datas.toString());
+//            }
+//
+//            @Override
+//            public void onError(String error) {
+//                Log.d(TAG, error);
+//            }
+//        });
     }
 
     @Override
