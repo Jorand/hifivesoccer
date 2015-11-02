@@ -1,5 +1,6 @@
 package com.hifivesoccer.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import com.hifivesoccer.R;
 import com.hifivesoccer.utils.ServerHandler;
+import com.hifivesoccer.utils.SharedPref;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,6 +30,32 @@ public class LoginActivity extends AppActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        String email;
+        String pass;
+
+        JSONObject myself;
+        String serializedSelf = SharedPref.getMyself((Activity) context);
+        if(serializedSelf.length() > 0){
+            try{
+                myself = new JSONObject(serializedSelf);
+                JSONObject profile = myself.getJSONObject("profile");
+                try {
+                    email = profile.getString("email");
+                    pass = profile.getString("password");
+
+                    JSONObject json = new JSONObject();
+                    json.put("email", email);
+                    json.put("password", pass);
+
+                    server.authenticate(json, (Activity) context);
+                } catch (JSONException e){
+                    Log.e(TAG, e.toString());
+                }
+            } catch (JSONException e){
+                Log.e(TAG, e.toString());
+            }
+        }
 
         // Auto-complete suggestions user account emails
         ArrayList<String> accountsEmails = getUserAccountEmail();
@@ -61,7 +89,15 @@ public class LoginActivity extends AppActivity {
 
         if (!email.isEmpty() && !password.isEmpty()) {
 
-            // login
+            JSONObject json = new JSONObject();
+            try {
+                json.put("email", email);
+                json.put("password", password);
+            } catch (JSONException e){
+                Log.e(TAG, e.toString());
+            }
+
+            server.authenticate(json, (Activity) context);
 
         } else {
             Toast toast = Toast.makeText(this, R.string.from_empty, Toast.LENGTH_SHORT);

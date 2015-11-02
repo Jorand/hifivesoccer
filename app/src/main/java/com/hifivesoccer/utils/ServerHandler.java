@@ -1,7 +1,10 @@
 package com.hifivesoccer.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -11,9 +14,12 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.hifivesoccer.R;
+import com.hifivesoccer.activities.MainActivity;
 
 import org.apache.http.client.ResponseHandler;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -37,8 +43,8 @@ public class ServerHandler {
         return instance;
     }
 
-    public void authenticate(JSONObject json, final ResponseHandler handler){
-        this.postDatas("authenticate", json, handler);
+    public void authenticate(JSONObject json, Activity activity){
+        this.postDatas("authenticate", json, this.authenticateHandler(activity));
     }
 
     public void getAllChats(final ResponseHandler handler){
@@ -128,5 +134,53 @@ public class ServerHandler {
     public interface ResponseHandler {
         void onSuccess(JSONObject response);
         void onError(String error);
+    }
+
+    private ResponseHandler authenticateHandler (final Activity activity){
+        return new ResponseHandler() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                Log.d(TAG, response.toString());
+                try {
+                    Token.getToken(response.getString("token"));
+                    try {
+                        SharedPref.setMyself(activity, response.getString("user"));
+
+                        Intent intent = new Intent(context, MainActivity.class);
+                        activity.startActivity(intent);
+                        activity.finish();
+                    } catch (JSONException e){
+                        Log.e(TAG, e.toString());
+                    }
+                } catch (JSONException e){
+                    Log.e(TAG, e.toString());
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.d(TAG, error);
+                JSONObject jsonError = new JSONObject();
+                try {
+                    jsonError = new JSONObject(error);
+                } catch (JSONException e){
+                    Log.e(TAG, e.toString());
+                }
+                if(jsonError.length() > 0){
+                    String reason;
+                    try {
+                        reason = jsonError.getString("reason");
+                    } catch (JSONException e){
+                        Log.e(TAG, e.toString());
+                        reason = activity.getResources().getString(R.string.hifive_generic_error);
+                    }
+                    Toast toast = Toast.makeText(activity, reason, Toast.LENGTH_SHORT);
+                    toast.show();
+                } else {
+                    Toast toast = Toast.makeText(activity, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+        };
     }
 }

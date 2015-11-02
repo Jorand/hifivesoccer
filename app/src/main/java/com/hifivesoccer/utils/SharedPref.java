@@ -14,15 +14,15 @@ import org.json.JSONObject;
 public class SharedPref {
     private final static String TAG = SharedPref.class.getSimpleName();
 
-    public static void setProfile(Activity activity, String profile){
+    public static void setMyself(Activity activity, String profile){
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(activity.getResources().getString(R.string.hifive_profile_key), profile);
+        editor.putString(activity.getResources().getString(R.string.hifive_myself_key), profile);
         editor.apply();
     }
 
-    public static String getProfile(Activity activity){
+    public static String getMyself(Activity activity){
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
-        return sharedPref.getString(activity.getResources().getString(R.string.hifive_profile_key), "{}");
+        return sharedPref.getString(activity.getResources().getString(R.string.hifive_myself_key), "");
     }
 }

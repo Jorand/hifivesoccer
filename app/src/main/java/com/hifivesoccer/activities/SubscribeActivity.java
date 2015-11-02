@@ -21,6 +21,8 @@ import com.hifivesoccer.utils.Token;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class SubscribeActivity extends AppActivity {
     private static final String TAG = SubscribeActivity.class.getSimpleName();
 
@@ -68,52 +70,7 @@ public class SubscribeActivity extends AppActivity {
                 Log.e(TAG, e.toString());
             }
 
-            server.authenticate(json, new ServerHandler.ResponseHandler() {
-                @Override
-                public void onSuccess(JSONObject response) {
-                    Log.d(TAG, response.toString());
-                    try {
-                        Token.getToken(response.getString("token"));
-                        try {
-                            SharedPref.setProfile((Activity) context, response.getString("user"));
-
-                            Intent intent = new Intent(context, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } catch (JSONException e){
-                            Log.e(TAG, e.toString());
-                        }
-                    } catch (JSONException e){
-                        Log.e(TAG, e.toString());
-                    }
-                }
-
-                @Override
-                public void onError(String error) {
-                    Log.d(TAG, error);
-                    JSONObject jsonError = new JSONObject();
-                    try {
-                        jsonError = new JSONObject(error);
-                    } catch (JSONException e){
-                        Log.e(TAG, e.toString());
-                    }
-                    if(jsonError.length() > 0){
-                        String reason;
-                        try {
-                            reason = jsonError.getString("reason");
-                        } catch (JSONException e){
-                            Log.e(TAG, e.toString());
-                            reason = getResources().getString(R.string.hifive_generic_error);
-                        }
-                        Toast toast = Toast.makeText(getBaseContext(), reason, Toast.LENGTH_SHORT);
-                        toast.show();
-                    } else {
-                        Toast toast = Toast.makeText(getBaseContext(), R.string.hifive_generic_error, Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
-
-                }
-            });
+            server.authenticate(json, (Activity) context);
 
         } else {
             Toast toast = Toast.makeText(this, R.string.from_empty, Toast.LENGTH_SHORT);
