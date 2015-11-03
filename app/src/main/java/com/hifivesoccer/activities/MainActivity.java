@@ -1,17 +1,22 @@
 package com.hifivesoccer.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.hifivesoccer.R;
 import com.hifivesoccer.adapters.ViewPagerAdapter;
 import com.hifivesoccer.libs.SlidingTabLayout;
+import com.hifivesoccer.utils.MySelf;
 
 public class MainActivity extends AppActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private final Context context = this;
 
     Toolbar toolbar;
     ViewPager pager;
@@ -54,6 +59,13 @@ public class MainActivity extends AppActivity {
 
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
+
+        if(MySelf.getSelf() != null){
+            TextView welcome = (TextView) findViewById(R.id.act_main_welcome);
+            String username = MySelf.getSelf().getProfile().getUsername();
+            welcome.setText("Bienvenue " + username);
+        }
+
     }
 
     @Override

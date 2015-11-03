@@ -1,5 +1,7 @@
 package com.hifivesoccer.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -7,6 +9,7 @@ import java.util.Locale;
  * Created by hugohil on 31/10/15.
  */
 public class Game extends AppBaseModel {
+
     private Infos infos = new Infos();
     private SimpleDateFormat date;
     private Place place;
@@ -25,11 +28,7 @@ public class Game extends AppBaseModel {
     public SimpleDateFormat getDate() {
         return date;
     }
-
-    public void setDate(SimpleDateFormat date) {
-        this.date = date;
-    }
-
+    
     public void setDate(String date) {
         this.date = new SimpleDateFormat(date, Locale.FRENCH);
     }

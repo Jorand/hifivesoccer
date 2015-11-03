@@ -1,9 +1,11 @@
 package com.hifivesoccer.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +14,12 @@ import android.widget.ListView;
 import com.hifivesoccer.R;
 import com.hifivesoccer.adapters.GameListAdapter;
 import com.hifivesoccer.models.Game;
+import com.hifivesoccer.utils.ServerHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeTabActivity extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class AllGamesTabActivity extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListView listView;
@@ -26,9 +29,25 @@ public class HomeTabActivity extends Fragment implements SwipeRefreshLayout.OnRe
     private String URL = "http://localhost:8080/api/matchs";
     private int offSet = 0;
 
+    private static final String TAG = MatchesTabActivity.class.getSimpleName();
+    private final Context context = getActivity();
+    private final ServerHandler server = ServerHandler.getInstance(context);
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v =inflater.inflate(R.layout.tab_home,container,false);
+
+        server.getAllGames(new ServerHandler.ResponseHandler() {
+            @Override
+            public void onSuccess(Object response) {
+                Log.d(TAG, response.toString());
+            }
+
+            @Override
+            public void onError(String error){
+                Log.e(TAG, error);
+            }
+        });
 
         listView = (ListView) v.findViewById(R.id.listView);
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh_layout);
