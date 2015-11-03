@@ -11,7 +11,7 @@ import com.hifivesoccer.R;
 import com.hifivesoccer.adapters.ViewPagerAdapter;
 import com.hifivesoccer.libs.SlidingTabLayout;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppActivity {
 
     Toolbar toolbar;
     ViewPager pager;
@@ -73,6 +73,10 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+
+        if (id == R.id.action_logout) {
+            confirmExit();
         }
 
         return super.onOptionsItemSelected(item);
