@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
@@ -21,15 +22,22 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class LoginActivity extends AppActivity {
-    private static final String TAG = LoginActivity.class.getSimpleName();
 
+    private static final String TAG = LoginActivity.class.getSimpleName();
     private final Context context = this;
+
     private final ServerHandler server = ServerHandler.getInstance(context);
+
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // Toolbar
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
 
         String email;
         String pass;

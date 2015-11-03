@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Menu;
@@ -24,15 +25,21 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class SubscribeActivity extends AppActivity {
+
     private static final String TAG = SubscribeActivity.class.getSimpleName();
 
     private final Context context = this;
     private final ServerHandler server = ServerHandler.getInstance(context);
 
+    private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscribe);
+
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
 
         // Auto-complete suggestions user account emails
         ArrayList<String> accountsEmails = getUserAccountEmail();
