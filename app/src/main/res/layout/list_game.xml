@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_avatar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/test"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="Jorand Le Pape"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/user_avatar"
+            android:layout_toEndOf="@+id/user_avatar"
+            android:textColor="@color/grey_text"
+            android:textStyle="bold|italic" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/game_date"
+            android:text="Mercredi à 18:30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:textColor="@color/primary"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/game_location"
+            android:text="Soccer5 Marne La Vallée"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:textAllCaps="false"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="16dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:text="A"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:textSize="18sp"
+                android:textColor="@color/primary"
+                android:textAllCaps="true"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="bottom"
+                android:layout_marginRight="10dp"
+                android:textStyle="bold"
+                android:textIsSelectable="false"
+                android:paddingTop="1dp" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/test"
+                android:layout_marginRight="5dp" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/test"
+                android:layout_marginRight="5dp" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/test"
+                android:layout_marginRight="5dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:text="B"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:textSize="18sp"
+                android:textColor="@color/primary"
+                android:textAllCaps="true"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="bottom"
+                android:layout_marginRight="10dp"
+                android:textStyle="bold"
+                android:textIsSelectable="false"
+                android:paddingTop="1dp" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/test"
+                android:layout_marginRight="5dp" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/test"
+                android:layout_marginRight="5dp" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/test"
+                android:layout_marginRight="5dp" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/test"
+                android:layout_marginRight="5dp" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/test"
+                android:layout_marginRight="5dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:paddingTop="15dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:stateListAnimator="@null"
+                android:layout_height="30dp"
+                android:background="@drawable/borderbutton"
+                android:clickable="true"
+                android:text="Intéressé(e)"
+                android:textColor="#BDBDBD"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginRight="10dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:stateListAnimator="@null"
+                android:layout_height="30dp"
+                android:background="@drawable/borderbutton"
+                android:clickable="true"
+                android:text="Participer"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/primary" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

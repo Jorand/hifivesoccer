@@ -6,5 +6,7 @@
     <color name="white">#ffffff</color>
     <color name="textview_bg">#f3f3f3</color>
 
+    <color name="grey_text">#5c5c5c</color>
+
     <color name="tabsScrollColor">#36825a</color>
 </resources>

@@ -7,7 +7,7 @@ import java.util.Locale;
  * Created by hugohil on 31/10/15.
  */
 public class Game extends AppBaseModel {
-    private Infos infos;
+    private Infos infos = new Infos();
     private SimpleDateFormat date;
     private Place place;
     private float price;
@@ -66,7 +66,7 @@ public class Game extends AppBaseModel {
         this.privacy = privacy;
     }
 
-    class Infos {
+    public class Infos {
         private String title;
         private String description;
 
@@ -87,7 +87,7 @@ public class Game extends AppBaseModel {
         }
     }
 
-    class Peoples {
+    public class Peoples {
         private User organizer;
         private User[] pending;
         private Attending attending;

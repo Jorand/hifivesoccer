@@ -11,7 +11,7 @@ import android.text.SpannableString;
 import android.text.style.ImageSpan;
 
 import com.hifivesoccer.R;
-import com.hifivesoccer.fragments.MatchesTabActivity;
+import com.hifivesoccer.fragments.HomeTabActivity;
 import com.hifivesoccer.fragments.NotificationsTabActivity;
 import com.hifivesoccer.fragments.MessagesTabActivity;
 
@@ -44,7 +44,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
         if(position == 0) // if the position is 0 we are returning the First tab
         {
-            MatchesTabActivity tab1 = new MatchesTabActivity();
+            HomeTabActivity tab1 = new HomeTabActivity();
             return tab1;
         }
         else if (position == 1) {
