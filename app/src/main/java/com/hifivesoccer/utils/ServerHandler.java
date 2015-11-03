@@ -26,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 /**
  * Created by hugohil on 31/10/15.
@@ -57,61 +58,63 @@ public class ServerHandler {
     }
 
     public void getAllChats(final ResponseHandler handler){
-        this.getDatas("chats", handler);
+        this.getDatas("chat", handler);
     }
 
     public void getChat(String id, final ResponseHandler handler){
-        this.getData("chats", id, handler);
+        this.getData("chat", id, handler);
     }
 
     public void getAllGames(final ResponseHandler handler){
-        this.getDatas("chats", handler);
+        this.getDatas("game", handler);
     }
 
     public void getGame(String id, final ResponseHandler handler){
-        this.getData("chats", id, handler);
+        this.getData("game", id, handler);
     }
 
     public void getAllMessages(final ResponseHandler handler){
-        this.getDatas("messages", handler);
+        this.getDatas("message", handler);
     }
 
-    public void getAllsage(String id, final ResponseHandler handler){
-        this.getData("messages", id, handler);
+    public void getMessage(String id, final ResponseHandler handler){
+        this.getData("message", id, handler);
     }
 
     public void getAllPlaces(final ResponseHandler handler){
-        this.getDatas("places", handler);
+        this.getDatas("place", handler);
     }
 
-    public void getAlace(String id, final ResponseHandler handler){
-        this.getData("places", id, handler);
+    public void getPlace(String id, final ResponseHandler handler){
+        this.getData("place", id, handler);
     }
 
     public void getAllTeams(final ResponseHandler handler){
-        this.getDatas("teams", handler);
+        this.getDatas("team", handler);
     }
 
     public void getTeam(String id, final ResponseHandler handler){
-        this.getData("teams", id, handler);
+        this.getData("team", id, handler);
     }
 
     public void getAllUsers(final ResponseHandler handler){
-        this.getDatas("users", handler);
+        this.getDatas("user", handler);
     }
 
     public void getUser(String id, final ResponseHandler handler){
-        this.getData("users", id, handler);
+        this.getData("user", id, handler);
     }
 
     private void getData(String route, String id, final ResponseHandler handler){
         String url = API_BASE_URL + route + '/' + id;
+        url += "?token=" + Token.getToken();
         this.performRequest(url, Request.Method.GET, new JSONObject(), handler);
     }
 
-    private void getDatas(String route,  final ResponseHandler handler){
+    private void getDatas(String route, final ResponseHandler handler){
         String url = API_BASE_URL + route;
-        this.performRequest(url, Request.Method.GET, new JSONObject(), handler);
+        url += "?token=" + Token.getToken();
+        this.performArrayRequest(url, Request.Method.GET, new JSONObject(), handler);
     }
 
     private void postDatas(String route, JSONObject json, final ResponseHandler handler){
@@ -132,7 +135,28 @@ public class ServerHandler {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        Log.d(TAG, error.toString());
+                        Log.e(TAG, error.toString());
+                        handler.onError(error.toString());
+                    }
+                }
+        );
+        requestQueue.add(jsonRequest);
+    }
+
+    private void performArrayRequest (String url, int verb, JSONObject json, final ResponseHandler handler){
+        RequestQueue requestQueue = Volley.newRequestQueue(this.context);
+        JsonArrayRequest jsonRequest = new JsonArrayRequest(
+                verb, url, json,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response){
+                        handler.onSuccess(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Log.e(TAG, error.toString());
                         handler.onError(error.toString());
                     }
                 }
@@ -141,15 +165,16 @@ public class ServerHandler {
     }
 
     public interface ResponseHandler {
-        void onSuccess(JSONObject response);
+        void onSuccess(Object response);
         void onError(String error);
     }
 
     private ResponseHandler authenticateHandlerToError (final Activity activity){
         return new ResponseHandler() {
             @Override
-            public void onSuccess(JSONObject response) {
-                Log.d(TAG, response.toString());
+            public void onSuccess(Object res) {
+                Log.d(TAG, res.toString());
+                JSONObject response = (JSONObject) res;
                 try {
                     Token.getToken(response.getString("token"));
                     try {
@@ -218,8 +243,9 @@ public class ServerHandler {
     private ResponseHandler authenticateHandlerToLogin (final Activity activity){
         return new ResponseHandler() {
             @Override
-            public void onSuccess(JSONObject response) {
-                Log.d(TAG, response.toString());
+            public void onSuccess(Object res) {
+                Log.d(TAG, res.toString());
+                JSONObject response = (JSONObject) res;
                 try {
                     Token.getToken(response.getString("token"));
                     try {
