@@ -15,14 +15,14 @@ public class SharedPref {
     private final static String TAG = SharedPref.class.getSimpleName();
 
     public static void setMyself(Activity activity, String profile){
-        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = activity.getSharedPreferences(activity.getResources().getString(R.string.hifive_pref_key), 0);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(activity.getResources().getString(R.string.hifive_myself_key), profile);
         editor.apply();
     }
 
     public static String getMyself(Activity activity){
-        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = activity.getSharedPreferences(activity.getResources().getString(R.string.hifive_pref_key), 0);
         return sharedPref.getString(activity.getResources().getString(R.string.hifive_myself_key), "");
     }
 }
