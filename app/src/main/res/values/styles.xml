@@ -7,6 +7,15 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
     </style>
 
+    <style name="AppTheme.splash" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+
+        <item name="android:background">@color/primary</item>
+        <item name="android:windowBackground">@color/primary</item>
+        <item name="android:colorBackground">@color/primary</item>
+    </style>
+
     <style name="AppTheme.Dialog" parent="Theme.AppCompat.Dialog">
 
         <item name="android:background">@color/primary</item>

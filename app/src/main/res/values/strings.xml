@@ -24,4 +24,5 @@
     <string name="hifive_myself_key">myself</string>
     <string name="hifive_pref_key">hifive_prefs</string>
     <string name="action_logout">Déconnexion</string>
+    <string name="title_activity_splashscreen">SplashscreenActivity</string>
 </resources>
