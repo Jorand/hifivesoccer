@@ -25,4 +25,11 @@ public class SharedPref {
         SharedPreferences sharedPref = activity.getSharedPreferences(activity.getResources().getString(R.string.hifive_pref_key), 0);
         return sharedPref.getString(activity.getResources().getString(R.string.hifive_myself_key), "");
     }
+
+    public static void deleteMyself(Activity activity){
+        SharedPreferences sharedPref = activity.getSharedPreferences(activity.getResources().getString(R.string.hifive_pref_key), 0);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove(activity.getResources().getString(R.string.hifive_myself_key));
+        editor.apply();
+    }
 }

@@ -17,4 +17,8 @@ public class Token {
         }
         return TOKEN;
     }
+
+    public static synchronized void deleteToken(){
+        TOKEN = null;
+    }
 }

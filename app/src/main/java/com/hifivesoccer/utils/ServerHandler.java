@@ -48,8 +48,12 @@ public class ServerHandler {
         return instance;
     }
 
-    public void authenticate(JSONObject json, Activity activity){
-        this.postDatas("authenticate", json, this.authenticateHandler(activity));
+    public void authenticateToError(JSONObject json, Activity activity){
+        this.postDatas("authenticate", json, this.authenticateHandlerToError(activity));
+    }
+
+    public void authenticateToLogin(JSONObject json, Activity activity){
+        this.postDatas("authenticate", json, this.authenticateHandlerToLogin(activity));
     }
 
     public void getAllChats(final ResponseHandler handler){
@@ -141,7 +145,7 @@ public class ServerHandler {
         void onError(String error);
     }
 
-    private ResponseHandler authenticateHandler (final Activity activity){
+    private ResponseHandler authenticateHandlerToError (final Activity activity){
         return new ResponseHandler() {
             @Override
             public void onSuccess(JSONObject response) {
@@ -207,6 +211,44 @@ public class ServerHandler {
                     Toast toast = Toast.makeText(activity, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
                     toast.show();
                 }
+            }
+        };
+    }
+
+    private ResponseHandler authenticateHandlerToLogin (final Activity activity){
+        return new ResponseHandler() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                Log.d(TAG, response.toString());
+                try {
+                    Token.getToken(response.getString("token"));
+                    try {
+                        SharedPref.setMyself(activity, response.getString("user"));
+
+                        Intent intent = new Intent(context, MainActivity.class);
+                        activity.startActivity(intent);
+                        activity.finish();
+
+                    } catch (JSONException e){
+                        Log.e(TAG, e.toString());
+                        Intent intent = new Intent(context, LoginActivity.class);
+                        activity.startActivity(intent);
+                        activity.finish();
+                    }
+                } catch (JSONException e){
+                    Log.e(TAG, e.toString());
+                    Intent intent = new Intent(context, LoginActivity.class);
+                    activity.startActivity(intent);
+                    activity.finish();
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.d(TAG, error);
+                Intent intent = new Intent(context, LoginActivity.class);
+                activity.startActivity(intent);
+                activity.finish();
             }
         };
     }

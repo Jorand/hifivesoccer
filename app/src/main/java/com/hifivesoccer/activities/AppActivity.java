@@ -2,9 +2,11 @@ package com.hifivesoccer.activities;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -17,21 +19,18 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
 import com.hifivesoccer.R;
+import com.hifivesoccer.utils.SharedPref;
+import com.hifivesoccer.utils.Token;
 
 import java.util.ArrayList;
 
-/**
- * Created by jorand on 02/11/2015.
- */
 public class AppActivity extends AppCompatActivity {
 
-    protected SharedPreferences preferences;
+    private final Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     /**
@@ -109,8 +108,7 @@ public class AppActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
-                        // action
+                        logout();
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -121,6 +119,20 @@ public class AppActivity extends AppCompatActivity {
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    /**
+     * Logout user
+     * Remove user in SharedPref and token
+     */
+    public void logout() {
+
+        SharedPref.deleteMyself((Activity) context);
+        Token.deleteToken();
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }
