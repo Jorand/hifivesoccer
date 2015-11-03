@@ -94,16 +94,6 @@ public class AppActivity extends AppCompatActivity {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public void logout() {
-
-        SharedPref.deleteMyself((Activity) context);
-        Token.deleteToken();
-
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
     /**
      * Dialog alert to confirm exit
      * Remove ACTIVE_USER and user token
@@ -118,8 +108,7 @@ public class AppActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
-                    logout();
+                        logout();
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -130,6 +119,20 @@ public class AppActivity extends AppCompatActivity {
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    /**
+     * Logout user
+     * Remove user in SharedPref and token
+     */
+    public void logout() {
+
+        SharedPref.deleteMyself((Activity) context);
+        Token.deleteToken();
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }

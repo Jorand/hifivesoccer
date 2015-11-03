@@ -84,7 +84,7 @@ public class SubscribeActivity extends AppActivity {
                 Log.e(TAG, e.toString());
             }
 
-            server.authenticate(json, (Activity) context);
+            server.authenticateToError(json, (Activity) context);
 
         } else {
             Toast toast = Toast.makeText(this, R.string.from_empty, Toast.LENGTH_SHORT);

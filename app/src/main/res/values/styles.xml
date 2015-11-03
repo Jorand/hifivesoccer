@@ -5,6 +5,7 @@
         <!-- Main theme colors -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
+
     </style>
 
     <style name="AppTheme.splash" parent="Theme.AppCompat.Light.NoActionBar">

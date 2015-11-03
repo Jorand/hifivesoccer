@@ -39,32 +39,6 @@ public class LoginActivity extends AppActivity {
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
-        String email;
-        String pass;
-
-        JSONObject myself;
-        String serializedSelf = SharedPref.getMyself((Activity) context);
-        if(serializedSelf.length() > 0){
-            try{
-                myself = new JSONObject(serializedSelf);
-                JSONObject profile = myself.getJSONObject("profile");
-                try {
-                    email = profile.getString("email");
-                    pass = profile.getString("password");
-
-                    JSONObject json = new JSONObject();
-                    json.put("email", email);
-                    json.put("password", pass);
-
-                    server.authenticate(json, (Activity) context);
-                } catch (JSONException e){
-                    Log.e(TAG, e.toString());
-                }
-            } catch (JSONException e){
-                Log.e(TAG, e.toString());
-            }
-        }
-
         // Auto-complete suggestions user account emails
         ArrayList<String> accountsEmails = getUserAccountEmail();
         setAutoCompleteText(R.id.act_login_email, accountsEmails);
@@ -105,7 +79,7 @@ public class LoginActivity extends AppActivity {
                 Log.e(TAG, e.toString());
             }
 
-            server.authenticate(json, (Activity) context);
+            server.authenticateToError(json, (Activity) context);
 
         } else {
             Toast toast = Toast.makeText(this, R.string.from_empty, Toast.LENGTH_SHORT);
