@@ -61,9 +61,9 @@ public class MainActivity extends AppActivity {
         tabs.setViewPager(pager);
 
         if(MySelf.getSelf() != null){
-            TextView welcome = (TextView) findViewById(R.id.act_main_welcome);
-            String username = MySelf.getSelf().getProfile().getUsername();
-            welcome.setText("Bienvenue " + username);
+            //TextView welcome = (TextView) findViewById(R.id.act_main_welcome);
+            //String username = MySelf.getSelf().getProfile().getUsername();
+            //welcome.setText("Bienvenue " + username);
         }
 
     }

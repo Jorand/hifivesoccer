@@ -1,8 +1,11 @@
 package com.hifivesoccer.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -10,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.hifivesoccer.R;
 import com.hifivesoccer.adapters.GameListAdapter;
@@ -29,13 +33,22 @@ public class AllGamesTabActivity extends Fragment implements SwipeRefreshLayout.
     private String URL = "http://localhost:8080/api/matchs";
     private int offSet = 0;
 
-    private static final String TAG = MatchesTabActivity.class.getSimpleName();
+    private static final String TAG = AllGamesTabActivity.class.getSimpleName();
     private final Context context = getActivity();
     private final ServerHandler server = ServerHandler.getInstance(context);
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v =inflater.inflate(R.layout.tab_home,container,false);
+        final View v =inflater.inflate(R.layout.tab_all_games,container,false);
+
+        // Example loader
+        ProgressDialog progress = new ProgressDialog(getActivity());
+        progress.setTitle("Connexion");
+        progress.setMessage("En attente...");
+        progress.show();
+
+        //progress.dismiss();
+        //progress.hide();
 
         server.getAllGames(new ServerHandler.ResponseHandler() {
             @Override
@@ -72,6 +85,33 @@ public class AllGamesTabActivity extends Fragment implements SwipeRefreshLayout.
         );
 
         return v;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // Example snackbar
+        Snackbar snackbar = Snackbar
+                .make(getView(), "Pas de connexion internet !", Snackbar.LENGTH_LONG)
+                .setAction("Réessayer", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Snackbar snackbar1 = Snackbar.make(getView(), "Nouvelle tentative de connexion…", Snackbar.LENGTH_SHORT);
+                        snackbar1.show();
+                    }
+                });
+
+        // Changing message text color
+        //snackbar.setActionTextColor(Color.RED);
+
+        // Changing action button text color
+        //View sbView = snackbar.getView();
+        //TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        //textView.setTextColor(Color.YELLOW);
+        //snackbar.show();
+
+        snackbar.show();
     }
 
     @Override
