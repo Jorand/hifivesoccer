@@ -1,17 +1,38 @@
 package com.hifivesoccer.activities;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hifivesoccer.R;
 import com.hifivesoccer.adapters.ViewPagerAdapter;
 import com.hifivesoccer.libs.SlidingTabLayout;
+import com.hifivesoccer.models.User;
+import com.hifivesoccer.utils.MySelf;
+import com.hifivesoccer.utils.SharedPref;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private final Context context = this;
 
     Toolbar toolbar;
     ViewPager pager;
@@ -54,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
+
+        TextView welcome = (TextView) findViewById(R.id.act_main_welcome);
+        String username = MySelf.getSelf().getProfile().getUsername();
+        welcome.setText("Bienvenue " + username);
     }
 
     @Override

@@ -1,13 +1,22 @@
 package com.hifivesoccer.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 /**
  * Created by hugohil on 31/10/15.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AppBaseModel {
     private String _id;
+//    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd hh:mm:ssZ")
+    @JsonIgnore
     private SimpleDateFormat createdAt;
 
     public String get_id() {
@@ -20,10 +29,6 @@ public class AppBaseModel {
 
     public SimpleDateFormat getCreatedAt() {
         return createdAt;
-    }
-
-    public void setCreatedAt(SimpleDateFormat createdAt) {
-        this.createdAt = createdAt;
     }
 
     public void setCreatedAt(String createdAt) {

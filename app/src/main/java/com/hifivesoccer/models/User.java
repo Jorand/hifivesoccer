@@ -1,5 +1,8 @@
 package com.hifivesoccer.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -90,11 +93,13 @@ public class User extends AppBaseModel {
     }
 
 
-    class Profile {
+    public class Profile {
         private String email;
         private String fname;
         private String lname;
         private String username;
+        private String password;
+        @JsonIgnore
         private SimpleDateFormat birthdate;
         private String picture;
 
@@ -134,10 +139,6 @@ public class User extends AppBaseModel {
             return birthdate;
         }
 
-        public void setBirthdate(SimpleDateFormat birthdate) {
-            this.birthdate = birthdate;
-        }
-
         public void setBirthdate(String birthdate) {
             this.birthdate = new SimpleDateFormat(birthdate, Locale.FRENCH);
         }
@@ -149,9 +150,17 @@ public class User extends AppBaseModel {
         public void setPicture(String picture) {
             this.picture = picture;
         }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
     }
 
-    class Infos {
+    public class Infos {
         private Favorites favorites;
         private Availability availability;
 
@@ -192,7 +201,7 @@ public class User extends AppBaseModel {
             }
         }
 
-        class Availability {
+        public class Availability {
             /*
                 This is probably not the best way to instantiate days.
                 Suggestions welcome.
@@ -278,20 +287,12 @@ public class User extends AppBaseModel {
                     return from;
                 }
 
-                public void setFrom(SimpleDateFormat from) {
-                    this.from = from;
-                }
-
                 public void setFrom(String from) {
                     this.from = new SimpleDateFormat(from, Locale.FRENCH);
                 }
 
                 public SimpleDateFormat getTo() {
                     return to;
-                }
-
-                public void setTo(SimpleDateFormat to) {
-                    this.to = to;
                 }
 
                 public void setTo(String to) {
@@ -301,7 +302,7 @@ public class User extends AppBaseModel {
         }
     }
 
-    class Statistics {
+    public class Statistics {
         private int games;
         private int goals;
         private int wins;
@@ -331,7 +332,7 @@ public class User extends AppBaseModel {
         }
     }
 
-    class Settings {
+    public class Settings {
         private int notificationsLevel;
         private float maxDistance;
 

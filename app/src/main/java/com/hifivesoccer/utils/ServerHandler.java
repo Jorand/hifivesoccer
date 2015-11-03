@@ -14,13 +14,18 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hifivesoccer.R;
+import com.hifivesoccer.activities.LoginActivity;
 import com.hifivesoccer.activities.MainActivity;
+import com.hifivesoccer.models.User;
 
 import org.apache.http.client.ResponseHandler;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
 
 /**
  * Created by hugohil on 31/10/15.
@@ -145,6 +150,28 @@ public class ServerHandler {
                     Token.getToken(response.getString("token"));
                     try {
                         SharedPref.setMyself(activity, response.getString("user"));
+
+                        User myself = new User();
+                        ObjectMapper mapper = new ObjectMapper();
+                        String serializedSelf = SharedPref.getMyself((Activity) context);
+                        Log.d(TAG, serializedSelf);
+                        if(serializedSelf.length() > 0){
+                            try{
+                                myself = mapper.readValue(serializedSelf, User.class);
+                                MySelf.getSelf(myself);
+                                Log.d(TAG, myself.toString());
+                            } catch (IOException e){
+                                Log.e(TAG, e.toString());
+
+                                Intent intent = new Intent(activity, LoginActivity.class);
+                                activity.startActivity(intent);
+                                activity.finish();
+                            }
+                        } else {
+                            Intent intent = new Intent(activity, LoginActivity.class);
+                            activity.startActivity(intent);
+                            activity.finish();
+                        }
 
                         Intent intent = new Intent(context, MainActivity.class);
                         activity.startActivity(intent);
