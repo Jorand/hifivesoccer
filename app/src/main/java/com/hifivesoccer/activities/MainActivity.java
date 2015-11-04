@@ -1,6 +1,7 @@
 package com.hifivesoccer.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -67,7 +68,9 @@ public class MainActivity extends AppActivity {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                Snackbar.make(coordinatorLayout, "FAB Clicked", Snackbar.LENGTH_SHORT).show();
+                //Snackbar.make(coordinatorLayout, "FAB Clicked", Snackbar.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, NewGameActivity.class);
+                startActivity(intent);
             }
         });
 

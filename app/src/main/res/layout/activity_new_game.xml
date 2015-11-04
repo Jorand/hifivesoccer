@@ -1,0 +1,112 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.hifivesoccer.activities.NewGameActivity">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/place_name"
+            android:hint="@string/act_newgame_place"
+            android:textStyle="italic"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginBottom="5dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:inputType="textPostalAddress"
+            android:textStyle="italic"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:id="@+id/place_address"
+            android:hint="@string/act_newgame_place_address"
+            android:layout_marginBottom="5dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:inputType="date"
+            android:textStyle="italic"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:id="@+id/date"
+            android:hint="@string/act_newgame_date"
+            android:layout_marginBottom="5dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:inputType="time"
+            android:textStyle="italic"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:id="@+id/time"
+            android:hint="Heure"
+            android:layout_marginBottom="5dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="5dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/act_newgame_guest"
+                android:id="@+id/add_guest"
+                android:textStyle="italic"
+                android:onClick="addFriends" />
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/act_newgame_visibility"
+                android:id="@+id/private_game"
+                android:enabled="true"
+                android:switchPadding="15dp"
+                android:textStyle="italic"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/friends_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/act_newgame_button"
+            android:id="@+id/new_match"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/white"
+            android:background="@color/primary"
+            android:clickable="true"
+            android:textSize="18sp"
+            android:textStyle="bold|italic"/>
+
+    </LinearLayout>
+
+</LinearLayout>

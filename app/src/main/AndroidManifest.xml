@@ -37,6 +37,16 @@
         <activity
             android:name=".activities.NewGameActivity"
             android:label="@string/title_activity_new_game" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
+        <activity
+            android:name=".activities.FriendsListActivity"
+            android:label="@string/title_activity_friends_list" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.NewGameActivity" />
         </activity>
     </application>
 

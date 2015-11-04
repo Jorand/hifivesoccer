@@ -29,7 +29,7 @@ public class MyGamesTabActivity extends Fragment implements SwipeRefreshLayout.O
     private GameListAdapter adapter;
     private List<Game> gameList;
 
-    private static final String TAG = AllGamesTabActivity.class.getSimpleName();
+    private static final String TAG = MyGamesTabActivity.class.getSimpleName();
     private final Context context = getActivity();
     private final ServerHandler server = ServerHandler.getInstance(context);
 

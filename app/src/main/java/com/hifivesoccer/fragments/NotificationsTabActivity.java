@@ -24,7 +24,7 @@ public class NotificationsTabActivity extends Fragment implements SwipeRefreshLa
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListView listView;
 
-    private static final String TAG = AllGamesTabActivity.class.getSimpleName();
+    private static final String TAG = NotificationsTabActivity.class.getSimpleName();
     private final Context context = getActivity();
 
     @Override

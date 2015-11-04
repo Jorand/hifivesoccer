@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static final String TAG = LoginActivity.class.getSimpleName();
+    private static final String TAG = SplashActivity.class.getSimpleName();
     private final Context context = this;
 
     private final ServerHandler server = ServerHandler.getInstance(context);
