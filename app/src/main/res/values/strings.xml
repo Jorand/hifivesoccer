@@ -31,4 +31,5 @@
 
     <string name="act_login_fail">Une erreur c\'est produite pendant la connexion. \nVeuillez réessayer ultérieurement.</string>
     <string name="act_login_error">les informations renseignées ne correspondent pas. \nVeuillez vérifier et réessayer.</string>
+    <string name="act_mygames_label">Mes matchs</string>
 </resources>

@@ -43,12 +43,11 @@ public class MyGamesTabActivity extends Fragment implements SwipeRefreshLayout.O
         swipeRefreshLayout.setOnRefreshListener(this);
 
         TextView textView = new TextView(getActivity());
-        textView.setText("Mes matchs");
+        textView.setText(R.string.act_mygames_label);
         textView.setTextColor(getResources().getColor(R.color.grey_1));
-        textView.setPadding(15, 15,15,15);
         textView.setTypeface(Typeface.DEFAULT_BOLD);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
-        textView.setBackgroundColor(Color.WHITE);
+        textView.setPadding(30, 30, 30, 30);
 
         listView.addHeaderView(textView);
 
