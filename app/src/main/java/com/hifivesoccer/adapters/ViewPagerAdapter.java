@@ -13,7 +13,7 @@ import android.text.style.ImageSpan;
 import com.hifivesoccer.R;
 import com.hifivesoccer.fragments.AllGamesTabActivity;
 import com.hifivesoccer.fragments.NotificationsTabActivity;
-import com.hifivesoccer.fragments.MessagesTabActivity;
+import com.hifivesoccer.fragments.MyGamesTabActivity;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -23,9 +23,10 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     int NumbOfTabs; // Store the number of tabs, this will also be passed when the ViewPagerAdapter is created
 
     private int[] imageResId = {
+
+        R.drawable.ic_action_home,
         R.drawable.icon_match,
-        R.drawable.icon_notif,
-        R.drawable.icon_chat
+        R.drawable.icon_notif
     };
 
     // Build a Constructor and assign the passed Values to appropriate values in the class
@@ -48,12 +49,12 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             return tab1;
         }
         else if (position == 1) {
-            NotificationsTabActivity tab2 = new NotificationsTabActivity();
+            MyGamesTabActivity tab2 = new MyGamesTabActivity();
             return tab2;
         }
-        else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
+        else
         {
-            MessagesTabActivity tab3 = new MessagesTabActivity();
+            NotificationsTabActivity tab3 = new NotificationsTabActivity();
             return tab3;
         }
 

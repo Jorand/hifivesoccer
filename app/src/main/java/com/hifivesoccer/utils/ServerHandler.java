@@ -1,9 +1,13 @@
 package com.hifivesoccer.utils;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -170,10 +174,16 @@ public class ServerHandler {
     }
 
     private ResponseHandler authenticateHandlerToError (final Activity activity){
+
+        final ProgressDialog progress = new ProgressDialog(activity);
+        progress.setMessage("Connexion…");
+        progress.show();
+
         return new ResponseHandler() {
             @Override
             public void onSuccess(Object res) {
                 Log.d(TAG, res.toString());
+                progress.dismiss();
                 JSONObject response = (JSONObject) res;
                 try {
                     Token.getToken(response.getString("token"));
@@ -205,6 +215,7 @@ public class ServerHandler {
                         Intent intent = new Intent(context, MainActivity.class);
                         activity.startActivity(intent);
                         activity.finish();
+
                     } catch (JSONException e){
                         Log.e(TAG, e.toString());
                     }
@@ -216,6 +227,7 @@ public class ServerHandler {
             @Override
             public void onError(String error) {
                 Log.d(TAG, error);
+                progress.dismiss();
                 JSONObject jsonError = new JSONObject();
                 try {
                     jsonError = new JSONObject(error);
@@ -228,12 +240,13 @@ public class ServerHandler {
                         reason = jsonError.getString("reason");
                     } catch (JSONException e){
                         Log.e(TAG, e.toString());
-                        reason = activity.getResources().getString(R.string.hifive_generic_error);
+                        reason = activity.getResources().getString(R.string.act_login_error);
                     }
-                    Toast toast = Toast.makeText(activity, reason, Toast.LENGTH_SHORT);
+                    //Toast toast = Toast.makeText(activity, reason, Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(activity, R.string.act_login_error, Toast.LENGTH_LONG);
                     toast.show();
                 } else {
-                    Toast toast = Toast.makeText(activity, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(activity, R.string.act_login_error, Toast.LENGTH_LONG);
                     toast.show();
                 }
             }

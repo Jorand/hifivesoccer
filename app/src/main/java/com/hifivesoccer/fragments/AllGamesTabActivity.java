@@ -1,11 +1,8 @@
 package com.hifivesoccer.fragments;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -13,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hifivesoccer.R;
 import com.hifivesoccer.adapters.GameListAdapter;
@@ -41,48 +38,21 @@ public class AllGamesTabActivity extends Fragment implements SwipeRefreshLayout.
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View v =inflater.inflate(R.layout.tab_all_games,container,false);
 
-        // Example loader
-        ProgressDialog progress = new ProgressDialog(getActivity());
-        progress.setTitle("Connexion");
-        progress.setMessage("En attente...");
-        progress.show();
-
-        //progress.dismiss();
-        //progress.hide();
-
-        server.getAllGames(new ServerHandler.ResponseHandler() {
-            @Override
-            public void onSuccess(Object response) {
-                Log.d(TAG, response.toString());
-            }
-
-            @Override
-            public void onError(String error){
-                Log.e(TAG, error);
-            }
-        });
-
         listView = (ListView) v.findViewById(R.id.listView);
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.primary);
+        swipeRefreshLayout.setOnRefreshListener(this);
 
         gameList = new ArrayList<>();
         adapter = new GameListAdapter(getActivity(), gameList);
         listView.setAdapter(adapter);
 
-        swipeRefreshLayout.setOnRefreshListener(this);
-
-        /**
-         * Showing Swipe Refresh animation on activity create
-         * As animation won't start on onCreate, post runnable is used
-         */
         swipeRefreshLayout.post(new Runnable() {
-                @Override
-                public void run() {
-
-                    fetchMovies();
-                }
+            @Override
+            public void run() {
+                updateList();
             }
-        );
+        });
 
         return v;
     }
@@ -90,17 +60,17 @@ public class AllGamesTabActivity extends Fragment implements SwipeRefreshLayout.
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        /*
         // Example snackbar
         Snackbar snackbar = Snackbar
-                .make(getView(), "Pas de connexion internet !", Snackbar.LENGTH_LONG)
-                .setAction("Réessayer", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Snackbar snackbar1 = Snackbar.make(getView(), "Nouvelle tentative de connexion…", Snackbar.LENGTH_SHORT);
-                        snackbar1.show();
-                    }
-                });
+            .make(getView(), "Pas de connexion internet !", Snackbar.LENGTH_LONG)
+            .setAction("Réessayer", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar snackbar1 = Snackbar.make(getView(), "Nouvelle tentative de connexion…", Snackbar.LENGTH_SHORT);
+                    snackbar1.show();
+                }
+            });
 
         // Changing message text color
         //snackbar.setActionTextColor(Color.RED);
@@ -112,39 +82,55 @@ public class AllGamesTabActivity extends Fragment implements SwipeRefreshLayout.
         //snackbar.show();
 
         snackbar.show();
+        */
     }
 
     @Override
     public void onRefresh() {
-        fetchMovies();
+        updateList();
     }
 
-    private void fetchMovies() {
+    private void updateList() {
 
         swipeRefreshLayout.setRefreshing(true);
 
-        //String url = URL + offSet;
+        String url = URL + offSet;
 
-        Game myGame = new Game();
-        Game.Infos myGameInfos = new Game().getInfos();
-        myGameInfos.setTitle("Test");
-        myGameInfos.setDescription("Description");
-        myGame.setInfos(myGameInfos);
+        server.getAllGames(new ServerHandler.ResponseHandler() {
+            @Override
+            public void onSuccess(Object response) {
+                Log.d(TAG, response.toString());
 
-        Game myGame2 = new Game();
-        Game.Infos myGame2Infos = new Game().getInfos();
-        myGame2Infos.setTitle("Test 2");
-        myGame2Infos.setDescription("Description 2");
-        myGame2.setInfos(myGame2Infos);
+                Game myGame = new Game();
+                Game.Infos myGameInfos = new Game().getInfos();
+                myGameInfos.setTitle("Test");
+                myGameInfos.setDescription("Description");
+                myGame.setInfos(myGameInfos);
 
-        gameList.add(0, myGame);
-        gameList.add(0, myGame2);
+                Game myGame2 = new Game();
+                Game.Infos myGame2Infos = new Game().getInfos();
+                myGame2Infos.setTitle("Test 2");
+                myGame2Infos.setDescription("Description 2");
+                myGame2.setInfos(myGame2Infos);
 
-        offSet = 2;
+                gameList.add(0, myGame);
+                gameList.add(0, myGame2);
 
-        adapter.notifyDataSetChanged();
+                offSet = 2;
 
-        swipeRefreshLayout.setRefreshing(false);
+                adapter.notifyDataSetChanged();
+
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+            @Override
+            public void onError(String error){
+                Log.e(TAG, error);
+                swipeRefreshLayout.setRefreshing(false);
+                Toast toast = Toast.makeText(getActivity(), R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
 
     }
 

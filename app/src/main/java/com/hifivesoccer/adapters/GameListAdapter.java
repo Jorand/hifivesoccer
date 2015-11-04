@@ -54,8 +54,8 @@ public class GameListAdapter extends BaseAdapter {
         TextView serial = (TextView) convertView.findViewById(R.id.user_name);
         TextView title = (TextView) convertView.findViewById(R.id.game_location);
 
-        serial.setText(String.valueOf(gameList.get(position).getInfos().getTitle()));
-        title.setText(gameList.get(position).getInfos().getTitle());
+        //serial.setText(String.valueOf(gameList.get(position).getInfos().getTitle()));
+        //title.setText(gameList.get(position).getInfos().getTitle());
 
         return convertView;
     }

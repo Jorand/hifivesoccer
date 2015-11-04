@@ -9,4 +9,8 @@
     <color name="grey_text">#5c5c5c</color>
 
     <color name="tabsScrollColor">#36825a</color>
+
+    <color name="grey_1">#666666</color>
+    <color name="grey_2">#888888</color>
+    <color name="list_divider">#d9d9d9</color>
 </resources>

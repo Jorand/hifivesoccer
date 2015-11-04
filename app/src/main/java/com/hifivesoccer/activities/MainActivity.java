@@ -22,8 +22,7 @@ public class MainActivity extends AppActivity {
     ViewPager pager;
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
-    CharSequence Titles[]={"Matchs","Notifications", "Messages"};
-    int tabIcons[]= {R.drawable.icon_match, R.drawable.icon_notif, R.drawable.icon_chat};
+    CharSequence Titles[]={"Tous les matchs","Mes matchs", "Notifications"};
     int Numboftabs =3;
 
     @Override
