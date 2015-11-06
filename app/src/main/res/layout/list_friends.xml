@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp" >
+
+    <!--
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/user_avatar"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@color/light_grey"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="8dp"/>
+        -->
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/user_avatar"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@color/light_grey"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="8dp"/>
+
+    <!-- Thumbnail Image
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/thumbnail"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/test"
+        android:layout_marginRight="8dp"
+        android:background="@color/light_grey" />
+        -->
+
+    <!-- Movie Title -->
+    <TextView
+        android:id="@+id/user_fullname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/user_avatar"
+        android:layout_toEndOf="@+id/user_avatar" />
+
+    <ImageButton
+        android:contentDescription="@string/act_list_friends_add_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addToList"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:longClickable="false"
+        android:src="@drawable/ic_action_add" />
+
+</RelativeLayout>

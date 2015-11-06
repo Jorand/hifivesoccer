@@ -121,7 +121,7 @@ public class ServerHandler {
         this.performArrayRequest(url, Request.Method.GET, new JSONObject(), handler);
     }
 
-    private void postDatas(String route, JSONObject json, final ResponseHandler handler){
+    public void postDatas(String route, JSONObject json, final ResponseHandler handler){
         String url = API_BASE_URL + route;
         this.performRequest(url, Request.Method.POST, json, handler);
     }

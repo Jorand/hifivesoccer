@@ -28,6 +28,8 @@ public class NewGameActivity extends AppActivity {
     String friendsId = "";
     String friendsName = "";
 
+    private final ServerHandler server = ServerHandler.getInstance(context);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,4 +90,8 @@ public class NewGameActivity extends AppActivity {
         startActivityForResult(intent, 0);
     }
 
+    public void newGame(View view) {
+
+        // POST
+    }
 }

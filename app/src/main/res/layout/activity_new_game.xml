@@ -104,6 +104,7 @@
             android:textColor="@color/white"
             android:background="@color/primary"
             android:clickable="true"
+            android:onClick="newGame"
             android:textSize="18sp"
             android:textStyle="bold|italic"/>
 

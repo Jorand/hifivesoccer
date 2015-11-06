@@ -1,5 +1,6 @@
 package com.hifivesoccer.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NavUtils;
@@ -11,12 +12,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hifivesoccer.R;
+import com.hifivesoccer.adapters.FiendsListAdapter;
+import com.hifivesoccer.adapters.GameListAdapter;
 import com.hifivesoccer.models.Game;
+import com.hifivesoccer.models.User;
 import com.hifivesoccer.utils.ServerHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FriendsListActivity extends AppActivity {
 
@@ -25,6 +33,10 @@ public class FriendsListActivity extends AppActivity {
     private final ServerHandler server = ServerHandler.getInstance(context);
 
     private Toolbar toolbar;
+
+    private ListView listView;
+    private FiendsListAdapter adapter;
+    private List<User> userList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +75,17 @@ public class FriendsListActivity extends AppActivity {
             friendsListText.setVisibility(View.VISIBLE);
         }
 
+        listView = (ListView) findViewById(R.id.users_list);
+
+        adapter = new FiendsListAdapter(this, userList);
+        listView.setAdapter(adapter);
+
         server.getAllUsers(new ServerHandler.ResponseHandler() {
             @Override
             public void onSuccess(Object response) {
                 Log.d(TAG, response.toString());
+
+
 
             }
 
