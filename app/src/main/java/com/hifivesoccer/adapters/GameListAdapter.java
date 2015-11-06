@@ -13,6 +13,8 @@ import com.hifivesoccer.models.Game;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 /**
  * Created by jorand on 03/11/2015.
  */
@@ -51,11 +53,16 @@ public class GameListAdapter extends BaseAdapter {
         if (convertView == null)
             convertView = inflater.inflate(R.layout.list_game, null);
 
-        TextView serial = (TextView) convertView.findViewById(R.id.user_name);
-        TextView title = (TextView) convertView.findViewById(R.id.game_location);
+        TextView organizerName = (TextView) convertView.findViewById(R.id.list_game_organizer_name);
+        TextView location = (TextView) convertView.findViewById(R.id.list_game_location);
+        CircleImageView organizerAvatar = (CircleImageView) convertView.findViewById(R.id.list_game_organizer_avatar);
+        TextView date = (TextView) convertView.findViewById(R.id.list_game_date);
 
-        //serial.setText(String.valueOf(gameList.get(position).getInfos().getTitle()));
-        //title.setText(gameList.get(position).getInfos().getTitle());
+        organizerName.setText(String.valueOf(gameList.get(position).getOrganizer().getProfile().getUsername()));
+        location.setText(String.valueOf(gameList.get(position).getPlace()));
+        date.setText(String.valueOf(gameList.get(position).getDate()));
+
+        // For the avatar: https://developer.android.com/intl/en-us/training/volley/request.html
 
         return convertView;
     }

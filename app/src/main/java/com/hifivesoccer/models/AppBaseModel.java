@@ -15,7 +15,6 @@ import java.util.Locale;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AppBaseModel {
     private String _id;
-//    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd hh:mm:ssZ")
     @JsonIgnore
     private SimpleDateFormat createdAt;
 

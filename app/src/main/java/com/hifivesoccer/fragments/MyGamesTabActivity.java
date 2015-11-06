@@ -74,16 +74,7 @@ public class MyGamesTabActivity extends Fragment implements SwipeRefreshLayout.O
 
         swipeRefreshLayout.setRefreshing(true);
 
-        Game myGame = new Game();
-        Game.Infos myGameInfos = new Game().getInfos();
-        myGame.setInfos(myGameInfos);
-
-        Game myGame2 = new Game();
-        Game.Infos myGame2Infos = new Game().getInfos();
-        myGame2.setInfos(myGame2Infos);
-
-        gameList.add(0, myGame);
-        gameList.add(0, myGame2);
+        // ...
 
         adapter.notifyDataSetChanged();
 

@@ -61,44 +61,12 @@ public class ServerHandler {
         this.postDatas("authenticate", json, this.authenticateHandlerToLogin(activity));
     }
 
-    public void getAllChats(final ResponseHandler handler){
-        this.getDatas("chat", handler);
-    }
-
-    public void getChat(String id, final ResponseHandler handler){
-        this.getData("chat", id, handler);
-    }
-
     public void getAllGames(final ResponseHandler handler){
         this.getDatas("game", handler);
     }
 
     public void getGame(String id, final ResponseHandler handler){
         this.getData("game", id, handler);
-    }
-
-    public void getAllMessages(final ResponseHandler handler){
-        this.getDatas("message", handler);
-    }
-
-    public void getMessage(String id, final ResponseHandler handler){
-        this.getData("message", id, handler);
-    }
-
-    public void getAllPlaces(final ResponseHandler handler){
-        this.getDatas("place", handler);
-    }
-
-    public void getPlace(String id, final ResponseHandler handler){
-        this.getData("place", id, handler);
-    }
-
-    public void getAllTeams(final ResponseHandler handler){
-        this.getDatas("team", handler);
-    }
-
-    public void getTeam(String id, final ResponseHandler handler){
-        this.getData("team", id, handler);
     }
 
     public void getAllUsers(final ResponseHandler handler){
@@ -193,10 +161,10 @@ public class ServerHandler {
                         User myself = new User();
                         ObjectMapper mapper = new ObjectMapper();
                         String serializedSelf = SharedPref.getMyself((Activity) context);
-                        Log.d(TAG, serializedSelf);
                         if(serializedSelf.length() > 0){
                             try{
                                 myself = mapper.readValue(serializedSelf, User.class);
+                                myself.initGames(context);
                                 MySelf.getSelf(myself);
                                 Log.d(TAG, myself.toString());
                             } catch (IOException e){
