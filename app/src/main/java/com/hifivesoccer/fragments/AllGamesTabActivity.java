@@ -12,11 +12,17 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hifivesoccer.R;
 import com.hifivesoccer.adapters.GameListAdapter;
 import com.hifivesoccer.models.Game;
 import com.hifivesoccer.utils.ServerHandler;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +33,6 @@ public class AllGamesTabActivity extends Fragment implements SwipeRefreshLayout.
     private GameListAdapter adapter;
     private List<Game> gameList;
 
-    private String URL = "http://localhost:8080/api/matchs";
     private int offSet = 0;
 
     private static final String TAG = AllGamesTabActivity.class.getSimpleName();
@@ -94,33 +99,40 @@ public class AllGamesTabActivity extends Fragment implements SwipeRefreshLayout.
 
         swipeRefreshLayout.setRefreshing(true);
 
-        String url = URL + offSet;
-
         server.getAllGames(new ServerHandler.ResponseHandler() {
             @Override
             public void onSuccess(Object response) {
                 Log.d(TAG, response.toString());
 
-                Game myGame = new Game();
-                Game.Infos myGameInfos = new Game().getInfos();
-                myGameInfos.setTitle("Test");
-                myGameInfos.setDescription("Description");
-                myGame.setInfos(myGameInfos);
+                JSONArray serializedGames = (JSONArray) response;
 
-                Game myGame2 = new Game();
-                Game.Infos myGame2Infos = new Game().getInfos();
-                myGame2Infos.setTitle("Test 2");
-                myGame2Infos.setDescription("Description 2");
-                myGame2.setInfos(myGame2Infos);
-
-                gameList.add(0, myGame);
-                gameList.add(0, myGame2);
-
-                offSet = 2;
-
-                adapter.notifyDataSetChanged();
-
-                swipeRefreshLayout.setRefreshing(false);
+                for (int i = 0; i < serializedGames.length(); i++) {
+                    try {
+                        JSONObject serializedGame = serializedGames.getJSONObject(i);
+                        ObjectMapper mapper = new ObjectMapper();
+                        try {
+                            final Game game = mapper.readValue(serializedGame.toString(), Game.class);
+                            game.initPeoples(context, new Game.initHandler() {
+                                @Override
+                                public void handle() {
+                                    gameList.add(game);
+                                    adapter.notifyDataSetChanged();
+                                    swipeRefreshLayout.setRefreshing(false);
+                                }
+                            });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            swipeRefreshLayout.setRefreshing(false);
+                            Toast toast = Toast.makeText(getActivity(), R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        swipeRefreshLayout.setRefreshing(false);
+                        Toast toast = Toast.makeText(getActivity(), R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                }
             }
 
             @Override

@@ -1,24 +1,63 @@
 package com.hifivesoccer.models;
 
+import android.app.Activity;
+import android.content.Context;
+import android.util.Log;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hifivesoccer.utils.ServerHandler;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 
 /**
  * Created by hugohil on 31/10/15.
  */
 public class User extends AppBaseModel {
+    private static final String TAG = User.class.getSimpleName();
     private Profile profile;
-    private Infos infos;
     private Statistics statistics;
-    private User[] friends;
-    private Team[] teams;
-    private Game[] games;
-    private Chat[] chats;
+    private String position;
     private boolean isPrivate;
     private Settings settings;
+
+    @JsonIgnore
+    private ArrayList<Game> games;
+    @JsonProperty("games")
+    private String[] gamesIDs;
+
+    public void initGames(Context context){
+        // Add a front-end cache
+        ServerHandler server = ServerHandler.getInstance(context);
+        if(gamesIDs == null){
+            return;
+        }
+        for (String id : gamesIDs){
+            server.getGame(id, new ServerHandler.ResponseHandler() {
+                @Override
+                public void onSuccess(Object response) {
+                    ObjectMapper mapper = new ObjectMapper();
+                    try {
+                        addGame(mapper.readValue(response.toString(), Game.class));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError(String error) {
+                    Log.e(TAG, error);
+                }
+            });
+        }
+    }
 
     public Profile getProfile() {
         return profile;
@@ -26,14 +65,6 @@ public class User extends AppBaseModel {
 
     public void setProfile(Profile profile) {
         this.profile = profile;
-    }
-
-    public Infos getInfos() {
-        return infos;
-    }
-
-    public void setInfos(Infos infos) {
-        this.infos = infos;
     }
 
     public Statistics getStatistics() {
@@ -44,44 +75,12 @@ public class User extends AppBaseModel {
         this.statistics = statistics;
     }
 
-    public User[] getFriends() {
-        return friends;
-    }
-
-    public void setFriends(User[] friends) {
-        this.friends = friends;
-    }
-
-    public Team[] getTeams() {
-        return teams;
-    }
-
-    public void setTeams(Team[] teams) {
-        this.teams = teams;
-    }
-
-    public Game[] getGames() {
-        return games;
-    }
-
-    public void setGames(Game[] games) {
-        this.games = games;
-    }
-
     public boolean isPrivate() {
         return isPrivate;
     }
 
     public void setIsPrivate(boolean isPrivate) {
         this.isPrivate = isPrivate;
-    }
-
-    public Chat[] getChats() {
-        return chats;
-    }
-
-    public void setChats(Chat[] chats) {
-        this.chats = chats;
     }
 
     public Settings getSettings() {
@@ -92,6 +91,33 @@ public class User extends AppBaseModel {
         this.settings = settings;
     }
 
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String[] getGamesIDs(){
+        return gamesIDs;
+    }
+
+    public void setGamesIDs(String[] gamesIDs) {
+        this.gamesIDs = gamesIDs;
+    }
+
+    public ArrayList<Game> getGames(){
+        return games;
+    }
+
+    public void setGames(ArrayList<Game> games){
+        this.games = games;
+    }
+
+    public void addGame(Game game){
+        this.games.add(game);
+    }
 
     public class Profile {
         private String email;
@@ -99,8 +125,6 @@ public class User extends AppBaseModel {
         private String lname;
         private String username;
         private String password;
-        @JsonIgnore
-        private SimpleDateFormat birthdate;
         private String picture;
 
         public String getEmail() {
@@ -135,14 +159,6 @@ public class User extends AppBaseModel {
             this.username = username;
         }
 
-        public SimpleDateFormat getBirthdate() {
-            return birthdate;
-        }
-
-        public void setBirthdate(String birthdate) {
-            this.birthdate = new SimpleDateFormat(birthdate, Locale.FRENCH);
-        }
-
         public String getPicture() {
             return picture;
         }
@@ -157,148 +173,6 @@ public class User extends AppBaseModel {
 
         public void setPassword(String password) {
             this.password = password;
-        }
-    }
-
-    public class Infos {
-        private Favorites favorites;
-        private Availability availability;
-
-        public Favorites getFavorites() {
-            return favorites;
-        }
-
-        public void setFavorites(Favorites favorites) {
-            this.favorites = favorites;
-        }
-
-        public Availability getAvailability() {
-            return availability;
-        }
-
-        public void setAvailability(Availability availability) {
-            this.availability = availability;
-        }
-
-        class Favorites {
-            private String position;
-            private Place place;
-
-            public String getPosition() {
-                return position;
-            }
-
-            public void setPosition(String position) {
-                this.position = position;
-            }
-
-            public Place getPlace() {
-                return place;
-            }
-
-            public void setPlace(Place place) {
-                this.place = place;
-            }
-        }
-
-        public class Availability {
-            /*
-                This is probably not the best way to instantiate days.
-                Suggestions welcome.
-             */
-            private Day monday;
-            private Day tuesday;
-            private Day wednesday;
-            private Day thursday;
-            private Day friday;
-            private Day saturday;
-            private Day sunday;
-
-            public Day getMonday() {
-                return monday;
-            }
-
-            public void setMonday(Day monday) {
-                this.monday = monday;
-            }
-
-            public Day getTuesday() {
-                return tuesday;
-            }
-
-            public void setTuesday(Day tuesday) {
-                this.tuesday = tuesday;
-            }
-
-            public Day getWednesday() {
-                return wednesday;
-            }
-
-            public void setWednesday(Day wednesday) {
-                this.wednesday = wednesday;
-            }
-
-            public Day getThursday() {
-                return thursday;
-            }
-
-            public void setThursday(Day thursday) {
-                this.thursday = thursday;
-            }
-
-            public Day getFriday() {
-                return friday;
-            }
-
-            public void setFriday(Day friday) {
-                this.friday = friday;
-            }
-
-            public Day getSaturday() {
-                return saturday;
-            }
-
-            public void setSaturday(Day saturday) {
-                this.saturday = saturday;
-            }
-
-            public Day getSunday() {
-                return sunday;
-            }
-
-            public void setSunday(Day sunday) {
-                this.sunday = sunday;
-            }
-
-            class Day {
-                private boolean available;
-                private SimpleDateFormat from;
-                private SimpleDateFormat to;
-
-                public boolean isAvailable() {
-                    return available;
-                }
-
-                public void setAvailable(boolean available) {
-                    this.available = available;
-                }
-
-                public SimpleDateFormat getFrom() {
-                    return from;
-                }
-
-                public void setFrom(String from) {
-                    this.from = new SimpleDateFormat(from, Locale.FRENCH);
-                }
-
-                public SimpleDateFormat getTo() {
-                    return to;
-                }
-
-                public void setTo(String to) {
-                    this.to = new SimpleDateFormat(to, Locale.FRENCH);
-                }
-            }
         }
     }
 
