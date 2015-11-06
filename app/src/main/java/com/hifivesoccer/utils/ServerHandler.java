@@ -144,7 +144,7 @@ public class ServerHandler {
     private ResponseHandler authenticateHandlerToError (final Activity activity){
 
         final ProgressDialog progress = new ProgressDialog(activity);
-        progress.setMessage("Connexion…");
+        progress.setMessage(activity.getString(R.string.connexion));
         progress.show();
 
         return new ResponseHandler() {

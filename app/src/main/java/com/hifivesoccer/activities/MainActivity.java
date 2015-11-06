@@ -75,9 +75,7 @@ public class MainActivity extends AppActivity {
         });
 
         if(MySelf.getSelf() != null){
-            //TextView welcome = (TextView) findViewById(R.id.act_main_welcome);
-            String username = MySelf.getSelf().getProfile().getUsername();
-            //welcome.setText("Bienvenue " + username);
+            String username = MySelf.getSelf().getUsername();
             Snackbar.make(coordinatorLayout, "Bienvenue " + username + " !", Snackbar.LENGTH_SHORT).show();
         }
 

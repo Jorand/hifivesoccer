@@ -42,4 +42,5 @@
     <string name="act_newgame_button">Créer le match</string>
     <string name="act_newgame_visibility">Privé</string>
     <string name="title_activity_friends_list">FriendsListActivity</string>
+    <string name="connexion">Connexion…</string>
 </resources>
