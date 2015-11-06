@@ -202,6 +202,7 @@ public class ServerHandler {
                 } catch (JSONException e){
                     Log.e(TAG, e.toString());
                 }
+                Log.d(TAG, jsonError.toString());
                 if(jsonError.length() > 0){
                     String reason;
                     try {
@@ -210,8 +211,8 @@ public class ServerHandler {
                         Log.e(TAG, e.toString());
                         reason = activity.getResources().getString(R.string.act_login_error);
                     }
-                    //Toast toast = Toast.makeText(activity, reason, Toast.LENGTH_LONG);
-                    Toast toast = Toast.makeText(activity, R.string.act_login_error, Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(activity, reason, Toast.LENGTH_LONG);
+                    //Toast toast = Toast.makeText(activity, R.string.act_login_error, Toast.LENGTH_LONG);
                     toast.show();
                 } else {
                     Toast toast = Toast.makeText(activity, R.string.act_login_error, Toast.LENGTH_LONG);

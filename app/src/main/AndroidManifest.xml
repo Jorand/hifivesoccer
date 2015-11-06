@@ -48,6 +48,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.NewGameActivity" />
         </activity>
+        <activity
+            android:name=".activities.GameDetailActivity"
+            android:label="@string/title_activity_game_detail" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -32,12 +32,12 @@ public class Game extends AppBaseModel {
     private String organizerID;
 
     @JsonIgnore
-    private ArrayList<User> teamA;
+    private ArrayList<User> teamA = new ArrayList<>();
     @JsonProperty("teamA")
     private String[] teamAIDs;
 
     @JsonIgnore
-    private ArrayList<User> teamB;
+    private ArrayList<User> teamB = new ArrayList<>();
     @JsonProperty("teamB")
     private String[] teamBIDs;
 

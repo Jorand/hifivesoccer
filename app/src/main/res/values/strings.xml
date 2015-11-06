@@ -41,6 +41,17 @@
     <string name="act_newgame_guest">Inviter des amis</string>
     <string name="act_newgame_button">Créer le match</string>
     <string name="act_newgame_visibility">Privé</string>
-    <string name="title_activity_friends_list">FriendsListActivity</string>
+    <string name="title_activity_friends_list">Inviter des amis</string>
     <string name="act_list_friends_add_button">Ajouter</string>
+    <string name="title_activity_game_detail">Fiche de match</string>
+    <string name="act_game_detail_team_a">Équipe A</string>
+    <string name="act_game_detail_team_b">Équipe B</string>
+    <string name="game_menu_team_a">Équipe A</string>
+    <string name="game_menu_team_b">Équipe B</string>
+    <string name="game_menu_exit">Quitter la partie</string>
+    <string name="game_menu_default">Participer</string>
+    <string name="dialog_exit_game_msq">Quitter la partie !</string>
+    <string name="dialog_exit_game_title">Êtes vous certain(e) de ne pas vouloir participer à ce match ?</string>
+    <string name="game_detail_add_player_button">INVITER</string>
+    <string name="act_game_detail_organizer_label">Organisé par</string>
 </resources>

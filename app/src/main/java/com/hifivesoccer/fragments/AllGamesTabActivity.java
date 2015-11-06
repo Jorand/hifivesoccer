@@ -1,6 +1,7 @@
 package com.hifivesoccer.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,11 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hifivesoccer.R;
+import com.hifivesoccer.activities.GameDetailActivity;
+import com.hifivesoccer.activities.NewGameActivity;
 import com.hifivesoccer.adapters.GameListAdapter;
 import com.hifivesoccer.models.Game;
 import com.hifivesoccer.utils.ServerHandler;
@@ -32,8 +36,6 @@ public class AllGamesTabActivity extends Fragment implements SwipeRefreshLayout.
     private ListView listView;
     private GameListAdapter adapter;
     private List<Game> gameList;
-
-    private int offSet = 0;
 
     private static final String TAG = AllGamesTabActivity.class.getSimpleName();
     private final Context context = getActivity();
@@ -56,6 +58,15 @@ public class AllGamesTabActivity extends Fragment implements SwipeRefreshLayout.
             @Override
             public void run() {
                 updateList();
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), GameDetailActivity.class);
+                intent.putExtra("GAME_ID", gameList.get(position).get_id());
+                startActivity(intent);
             }
         });
 

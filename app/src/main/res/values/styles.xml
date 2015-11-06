@@ -7,6 +7,8 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
 
         <item name="colorAccent">@color/primary</item>
+
+        <item name="android:popupMenuStyle">@style/PopupMenu</item>
     </style>
 
     <style name="AppTheme.splash" parent="Theme.AppCompat.Light.NoActionBar">
@@ -21,6 +23,10 @@
     <style name="AppTheme.Dialog" parent="Theme.AppCompat.Dialog">
 
         <item name="android:background">@color/primary</item>
+    </style>
+
+    <style name="PopupMenu" parent="@android:style/Widget.PopupMenu">
+        <item name="android:popupBackground">@android:color/white</item>
     </style>
 
 </resources>

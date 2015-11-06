@@ -1,0 +1,175 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context="com.hifivesoccer.activities.NewGameActivity">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/act_game_detail_organizer_label"
+                android:layout_gravity="center_horizontal"
+                android:textStyle="italic"
+                android:textSize="20sp"
+                android:layout_marginRight="7dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Romain Giordano"
+                android:id="@+id/act_game_detail_organizer_username"
+                android:layout_gravity="center_horizontal"
+                android:textSize="20sp"
+                android:textIsSelectable="true"
+                android:textColor="@color/primary"
+                android:textStyle="italic" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/act_game_detail_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mercredi 2"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold|italic"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/act_game_detail_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="18:00"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold|italic"
+            android:textSize="40sp"
+            android:textColor="@color/primary" />
+
+        <TextView
+            android:id="@+id/act_game_detail_place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Soccer5 Marne La Vallée"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold|italic"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/act_game_detail_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9€ / participant"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold|italic"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/act_game_detail_button"
+            android:onClick="onClickJoinGame"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/game_menu_default"
+            android:textColor="@color/white"
+            android:background="@color/primary"
+            android:textSize="18sp"
+            android:textStyle="bold|italic" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/list_divider"
+        android:layout_marginTop="10dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:divider="@color/grey_1"
+            android:layout_gravity="left">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/act_game_detail_team_a"
+                android:layout_gravity="center_horizontal"
+                android:textStyle="italic"
+                android:textSize="24sp" />
+
+            <ListView
+                android:id="@+id/act_game_detail_team_a_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </ListView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/act_game_detail_team_b"
+                android:layout_gravity="center_horizontal"
+                android:textStyle="italic"
+                android:textSize="24sp" />
+
+            <ListView
+                android:id="@+id/act_game_detail_team_b_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </ListView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
