@@ -42,7 +42,7 @@ public class Game extends AppBaseModel {
     private String[] teamBIDs;
 
     @JsonIgnore
-    private ArrayList<User> pending;
+    private ArrayList<User> pending = new ArrayList<User>();
     @JsonProperty("pending")
     private String[] pendingIDs;
 

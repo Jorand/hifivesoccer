@@ -58,7 +58,7 @@ public class GameListAdapter extends BaseAdapter {
         CircleImageView organizerAvatar = (CircleImageView) convertView.findViewById(R.id.list_game_organizer_avatar);
         TextView date = (TextView) convertView.findViewById(R.id.list_game_date);
 
-        organizerName.setText(String.valueOf(gameList.get(position).getOrganizer().getProfile().getUsername()));
+        organizerName.setText(String.valueOf(gameList.get(position).getOrganizer().getUsername()));
         location.setText(String.valueOf(gameList.get(position).getPlace()));
         date.setText(String.valueOf(gameList.get(position).getDate()));
 

@@ -94,6 +94,11 @@ public class ServerHandler {
         this.performRequest(url, Request.Method.POST, json, handler);
     }
 
+    private void putDatas(String route, JSONObject json, final ResponseHandler handler){
+        String url = API_BASE_URL + route;
+        this.performRequest(url, Request.Method.PUT, json, handler);
+    }
+
     private void performRequest (String url, int verb, JSONObject json, final ResponseHandler handler){
         RequestQueue requestQueue = Volley.newRequestQueue(this.context);
         JsonObjectRequest jsonRequest = new JsonObjectRequest(
@@ -144,7 +149,7 @@ public class ServerHandler {
     private ResponseHandler authenticateHandlerToError (final Activity activity){
 
         final ProgressDialog progress = new ProgressDialog(activity);
-        progress.setMessage("Connexion…");
+        progress.setMessage(activity.getString(R.string.connexion));
         progress.show();
 
         return new ResponseHandler() {

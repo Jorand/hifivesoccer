@@ -22,11 +22,20 @@ import java.util.Locale;
  */
 public class User extends AppBaseModel {
     private static final String TAG = User.class.getSimpleName();
-    private Profile profile;
-    private Statistics statistics;
+
+    private String email;
+    private String fname;
+    private String lname;
+    private String username;
+    private String password;
+    private String picture;
     private String position;
+    private int played;
+    private int goals;
+    private int wins;
+    private int notificationsLevel;
+    private float maxDistance;
     private boolean isPrivate;
-    private Settings settings;
 
     @JsonIgnore
     private ArrayList<Game> games;
@@ -59,36 +68,12 @@ public class User extends AppBaseModel {
         }
     }
 
-    public Profile getProfile() {
-        return profile;
-    }
-
-    public void setProfile(Profile profile) {
-        this.profile = profile;
-    }
-
-    public Statistics getStatistics() {
-        return statistics;
-    }
-
-    public void setStatistics(Statistics statistics) {
-        this.statistics = statistics;
-    }
-
     public boolean isPrivate() {
         return isPrivate;
     }
 
     public void setIsPrivate(boolean isPrivate) {
         this.isPrivate = isPrivate;
-    }
-
-    public Settings getSettings() {
-        return settings;
-    }
-
-    public void setSettings(Settings settings) {
-        this.settings = settings;
     }
 
     public String getPosition() {
@@ -119,111 +104,91 @@ public class User extends AppBaseModel {
         this.games.add(game);
     }
 
-    public class Profile {
-        private String email;
-        private String fname;
-        private String lname;
-        private String username;
-        private String password;
-        private String picture;
-
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
-
-        public String getFname() {
-            return fname;
-        }
-
-        public void setFname(String fname) {
-            this.fname = fname;
-        }
-
-        public String getLname() {
-            return lname;
-        }
-
-        public void setLname(String lname) {
-            this.lname = lname;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public String getPicture() {
-            return picture;
-        }
-
-        public void setPicture(String picture) {
-            this.picture = picture;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
+    public String getEmail() {
+        return email;
     }
 
-    public class Statistics {
-        private int games;
-        private int goals;
-        private int wins;
-
-        public int getGames() {
-            return games;
-        }
-
-        public void setGames(int games) {
-            this.games = games;
-        }
-
-        public int getGoals() {
-            return goals;
-        }
-
-        public void setGoals(int goals) {
-            this.goals = goals;
-        }
-
-        public int getWins() {
-            return wins;
-        }
-
-        public void setWins(int wins) {
-            this.wins = wins;
-        }
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public class Settings {
-        private int notificationsLevel;
-        private float maxDistance;
+    public String getFname() {
+        return fname;
+    }
 
-        public int getNotificationsLevel() {
-            return notificationsLevel;
-        }
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
 
-        public void setNotificationsLevel(int notificationsLevel) {
-            this.notificationsLevel = notificationsLevel;
-        }
+    public String getLname() {
+        return lname;
+    }
 
-        public float getMaxDistance() {
-            return maxDistance;
-        }
+    public void setLname(String lname) {
+        this.lname = lname;
+    }
 
-        public void setMaxDistance(float maxDistance) {
-            this.maxDistance = maxDistance;
-        }
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getPlayed() {
+        return played;
+    }
+
+    public void setPlayed(int played) {
+        this.played = played;
+    }
+
+    public int getGoals() {
+        return goals;
+    }
+
+    public void setGoals(int goals) {
+        this.goals = goals;
+    }
+
+    public int getWins() {
+        return wins;
+    }
+
+    public void setWins(int wins) {
+        this.wins = wins;
+    }
+
+    public int getNotificationsLevel() {
+        return notificationsLevel;
+    }
+
+    public void setNotificationsLevel(int notificationsLevel) {
+        this.notificationsLevel = notificationsLevel;
+    }
+
+    public float getMaxDistance() {
+        return maxDistance;
+    }
+
+    public void setMaxDistance(float maxDistance) {
+        this.maxDistance = maxDistance;
     }
 }
