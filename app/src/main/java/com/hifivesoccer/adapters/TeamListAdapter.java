@@ -27,14 +27,11 @@ public class TeamListAdapter extends BaseAdapter {
     public TeamListAdapter(Activity activity, List<User> teamList) {
         this.activity = activity;
         this.teamList = teamList;
-
-        Log.d("LOLLLLLL", "init adapter");
     }
 
     @Override
     public int getCount() {
         return teamList.size();
-        //return (teamList == null) ? 0 : teamList.size();
     }
 
     @Override
@@ -60,11 +57,6 @@ public class TeamListAdapter extends BaseAdapter {
         TextView userName = (TextView) convertView.findViewById(R.id.teamlist_username);
 
         userName.setText(teamList.get(position).getUsername());
-
-        Log.d("LOL", teamList.get(position).getUsername());
-
-
-        // For the avatar: https://developer.android.com/intl/en-us/training/volley/request.html
 
         return convertView;
     }

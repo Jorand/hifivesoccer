@@ -11,11 +11,14 @@ import android.support.v7.internal.widget.AdapterViewCompat;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +47,8 @@ public class GameDetailActivity extends AppActivity {
     private final Context context = this;
     private final ServerHandler server = ServerHandler.getInstance(context);
 
+    private LayoutInflater inflater;
+
     private Toolbar toolbar;
     private Button gameButton;
 
@@ -55,12 +60,18 @@ public class GameDetailActivity extends AppActivity {
 
     private String status = "";
 
-    private List<User> teamAList;
-    private List<User> teamBList;
+    private List<User> teamAList = new ArrayList<>();
+    private List<User> teamBList = new ArrayList<>();
+
+    private List<String> teamAListIds = new ArrayList<>();
+    private List<String> teamBListIds = new ArrayList<>();
 
     private TeamListAdapter adapterTeamA;
     private TeamListAdapter adapterTeamB;
     private String[] myGamesIds;
+
+    private LinearLayout teamA;
+    private LinearLayout teamB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,16 +97,8 @@ public class GameDetailActivity extends AppActivity {
 
         gameButton = (Button) findViewById(R.id.act_game_detail_button);
 
-        teamAList = new ArrayList<>();
-        teamBList = new ArrayList<>();
-
-        adapterTeamA = new TeamListAdapter(this, teamAList);
-        final ListView teamA = (ListView) findViewById(R.id.act_game_detail_team_a_list);
-        teamA.setAdapter(adapterTeamA);
-
-        adapterTeamB = new TeamListAdapter(this, teamBList);
-        final ListView teamB = (ListView) findViewById(R.id.act_game_detail_team_b_list);
-        teamB.setAdapter(adapterTeamB);
+        teamA = (LinearLayout) findViewById(R.id.act_game_detail_team_a_list);
+        teamB = (LinearLayout) findViewById(R.id.act_game_detail_team_b_list);
 
         if(MySelf.getSelf() != null){
             me = MySelf.getSelf();
@@ -123,25 +126,34 @@ public class GameDetailActivity extends AppActivity {
 
                             OrganizerName.setText(game.getOrganizer().getUsername());
                             GameDate.setText(game.getDate());
-                            GameTime.setText(game.getDate());
+                            GameTime.setText(game.getTime());
                             GamePlace.setText(game.getPlace());
-                            GamePrice.setText(String.valueOf(game.getPrice()));
+                            String price = String.format("%s", game.getPrice());
+                            GamePrice.setText(price+"€ / participant");
 
-                            teamAList = (List<User>) game.getTeamA();
-                            teamBList = (List<User>) game.getTeamB();
+                            for (int i = 0; i < game.getTeamA().size(); i++) {
 
-                            if (teamAList.contains(me)) {
-                                status = "teamA";
-                                gameButton.setText(R.string.game_menu_team_a);
+                                teamAListIds.add(game.getTeamA().get(i).get_id());
+                                teamAList.add(game.getTeamA().get(i));
+
+                                if (game.getTeamA().get(i).get_id().equals(me.get_id())) {
+                                    status = "teamA";
+                                    gameButton.setText(R.string.game_menu_team_a);
+                                }
                             }
 
-                            if (teamBList.contains(me)) {
-                                status = "teamB";
-                                gameButton.setText(R.string.game_menu_team_b);
+                            for (int i = 0; i < game.getTeamB().size(); i++) {
+
+                                teamBListIds.add(game.getTeamB().get(i).get_id());
+                                teamBList.add(game.getTeamB().get(i));
+
+                                if (game.getTeamB().get(i).get_id().equals(me.get_id())) {
+                                    status = "teamB";
+                                    gameButton.setText(R.string.game_menu_team_b);
+                                }
                             }
 
-                            adapterTeamA.notifyDataSetChanged();
-                            adapterTeamB.notifyDataSetChanged();
+                            updateTeamList();
                         }
                     });
                 } catch (IOException e) {
@@ -195,45 +207,150 @@ public class GameDetailActivity extends AppActivity {
 
     }
 
-    private void joinTeam(String team) {
-        Toast.makeText(context, "You join Team " + team, Toast.LENGTH_SHORT).show();
+    private void updateTeamList() {
+
+        teamA.removeAllViews();
+        teamB.removeAllViews();
+
+        if (inflater == null)
+            inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        for (int i = 0; i < teamAList.size(); i++) {
+            User user = teamAList.get(i);
+            View convertView = inflater.inflate(R.layout.team_list_reverse, null);
+
+            ImageView userPicture = (ImageView) convertView.findViewById(R.id.teamlist_picture);
+            TextView userName = (TextView) convertView.findViewById(R.id.teamlist_username);
+
+            userName.setText(teamAList.get(i).getUsername());
+
+            teamA.addView(convertView);
+        }
+
+        for (int i = 0; i < teamBList.size(); i++) {
+            User user = teamBList.get(i);
+            View convertView = inflater.inflate(R.layout.team_list, null);
+
+            ImageView userPicture = (ImageView) convertView.findViewById(R.id.teamlist_picture);
+            TextView userName = (TextView) convertView.findViewById(R.id.teamlist_username);
+
+            userName.setText(teamBList.get(i).getUsername());
+
+            teamB.addView(convertView);
+        }
+    }
+
+    private void joinTeam(final String team) {
+
+        JSONObject json = new JSONObject();
+
+        final List<String> teamA_List = teamAListIds;
+        final List<String> teamB_list = teamBListIds;
 
         if (team.equals("teamA")) {
 
-            JSONObject json = new JSONObject();
+            if (!teamA_List.contains(myId))
+                teamA_List.add(myId);
 
-            try {
-                json.put("_id", gameId);
-                json.put("teamA", new JSONArray(teamAList));
-
-                server.putDatas("game", json, new ServerHandler.ResponseHandler() {
-                    @Override
-                    public void onSuccess(Object response) {
-                        Log.d(TAG, response.toString());
-
-
-                        adapterTeamA.notifyDataSetChanged();
-                        gameButton.setText(R.string.game_menu_team_a);
-                    }
-
-                    @Override
-                    public void onError(String error) {
-                        Log.e(TAG, error);
-                        Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
-                });
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
-                toast.show();
-            }
+            teamB_list.remove(myId);
         }
 
         if (team.equals("teamB")) {
-            gameButton.setText(R.string.game_menu_team_b);
+
+            teamA_List.remove(myId);
+
+            if (!teamB_list.contains(myId))
+                teamB_list.add(myId);
         }
+
+        Log.d(TAG, teamA_List.toString());
+        Log.d(TAG, teamB_list.toString());
+
+        JSONArray jsonTeamA = new JSONArray(teamA_List);
+        JSONArray jsonTeamB = new JSONArray(teamB_list);
+
+        if (jsonTeamA.length() <= 0)
+            jsonTeamA = null;
+
+        if (jsonTeamB.length() <= 0)
+            jsonTeamB = null;
+
+        try {
+
+            json.put("_id", gameId);
+            json.put("teamA", jsonTeamA);
+            json.put("teamB", jsonTeamB);
+
+            Log.d(TAG, "JSON: "+json.toString());
+
+            server.putDatas("game", json, new ServerHandler.ResponseHandler() {
+                @Override
+                public void onSuccess(Object response) {
+                    Log.d(TAG, response.toString());
+
+                    Toast.makeText(context, "You join Team " + team, Toast.LENGTH_SHORT).show();
+
+                    JSONObject serializedGame = (JSONObject) response;
+                    ObjectMapper mapper = new ObjectMapper();
+                    try {
+
+                        teamAListIds.clear();
+                        teamAList.clear();
+                        teamBListIds.clear();
+                        teamBList.clear();
+
+                        final Game game = mapper.readValue(serializedGame.toString(), Game.class);
+                        game.initPeoples(context, new Game.initHandler() {
+                            @Override
+                            public void handle() {
+
+                                for (int i = 0; i < game.getTeamA().size(); i++) {
+
+                                    teamAListIds.add(game.getTeamA().get(i).get_id());
+                                    teamAList.add(game.getTeamA().get(i));
+
+                                    if (game.getTeamA().get(i).get_id().equals(me.get_id())) {
+                                        status = "teamA";
+                                        gameButton.setText(R.string.game_menu_team_a);
+                                    }
+                                }
+
+                                for (int i = 0; i < game.getTeamB().size(); i++) {
+
+                                    teamBListIds.add(game.getTeamB().get(i).get_id());
+                                    teamBList.add(game.getTeamB().get(i));
+
+                                    if (game.getTeamB().get(i).get_id().equals(me.get_id())) {
+                                        status = "teamB";
+                                        gameButton.setText(R.string.game_menu_team_b);
+                                    }
+                                }
+
+                                updateTeamList();
+                            }
+                        });
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+
+                }
+
+                @Override
+                public void onError(String error) {
+                    Log.e(TAG, error);
+                    Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
     }
 
     private void exitGame() {
@@ -247,8 +364,90 @@ public class GameDetailActivity extends AppActivity {
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        Toast.makeText(context, "You join left the game !", Toast.LENGTH_SHORT).show();
-                        gameButton.setText(R.string.game_menu_default);
+                        JSONObject json = new JSONObject();
+
+                        final List<String> teamA_List = teamAListIds;
+                        final List<String> teamB_list = teamBListIds;
+
+                        teamA_List.remove(myId);
+                        teamB_list.remove(myId);
+
+                        try {
+
+                            json.put("_id", gameId);
+                            json.put("teamA", new JSONArray(teamA_List));
+                            json.put("teamB", new JSONArray(teamB_list));
+
+                            server.putDatas("game", json, new ServerHandler.ResponseHandler() {
+                                @Override
+                                public void onSuccess(Object response) {
+                                    Log.d(TAG, response.toString());
+
+                                    Toast.makeText(context, "You join left the game !", Toast.LENGTH_SHORT).show();
+
+                                    gameButton.setText(R.string.game_menu_default);
+
+                                    JSONObject serializedGame = (JSONObject) response;
+                                    ObjectMapper mapper = new ObjectMapper();
+                                    try {
+
+                                        teamAListIds.clear();
+                                        teamAList.clear();
+                                        teamBListIds.clear();
+                                        teamBList.clear();
+
+                                        final Game game = mapper.readValue(serializedGame.toString(), Game.class);
+                                        game.initPeoples(context, new Game.initHandler() {
+                                            @Override
+                                            public void handle() {
+
+                                                for (int i = 0; i < game.getTeamA().size(); i++) {
+
+                                                    teamAListIds.add(game.getTeamA().get(i).get_id());
+                                                    teamAList.add(game.getTeamA().get(i));
+
+                                                    if (game.getTeamA().get(i).get_id().equals(me.get_id())) {
+                                                        status = "teamA";
+                                                        gameButton.setText(R.string.game_menu_team_a);
+                                                    }
+                                                }
+
+                                                for (int i = 0; i < game.getTeamB().size(); i++) {
+
+                                                    teamBListIds.add(game.getTeamB().get(i).get_id());
+                                                    teamBList.add(game.getTeamB().get(i));
+
+                                                    if (game.getTeamB().get(i).get_id().equals(me.get_id())) {
+                                                        status = "teamB";
+                                                        gameButton.setText(R.string.game_menu_team_b);
+                                                    }
+                                                }
+
+                                                updateTeamList();
+                                            }
+                                        });
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                        Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+                                        toast.show();
+                                    }
+
+
+                                }
+
+                                @Override
+                                public void onError(String error) {
+                                    Log.e(TAG, error);
+                                    Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }
+                            });
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

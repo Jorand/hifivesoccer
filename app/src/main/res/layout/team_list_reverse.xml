@@ -3,15 +3,9 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="right"
+    android:gravity="right"
     android:padding="10dp">
-
-    <ImageView
-        android:id="@+id/teamlist_picture"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/test"
-        android:layout_marginRight="16dp"
-        android:layout_gravity="center_vertical" />
 
     <TextView
         android:id="@+id/teamlist_username"
@@ -20,6 +14,14 @@
         android:text="TEST"
         android:textSize="18sp"
         android:textStyle="bold|italic"
+        android:layout_gravity="center_vertical" />
+
+    <ImageView
+        android:id="@+id/teamlist_picture"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/test"
+        android:layout_marginLeft="16dp"
         android:layout_gravity="center_vertical" />
 
 </LinearLayout>
