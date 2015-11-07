@@ -32,6 +32,7 @@ public class NotificationsTabActivity extends Fragment implements SwipeRefreshLa
         View v =inflater.inflate(R.layout.tab_notifications,container,false);
 
         listView = (ListView) v.findViewById(R.id.listView);
+        listView.setEmptyView(v.findViewById(R.id.empty_list_view ));
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setColorSchemeResources(R.color.primary);
         swipeRefreshLayout.setOnRefreshListener(this);

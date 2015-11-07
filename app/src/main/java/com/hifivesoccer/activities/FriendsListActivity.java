@@ -97,6 +97,7 @@ public class FriendsListActivity extends AppActivity {
         */
 
         listView = (ListView) findViewById(R.id.users_list);
+        listView.setEmptyView(findViewById(R.id.empty_list_view ));
 
         adapter = new FiendsListAdapter(this, userList, userListAdded);
         listView.setAdapter(adapter);

@@ -65,4 +65,8 @@
 
     <string name="hifive_token_key">token</string>
     <string name="act_newgame_time">Heure</string>
+    <string name="match_empty_list">Il n\'y a pas de match pour le moment.</string>
+    <string name="notifications_empty_list">Vous n\'avez pas de match en attente pour le moment.</string>
+    <string name="mygames_empty_list">Pas de match prévu pour l\'instant. \nOrganiser un match avec tes amis !</string>
+    <string name="friends_empty_list">La liste est vide. Ajoute tes amis pour les inviter.</string>
 </resources>

@@ -51,6 +51,7 @@ public class AllGamesTabActivity extends Fragment implements SwipeRefreshLayout.
         swipeRefreshLayout.setOnRefreshListener(this);
 
         gameList = new ArrayList<>();
+        //listView.setEmptyView( v.findViewById( R.id.empty_list_view ) );
         adapter = new GameListAdapter(getActivity(), gameList);
         listView.setAdapter(adapter);
 

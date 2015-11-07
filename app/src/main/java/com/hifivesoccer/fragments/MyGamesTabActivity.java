@@ -49,6 +49,7 @@ public class MyGamesTabActivity extends Fragment implements SwipeRefreshLayout.O
         textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
         textView.setPadding(30, 30, 30, 30);
 
+        listView.setEmptyView(v.findViewById(R.id.empty_list_view ));
         listView.addHeaderView(textView);
 
         gameList = new ArrayList<>();
