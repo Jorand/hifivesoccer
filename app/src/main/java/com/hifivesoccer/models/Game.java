@@ -8,9 +8,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hifivesoccer.utils.ServerHandler;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
 /**
@@ -32,12 +37,12 @@ public class Game extends AppBaseModel {
     private String organizerID;
 
     @JsonIgnore
-    private ArrayList<User> teamA = new ArrayList<>();
+    private ArrayList<User> teamA = new ArrayList<User>();
     @JsonProperty("teamA")
     private String[] teamAIDs;
 
     @JsonIgnore
-    private ArrayList<User> teamB = new ArrayList<>();
+    private ArrayList<User> teamB = new ArrayList<User>();
     @JsonProperty("teamB")
     private String[] teamBIDs;
 
@@ -48,6 +53,7 @@ public class Game extends AppBaseModel {
 
     public void initPeoples(Context context, final initHandler callback){
         requestQueue++;
+        Log.d(TAG, ""+requestQueue);
         if(organizerID != null){
             getUserAndAdToList(getOrganizerID(), context, new addToList() {
                 @Override
@@ -55,48 +61,74 @@ public class Game extends AppBaseModel {
                     setOrganizer((User) response);
                     requestQueue--;
                     checkIfAsyncDone(callback);
+                    Log.d(TAG, ""+requestQueue);
                 }
             });
         }
-        if(pendingIDs != null){
-            for (String id : pendingIDs){
-                requestQueue++;
-                getUserAndAdToList(id, context, new addToList() {
-                    @Override
-                    public void handle(Object response) {
-                        pending.add((User) response);
-                        requestQueue--;
-                        checkIfAsyncDone(callback);
-                    }
-                });
-            }
+        if(pendingIDs.length > 0){
+            String ids = arrayToJavaScriptArray(pendingIDs);
+            requestQueue++;
+            Log.d(TAG, ""+requestQueue);
+            getArrayOfUsersAndAdToList(ids, context, new addToList() {
+                public void decrementQueue() {
+                    requestQueue--;
+                }
+
+                @Override
+                public void handle(Object response) {
+                    decrementQueue();
+
+                    pending.add((User) response);
+                    checkIfAsyncDone(callback);
+                    Log.d(TAG, "" + requestQueue);
+                }
+            });
         }
-        if(teamAIDs != null){
-            for (String id : teamAIDs){
-                requestQueue++;
-                getUserAndAdToList(id, context, new addToList() {
-                    @Override
-                    public void handle(Object response) {
-                        teamA.add((User) response);
-                        requestQueue--;
-                        checkIfAsyncDone(callback);
-                    }
-                });
-            }
+        if(teamAIDs.length > 0){
+            String ids = arrayToJavaScriptArray(teamAIDs);
+            requestQueue++;
+            Log.d(TAG, ""+requestQueue);
+            getArrayOfUsersAndAdToList(ids, context, new addToList() {
+                public void decrementQueue() {
+                    requestQueue--;
+                }
+
+                @Override
+                public void handle(Object response) {
+                    decrementQueue();
+                    teamA.add((User) response);
+                    checkIfAsyncDone(callback);
+                    Log.d(TAG, "" + requestQueue);
+                }
+            });
         }
-        if(teamBIDs != null){
-            for (String id : teamBIDs){
-                requestQueue++;
-                getUserAndAdToList(id, context, new addToList() {
-                    @Override
-                    public void handle(Object response){
-                        teamB.add((User) response);
-                        requestQueue--;
-                        checkIfAsyncDone(callback);
-                    }
-                });
-            }
+        if(teamBIDs.length > 0){
+            String ids = arrayToJavaScriptArray(teamBIDs);
+            requestQueue++;
+            Log.d(TAG, ""+requestQueue);
+            getArrayOfUsersAndAdToList(ids, context, new addToList() {
+                public void decrementQueue() {
+                    requestQueue--;
+                }
+
+                @Override
+                public void handle(Object response) {
+                    decrementQueue();
+                    teamB.add((User) response);
+                    checkIfAsyncDone(callback);
+                    Log.d(TAG, "" + requestQueue);
+                }
+            });
         }
+    }
+
+    private String arrayToJavaScriptArray (String[] array){
+        String ids = "[";
+        for (String id : array){
+            ids += id + ",";
+        }
+        ids += "]";
+        return ids;
     }
 
     void checkIfAsyncDone (initHandler callback){
@@ -117,6 +149,35 @@ public class Game extends AppBaseModel {
                     handler.handle(user);
                 } catch (IOException e) {
                     e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.e(TAG, error);
+            }
+        });
+    }
+
+    private void getArrayOfUsersAndAdToList(String id, Context context, final addToList handler){
+        ServerHandler server = ServerHandler.getInstance(context);
+        server.getArrayOfUsers(id, new ServerHandler.ResponseHandler() {
+            @Override
+            public void onSuccess(Object response) {
+                JSONArray serializedUsers = (JSONArray) response;
+                for (int i = 0; i < serializedUsers.length(); i++) {
+                    ObjectMapper mapper = new ObjectMapper();
+                    try {
+                        User user = null;
+                        try {
+                            user = mapper.readValue(serializedUsers.getJSONObject(i).toString(), User.class);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        handler.handle(user);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
