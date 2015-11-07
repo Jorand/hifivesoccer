@@ -57,4 +57,5 @@
     <string name="act_game_detail_organizer_label">Organisé par</string>
 
     <string name="connexion">Connexion…</string>
+    <string name="hifive_token_key">token</string>
 </resources>

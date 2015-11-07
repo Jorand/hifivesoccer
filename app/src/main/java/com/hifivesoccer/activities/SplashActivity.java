@@ -12,6 +12,7 @@ import android.widget.EditText;
 import com.hifivesoccer.R;
 import com.hifivesoccer.utils.ServerHandler;
 import com.hifivesoccer.utils.SharedPref;
+import com.hifivesoccer.utils.Token;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,34 +31,14 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        String email;
-        String pass;
-
-        JSONObject myself;
-        String serializedSelf = SharedPref.getMyself((Activity) context);
-        if(serializedSelf.length() > 0){
-            try{
-                myself = new JSONObject(serializedSelf);
-                JSONObject profile = myself.getJSONObject("profile");
-                try {
-                    email = profile.getString("email");
-                    pass = profile.getString("password");
-
-                    JSONObject json = new JSONObject();
-                    json.put("email", email);
-                    json.put("password", pass);
-
-                    server.authenticateToLogin(json, (Activity) context);
-                } catch (JSONException e){
-                    Log.e(TAG, e.toString());
-                    GoToLogin();
-                }
-            } catch (JSONException e){
-                Log.e(TAG, e.toString());
-                GoToLogin();
-            }
-        }
-        else {
+        String token = SharedPref.getToken(this);
+        Log.d(TAG, token);
+        if(token != ""){
+            Token.getToken(this, token);
+            Intent intent = new Intent(context, MainActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
             GoToLogin();
         }
 

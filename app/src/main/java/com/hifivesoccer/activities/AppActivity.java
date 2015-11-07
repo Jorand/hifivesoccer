@@ -141,7 +141,7 @@ public class AppActivity extends AppCompatActivity {
     public void logout() {
 
         SharedPref.deleteMyself((Activity) context);
-        Token.deleteToken();
+        Token.deleteToken((Activity) this);
 
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
