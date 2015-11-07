@@ -3,6 +3,7 @@ package com.hifivesoccer.activities;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -100,7 +101,7 @@ public class NewGameActivity extends AppActivity {
                 final boolean isPrivate = isPrivateSwitch.isEnabled();
 
                 String postGameDate = new SimpleDateFormat("EEE dd MMM yyyy", Locale.getDefault()).format(gameDate);
-                String postGameTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(cal.getTime());
+                String postGameTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(gameTime);
 
                 if (!placeName.isEmpty() && !placeAddress.isEmpty() && !gamePrice.isEmpty()) {
 
@@ -119,17 +120,39 @@ public class NewGameActivity extends AppActivity {
 
                         Log.d(TAG, json.toString());
 
+                        final ProgressDialog progress = new ProgressDialog(context);
+                        progress.setMessage(context.getString(R.string.loading));
+                        progress.show();
+
                         server.postDatas("game", json, new ServerHandler.ResponseHandler() {
                             @Override
                             public void onSuccess(Object response) {
                                 Log.d(TAG, response.toString());
 
-                                Toast toast = Toast.makeText(context, "Game bien ajouté", Toast.LENGTH_SHORT);
-                                toast.show();
+                                progress.dismiss();
 
-                                //Intent intent = new Intent(context, GameDetailActivity.class);
-                                //intent.putExtra("GAME_ID", gameList.get(position).get_id());
-                                //startActivity(intent);
+                                JSONObject res = (JSONObject) response;
+
+                                try {
+                                    String id = res.getString("id");
+
+                                    Intent intent = new Intent(context, GameDetailActivity.class);
+                                    intent.putExtra("GAME_ID", id);
+                                    startActivity(intent);
+                                    finish();
+
+                                } catch (JSONException e) {
+                                    Log.e(TAG, e.toString());
+
+                                    Intent intent = new Intent(context, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+
+                                    e.printStackTrace();
+                                }
+
+                                //Toast toast = Toast.makeText(context, "Game bien ajouté", Toast.LENGTH_SHORT);
+                                //toast.show();
                             }
 
                             @Override
@@ -137,6 +160,7 @@ public class NewGameActivity extends AppActivity {
                                 Log.e(TAG, error);
                                 Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
                                 toast.show();
+                                progress.dismiss();
                             }
                         });
 
@@ -164,6 +188,9 @@ public class NewGameActivity extends AppActivity {
 
         hours_x = cal.get(Calendar.HOUR_OF_DAY);
         min_x = cal.get(Calendar.MINUTE);
+
+        gameDate = cal.getTime();
+        gameTime = cal.getTime();
 
         showDialogOnButtonClick();
         showTimePickerDialog();
