@@ -31,7 +31,6 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:inputType="textPostalAddress"
             android:textStyle="italic"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
@@ -39,16 +38,38 @@
             android:hint="@string/act_newgame_place_address"
             android:layout_marginBottom="5dp" />
 
-        <EditText
+
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:inputType="datetime"
-            android:textStyle="italic"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:id="@+id/game_date"
-            android:hint="@string/act_newgame_date"
-            android:layout_marginBottom="5dp" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="50dp"
+                android:textStyle="italic"
+                android:clickable="true"
+                android:id="@+id/game_date"
+                android:hint="@string/act_newgame_date"
+                android:textSize="18dp"
+                android:padding="10dp"
+                android:layout_marginRight="5dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="50dp"
+                android:textStyle="italic"
+                android:clickable="true"
+                android:id="@+id/game_time"
+                android:hint="@string/act_newgame_time"
+                android:textSize="18dp"
+                android:padding="10dp"
+                android:layout_gravity="right" />
+
+        </LinearLayout>
 
         <EditText
             android:layout_width="match_parent"

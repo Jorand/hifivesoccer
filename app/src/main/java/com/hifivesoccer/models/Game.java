@@ -26,6 +26,7 @@ public class Game extends AppBaseModel {
     private static final String TAG = Game.class.getSimpleName();
     private String description;
     private String date;
+    private String time;
     private String place;
     private float price;
     private boolean privacy;
@@ -159,7 +160,7 @@ public class Game extends AppBaseModel {
         });
     }
 
-    private void getArrayOfUsersAndAdToList(String id, Context context, final addToList handler){
+    private void getArrayOfUsersAndAdToList(String id, Context context, final addToList handler) {
         ServerHandler server = ServerHandler.getInstance(context);
         server.getArrayOfUsers(id, new ServerHandler.ResponseHandler() {
             @Override
@@ -186,6 +187,14 @@ public class Game extends AppBaseModel {
                 Log.e(TAG, error);
             }
         });
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public interface addToList {
