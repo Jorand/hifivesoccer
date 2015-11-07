@@ -74,7 +74,7 @@ public class NewGameActivity extends AppActivity {
                 final boolean isPrivate = isPrivateSwitch.isEnabled();
 
 
-                if (!placeName.isEmpty() && !placeAddress.isEmpty() && !gameDate.isEmpty() && !gamePrice.isEmpty() && !gameDescription.isEmpty()) {
+                if (!placeName.isEmpty() && !placeAddress.isEmpty() && !gameDate.isEmpty() && !gamePrice.isEmpty()) {
 
                     JSONObject json = new JSONObject();
                     try {
@@ -84,33 +84,38 @@ public class NewGameActivity extends AppActivity {
                         json.put("place", placeName);
                         json.put("price", Float.parseFloat(gamePrice));
                         json.put("private", isPrivate);
-                        json.put("pending", pendingList);
+
+                        if (pendingList.length() > 0)
+                            json.put("pending", pendingList);
+
+                        Log.d(TAG, json.toString());
+
+                        server.postDatas("game", json, new ServerHandler.ResponseHandler() {
+                            @Override
+                            public void onSuccess(Object response) {
+                                Log.d(TAG, response.toString());
+
+                                Toast toast = Toast.makeText(context, "Game bien ajouté", Toast.LENGTH_SHORT);
+                                toast.show();
+
+                                //Intent intent = new Intent(context, GameDetailActivity.class);
+                                //intent.putExtra("GAME_ID", gameList.get(position).get_id());
+                                //startActivity(intent);
+                            }
+
+                            @Override
+                            public void onError(String error){
+                                Log.e(TAG, error);
+                                Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        });
+
                     } catch (JSONException e) {
                         Log.e(TAG, e.toString());
+                        Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+                        toast.show();
                     }
-
-                    Log.d(TAG, json.toString());
-
-                    server.postDatas("game", json, new ServerHandler.ResponseHandler() {
-                        @Override
-                        public void onSuccess(Object response) {
-                            Log.d(TAG, response.toString());
-
-                            Toast toast = Toast.makeText(context, "Game bien ajouté", Toast.LENGTH_SHORT);
-                            toast.show();
-
-                            //Intent intent = new Intent(context, GameDetailActivity.class);
-                            //intent.putExtra("GAME_ID", gameList.get(position).get_id());
-                            //startActivity(intent);
-                        }
-
-                        @Override
-                        public void onError(String error){
-                            Log.e(TAG, error);
-                            Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
-                            toast.show();
-                        }
-                    });
 
                 } else {
                     Toast toast = Toast.makeText(context, R.string.from_empty, Toast.LENGTH_SHORT);
@@ -133,6 +138,8 @@ public class NewGameActivity extends AppActivity {
 
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
+
+                pendingList = new JSONArray();
 
                 friendsId = data.getStringExtra("USERS_LIST_ID");
                 friendsName = data.getStringExtra("USERS_LIST_NAME");

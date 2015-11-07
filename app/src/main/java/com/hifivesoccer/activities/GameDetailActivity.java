@@ -51,6 +51,8 @@ public class GameDetailActivity extends AppActivity {
     private User me;
     private String myId;
 
+    private String gameId;
+
     private String status = "";
 
     private List<User> teamAList;
@@ -74,7 +76,7 @@ public class GameDetailActivity extends AppActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        final String gameId = getIntent().getStringExtra("GAME_ID");
+        gameId = getIntent().getStringExtra("GAME_ID");
 
         final TextView OrganizerName = (TextView) findViewById(R.id.act_game_detail_organizer_username);
         final TextView GameDate = (TextView) findViewById(R.id.act_game_detail_date);
@@ -196,11 +198,42 @@ public class GameDetailActivity extends AppActivity {
     private void joinTeam(String team) {
         Toast.makeText(context, "You join Team " + team, Toast.LENGTH_SHORT).show();
 
-        if (team.equals("teamA"))
-            gameButton.setText(R.string.game_menu_team_a);
+        if (team.equals("teamA")) {
 
-        if (team.equals("teamB"))
+            JSONObject json = new JSONObject();
+
+            try {
+                json.put("_id", gameId);
+                json.put("teamA", new JSONArray(teamAList));
+
+                server.postDatas("game", json, new ServerHandler.ResponseHandler() {
+                    @Override
+                    public void onSuccess(Object response) {
+                        Log.d(TAG, response.toString());
+
+
+                        adapterTeamA.notifyDataSetChanged();
+                        gameButton.setText(R.string.game_menu_team_a);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        Log.e(TAG, error);
+                        Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
+
+        if (team.equals("teamB")) {
             gameButton.setText(R.string.game_menu_team_b);
+        }
     }
 
     private void exitGame() {
