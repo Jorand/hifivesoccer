@@ -15,6 +15,7 @@ import java.util.Locale;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AppBaseModel {
     private String _id;
+
     @JsonIgnore
     private SimpleDateFormat createdAt;
 

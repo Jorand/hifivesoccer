@@ -206,7 +206,7 @@ public class GameDetailActivity extends AppActivity {
                 json.put("_id", gameId);
                 json.put("teamA", new JSONArray(teamAList));
 
-                server.postDatas("game", json, new ServerHandler.ResponseHandler() {
+                server.putDatas("game", json, new ServerHandler.ResponseHandler() {
                     @Override
                     public void onSuccess(Object response) {
                         Log.d(TAG, response.toString());

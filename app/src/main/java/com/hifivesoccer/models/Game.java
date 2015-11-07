@@ -48,14 +48,16 @@ public class Game extends AppBaseModel {
 
     public void initPeoples(Context context, final initHandler callback){
         requestQueue++;
-        getUserAndAdToList(getOrganizerID(), context, new addToList() {
-            @Override
-            public void handle(Object response) {
-                setOrganizer((User) response);
-                requestQueue--;
-                checkIfAsyncDone(callback);
-            }
-        });
+        if(organizerID != null){
+            getUserAndAdToList(getOrganizerID(), context, new addToList() {
+                @Override
+                public void handle(Object response) {
+                    setOrganizer((User) response);
+                    requestQueue--;
+                    checkIfAsyncDone(callback);
+                }
+            });
+        }
         if(pendingIDs != null){
             for (String id : pendingIDs){
                 requestQueue++;
