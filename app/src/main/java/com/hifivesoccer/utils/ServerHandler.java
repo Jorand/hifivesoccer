@@ -77,10 +77,20 @@ public class ServerHandler {
         this.getData("user", id, handler);
     }
 
+    public void getArrayOfUsers(String ids, final ResponseHandler handler){
+        this.getArrayOfDatas("user", ids, handler);
+    }
+
     private void getData(String route, String id, final ResponseHandler handler){
         String url = API_BASE_URL + route + '/' + id;
         url += "?token=" + Token.getToken();
         this.performRequest(url, Request.Method.GET, new JSONObject(), handler);
+    }
+
+    private void getArrayOfDatas(String route, String ids, final ResponseHandler handler){
+        String url = API_BASE_URL + route + '/' + ids;
+        url += "?token=" + Token.getToken();
+        this.performArrayRequest(url, Request.Method.GET, new JSONObject(), handler);
     }
 
     private void getDatas(String route, final ResponseHandler handler){
@@ -173,7 +183,7 @@ public class ServerHandler {
                             try{
                                 myself = mapper.readValue(serializedSelf, User.class);
                                 myself.initGames(context);
-                                MySelf.getSelf(myself);
+                                MySelf.setSelf(myself);
                                 Log.d(TAG, myself.toString());
                             } catch (IOException e){
                                 Log.e(TAG, e.toString());
