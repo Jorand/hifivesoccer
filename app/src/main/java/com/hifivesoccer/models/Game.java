@@ -21,6 +21,7 @@ public class Game extends AppBaseModel {
     private static final String TAG = Game.class.getSimpleName();
     private String description;
     private String date;
+    private String time;
     private String place;
     private float price;
     private boolean privacy;
@@ -125,6 +126,14 @@ public class Game extends AppBaseModel {
                 Log.e(TAG, error);
             }
         });
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public interface addToList {

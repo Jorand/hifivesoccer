@@ -69,6 +69,9 @@ public class NewGameActivity extends AppActivity {
 
     private Calendar cal;
 
+    private Date gameDate;
+    private Date gameTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,20 +94,22 @@ public class NewGameActivity extends AppActivity {
 
                 final String placeName = getEditTextValue(R.id.place_name);
                 final String placeAddress = getEditTextValue(R.id.place_address);
-                final String gameDate = getEditTextValue(R.id.game_date);
                 final String gamePrice = getEditTextValue(R.id.game_price);
                 final String gameDescription = getEditTextValue(R.id.game_description);
                 Switch isPrivateSwitch = (Switch) findViewById(R.id.private_game);
                 final boolean isPrivate = isPrivateSwitch.isEnabled();
 
+                String postGameDate = new SimpleDateFormat("EEE dd MMM yyyy", Locale.getDefault()).format(gameDate);
+                String postGameTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(cal.getTime());
 
-                if (!placeName.isEmpty() && !placeAddress.isEmpty() && !gameDate.isEmpty() && !gamePrice.isEmpty()) {
+                if (!placeName.isEmpty() && !placeAddress.isEmpty() && !gamePrice.isEmpty()) {
 
                     JSONObject json = new JSONObject();
                     try {
                         json.put("organizer", MySelf.getSelf().get_id());
                         json.put("description", gameDescription);
-                        json.put("date", gameDate);
+                        json.put("date", postGameDate);
+                        json.put("time", postGameTime);
                         json.put("place", placeName);
                         json.put("price", Float.parseFloat(gamePrice));
                         json.put("private", isPrivate);
@@ -186,7 +191,9 @@ public class NewGameActivity extends AppActivity {
 
             Calendar calendar = Calendar.getInstance();
             calendar.set(year,monthOfYear,dayOfMonth);
-            button_date.setText(new SimpleDateFormat("EEE dd MMM yyyy", Locale.getDefault()).format(calendar.getTime()));
+
+            gameDate = calendar.getTime();
+            button_date.setText(new SimpleDateFormat("EEE dd MMM yyyy", Locale.getDefault()).format(gameDate));
 
         }
     };
@@ -216,7 +223,10 @@ public class NewGameActivity extends AppActivity {
             calendar.set(Calendar.MINUTE, minute);
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeZone(tz);
-            button_time.setText(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(calendar.getTime()));
+
+            gameTime = calendar.getTime();
+
+            button_time.setText(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(gameTime));
 
             //Toast.makeText(context, "Heure " + hours_x +":"+min_x,Toast.LENGTH_SHORT).show();
             //button_time.setText(hours_x+":"+min_x);
