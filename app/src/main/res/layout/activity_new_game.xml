@@ -42,24 +42,34 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:inputType="date"
+            android:inputType="datetime"
             android:textStyle="italic"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:id="@+id/date"
+            android:id="@+id/game_date"
             android:hint="@string/act_newgame_date"
             android:layout_marginBottom="5dp" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:inputType="time"
             android:textStyle="italic"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:id="@+id/time"
-            android:hint="Heure"
+            android:id="@+id/game_description"
+            android:hint="@string/act_new_game_description"
             android:layout_marginBottom="5dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textStyle="italic"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:id="@+id/game_price"
+            android:hint="@string/act_new_game_price"
+            android:layout_marginBottom="5dp"
+            android:inputType="number" />
 
         <RelativeLayout
             android:layout_width="match_parent"

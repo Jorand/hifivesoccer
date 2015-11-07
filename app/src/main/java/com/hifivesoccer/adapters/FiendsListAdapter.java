@@ -2,10 +2,12 @@ package com.hifivesoccer.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -19,20 +21,19 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * Created by jorand on 06/11/2015.
- */
 public class FiendsListAdapter extends BaseAdapter {
 
     private Activity activity;
     private LayoutInflater inflater;
     private List<User> userList;
+    private List<User> userListAdded;
 
     //ImageLoader imageLoader = AppActivity.getInstance().getImageLoader();
 
-    public FiendsListAdapter(Activity activity, List<User> userList) {
+    public FiendsListAdapter(Activity activity, List<User> userList, List<User> userListAdded) {
         this.activity = activity;
         this.userList = userList;
+        this.userListAdded = userListAdded;
     }
 
     @Override
@@ -60,13 +61,25 @@ public class FiendsListAdapter extends BaseAdapter {
 
         TextView name = (TextView) convertView.findViewById(R.id.user_fullname);
 
+        ImageButton addButton = (ImageButton) convertView.findViewById(R.id.addToList);
+        ImageButton removeButton = (ImageButton) convertView.findViewById(R.id.removeToList);
+
+        if (userListAdded.contains(userList.get(position))) {
+            addButton.setVisibility(View.GONE);
+            removeButton.setVisibility(View.VISIBLE);
+        }
+        else {
+            addButton.setVisibility(View.VISIBLE);
+            removeButton.setVisibility(View.GONE);
+        }
+
         //if (imageLoader == null)
         //    imageLoader = AppActivity.getInstance().getImageLoader();
         //NetworkImageView thumbNail = (NetworkImageView) convertView.findViewById(R.id.user_avatar);
 
         //thumbNail.setImageUrl(userList.get(position).getProfile().getPicture(), imageLoader);
 
-        name.setText(String.valueOf(userList.get(position).getProfile().getUsername()));
+        name.setText(String.valueOf(userList.get(position).getUsername()));
 
 
         return convertView;

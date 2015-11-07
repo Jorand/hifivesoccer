@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:padding="16dp" >
 
     <!--
@@ -16,8 +17,8 @@
 
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/user_avatar"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:background="@color/light_grey"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="8dp"/>
@@ -49,10 +50,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/addToList"
+        android:clickable="true"
+        android:onClick="addToList"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:longClickable="false"
+        android:background="@color/light_grey"
+        android:paddingLeft="9dp"
+        android:paddingTop="4dp"
+        android:paddingRight="9dp"
+        android:paddingBottom="4dp"
         android:src="@drawable/ic_action_add" />
+
+    <ImageButton
+        android:contentDescription="@string/act_list_friends_remove_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/removeToList"
+        android:clickable="true"
+        android:onClick="removeToList"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone"
+        android:src="@drawable/ic_action_done"
+        android:background="@color/primary"
+        android:paddingLeft="9dp"
+        android:paddingTop="4dp"
+        android:paddingRight="9dp"
+        android:paddingBottom="4dp" />
 
 </RelativeLayout>

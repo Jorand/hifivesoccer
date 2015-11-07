@@ -59,9 +59,9 @@ public class TeamListAdapter extends BaseAdapter {
         ImageView userPicture = (ImageView) convertView.findViewById(R.id.teamlist_picture);
         TextView userName = (TextView) convertView.findViewById(R.id.teamlist_username);
 
-        userName.setText(teamList.get(position).getProfile().getUsername());
+        userName.setText(teamList.get(position).getUsername());
 
-        Log.d("LOL", teamList.get(position).getProfile().getUsername());
+        Log.d("LOL", teamList.get(position).getUsername());
 
 
         // For the avatar: https://developer.android.com/intl/en-us/training/volley/request.html

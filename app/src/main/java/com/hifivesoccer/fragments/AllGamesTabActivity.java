@@ -144,6 +144,7 @@ public class AllGamesTabActivity extends Fragment implements SwipeRefreshLayout.
                         toast.show();
                     }
                 }
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override

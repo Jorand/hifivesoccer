@@ -119,7 +119,7 @@ public class GameDetailActivity extends AppActivity {
                                 isOrganizer = true;
                             }
 
-                            OrganizerName.setText(game.getOrganizer().getProfile().getUsername());
+                            OrganizerName.setText(game.getOrganizer().getUsername());
                             GameDate.setText(game.getDate());
                             GameTime.setText(game.getDate());
                             GamePlace.setText(game.getPlace());

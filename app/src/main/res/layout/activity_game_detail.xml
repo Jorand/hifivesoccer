@@ -40,7 +40,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Romain Giordano"
                 android:id="@+id/act_game_detail_organizer_username"
                 android:layout_gravity="center_horizontal"
                 android:textSize="20sp"
@@ -62,7 +61,6 @@
             android:id="@+id/act_game_detail_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mercredi 2"
             android:layout_gravity="center_horizontal"
             android:textStyle="bold|italic"
             android:textSize="20sp" />
@@ -71,7 +69,6 @@
             android:id="@+id/act_game_detail_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="18:00"
             android:layout_gravity="center_horizontal"
             android:textStyle="bold|italic"
             android:textSize="40sp"
@@ -81,7 +78,6 @@
             android:id="@+id/act_game_detail_place"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Soccer5 Marne La Vallée"
             android:layout_gravity="center_horizontal"
             android:textStyle="bold|italic"
             android:textSize="24sp" />
@@ -90,14 +86,12 @@
             android:id="@+id/act_game_detail_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="9€ / participant"
             android:layout_gravity="center_horizontal"
             android:textStyle="bold|italic"
             android:textSize="20sp" />
 
         <Button
             android:id="@+id/act_game_detail_button"
-            android:onClick="onClickJoinGame"
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

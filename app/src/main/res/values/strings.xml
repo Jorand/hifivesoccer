@@ -44,6 +44,7 @@
 
     <string name="title_activity_friends_list">Inviter des amis</string>
     <string name="act_list_friends_add_button">Ajouter</string>
+    <string name="act_list_friends_remove_button">Annuler</string>
     <string name="title_activity_game_detail">Fiche de match</string>
     <string name="act_game_detail_team_a">Équipe A</string>
     <string name="act_game_detail_team_b">Équipe B</string>
@@ -57,4 +58,7 @@
     <string name="act_game_detail_organizer_label">Organisé par</string>
 
     <string name="connexion">Connexion…</string>
+    <string name="loading">Chargement…</string>
+    <string name="act_new_game_description">Message (Informations)</string>
+    <string name="act_new_game_price">Prix par participant</string>
 </resources>
