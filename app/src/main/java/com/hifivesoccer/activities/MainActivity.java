@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -75,8 +76,11 @@ public class MainActivity extends AppActivity {
         });
 
         if(MySelf.getSelf() != null){
+            Log.d(TAG, MySelf.getSelf().get_id());
             String username = MySelf.getSelf().getUsername();
             Snackbar.make(coordinatorLayout, "Bienvenue " + username + " !", Snackbar.LENGTH_SHORT).show();
+        } else {
+            Log.d(TAG, "MySelf is null");
         }
 
     }

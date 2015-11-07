@@ -7,7 +7,7 @@ import com.hifivesoccer.models.User;
  */
 public class MySelf {
     private MySelf(){}
-    private static User self;
+    private static User self = null;
 
     public static User getSelf() {
         return self;

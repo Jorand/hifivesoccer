@@ -40,7 +40,7 @@ public class ServerHandler {
 
     private Context context;
     private static ServerHandler instance;
-    private final String API_BASE_URL = "http://10.0.2.2:8080/api/"; // 10.0.2.2 is the emulator alias for your machine's localhost
+    private final String API_BASE_URL = "http://192.168.56.1:8080/api/"; // See http://bbowden.tumblr.com/post/58650831283/accessing-a-localhost-server-from-the-genymotion
 
     private ServerHandler(Context context){
         this.context = context;
@@ -91,11 +91,13 @@ public class ServerHandler {
 
     public void postDatas(String route, JSONObject json, final ResponseHandler handler){
         String url = API_BASE_URL + route;
+        url += "?token=" + Token.getToken();
         this.performRequest(url, Request.Method.POST, json, handler);
     }
 
-    private void putDatas(String route, JSONObject json, final ResponseHandler handler){
+    public void putDatas(String route, JSONObject json, final ResponseHandler handler){
         String url = API_BASE_URL + route;
+        url += "?token=" + Token.getToken();
         this.performRequest(url, Request.Method.PUT, json, handler);
     }
 
@@ -166,6 +168,7 @@ public class ServerHandler {
                         User myself = new User();
                         ObjectMapper mapper = new ObjectMapper();
                         String serializedSelf = SharedPref.getMyself((Activity) context);
+                        Log.d(TAG, serializedSelf);
                         if(serializedSelf.length() > 0){
                             try{
                                 myself = mapper.readValue(serializedSelf, User.class);

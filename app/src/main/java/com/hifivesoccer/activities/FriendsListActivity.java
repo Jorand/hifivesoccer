@@ -119,15 +119,18 @@ public class FriendsListActivity extends AppActivity {
                         try {
                             final User user = mapper.readValue(serializedUser.toString(), User.class);
 
-                            if (!user.get_id().equals(MySelf.getSelf().get_id())) {
+                            if(user != null){
+                                Log.d(TAG, user.toString());
+                                if (!user.get_id().equals(MySelf.getSelf().get_id())) {
 
-                                if (Arrays.asList(friendsIdList).contains(user.get_id())) {
-                                    userListAdded.add(user);
+                                    if (Arrays.asList(friendsIdList).contains(user.get_id())) {
+                                        userListAdded.add(user);
+                                    }
+
+                                    userList.add(user);
+
+                                    adapter.notifyDataSetChanged();
                                 }
-
-                                userList.add(user);
-
-                                adapter.notifyDataSetChanged();
                             }
                         } catch (IOException e) {
                             e.printStackTrace();

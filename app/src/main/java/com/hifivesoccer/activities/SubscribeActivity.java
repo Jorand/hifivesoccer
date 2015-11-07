@@ -73,7 +73,7 @@ public class SubscribeActivity extends AppActivity {
         final String email = getEditTextValue(R.id.act_subscribe_email);
         final String password = getEditTextValue(R.id.act_subscribe_password);
 
-        if (!email.isEmpty() && !password.isEmpty()) {
+        if (!email.isEmpty() && !password.isEmpty() && !username.isEmpty()) {
 
             JSONObject json = new JSONObject();
             try {
