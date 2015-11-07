@@ -159,7 +159,7 @@ public class ServerHandler {
                 progress.dismiss();
                 JSONObject response = (JSONObject) res;
                 try {
-                    Token.getToken(response.getString("token"));
+                    Token.getToken(activity, response.getString("token"));
                     try {
                         SharedPref.setMyself(activity, response.getString("user"));
 
@@ -234,7 +234,7 @@ public class ServerHandler {
                 Log.d(TAG, res.toString());
                 JSONObject response = (JSONObject) res;
                 try {
-                    Token.getToken(response.getString("token"));
+                    Token.getToken(activity, response.getString("token"));
                     try {
                         SharedPref.setMyself(activity, response.getString("user"));
 

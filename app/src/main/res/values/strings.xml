@@ -58,7 +58,10 @@
     <string name="act_game_detail_organizer_label">Organisé par</string>
 
     <string name="connexion">Connexion…</string>
+
     <string name="loading">Chargement…</string>
     <string name="act_new_game_description">Message (Informations)</string>
     <string name="act_new_game_price">Prix par participant</string>
+
+    <string name="hifive_token_key">token</string>
 </resources>

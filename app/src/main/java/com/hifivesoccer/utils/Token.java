@@ -1,5 +1,10 @@
 package com.hifivesoccer.utils;
 
+import android.app.Activity;
+import android.content.Context;
+
+import com.hifivesoccer.activities.AppActivity;
+
 /**
  * Created by hugohil on 02/11/15.
  */
@@ -11,14 +16,16 @@ public class Token {
         return TOKEN;
     }
 
-    public static synchronized String getToken(String token){
+    public static synchronized String getToken(Activity activity, String token){
         if(TOKEN == null){
             TOKEN = token;
+            SharedPref.setToken(activity, TOKEN);
         }
         return TOKEN;
     }
 
-    public static synchronized void deleteToken(){
+    public static synchronized void deleteToken(Activity activity){
         TOKEN = null;
+        SharedPref.deleteToken(activity);
     }
 }
