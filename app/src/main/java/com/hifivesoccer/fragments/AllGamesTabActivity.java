@@ -117,6 +117,8 @@ public class AllGamesTabActivity extends Fragment implements SwipeRefreshLayout.
 
                 JSONArray serializedGames = (JSONArray) response;
 
+                gameList = new ArrayList<>();
+
                 for (int i = 0; i < serializedGames.length(); i++) {
                     try {
                         JSONObject serializedGame = serializedGames.getJSONObject(i);
