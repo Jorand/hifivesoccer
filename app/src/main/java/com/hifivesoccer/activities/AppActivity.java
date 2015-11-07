@@ -25,6 +25,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.hifivesoccer.R;
 import com.hifivesoccer.utils.LruBitmapCache;
+import com.hifivesoccer.utils.MySelf;
 import com.hifivesoccer.utils.SharedPref;
 import com.hifivesoccer.utils.Token;
 
@@ -139,7 +140,7 @@ public class AppActivity extends AppCompatActivity {
      * Remove user in SharedPref and token
      */
     public void logout() {
-
+        MySelf.setSelf(null);
         SharedPref.deleteMyself((Activity) context);
         Token.deleteToken((Activity) this);
 

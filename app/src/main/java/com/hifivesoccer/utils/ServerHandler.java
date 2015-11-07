@@ -173,7 +173,7 @@ public class ServerHandler {
                             try{
                                 myself = mapper.readValue(serializedSelf, User.class);
                                 myself.initGames(context);
-                                MySelf.getSelf(myself);
+                                MySelf.setSelf(myself);
                                 Log.d(TAG, myself.toString());
                             } catch (IOException e){
                                 Log.e(TAG, e.toString());

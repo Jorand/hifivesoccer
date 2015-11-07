@@ -13,10 +13,8 @@ public class MySelf {
         return self;
     }
 
-    public static synchronized User getSelf(User self) {
-        if(MySelf.self == null){
-            MySelf.self = self;
-        }
+    public static synchronized User setSelf(User self) {
+        MySelf.self = self;
         return self;
     }
 }
