@@ -53,71 +53,53 @@ public class Game extends AppBaseModel {
     private String[] pendingIDs;
 
     public void initPeoples(Context context, final initHandler callback){
-        requestQueue++;
-        Log.d(TAG, ""+requestQueue);
+
+        requestQueue = 0;
+
         if(organizerID != null){
+            requestQueue++;
             getUserAndAdToList(getOrganizerID(), context, new addToList() {
                 @Override
                 public void handle(Object response) {
                     setOrganizer((User) response);
                     requestQueue--;
                     checkIfAsyncDone(callback);
-                    Log.d(TAG, ""+requestQueue);
                 }
             });
         }
         if(pendingIDs.length > 0){
             String ids = arrayToJavaScriptArray(pendingIDs);
-            requestQueue++;
-            Log.d(TAG, ""+requestQueue);
+            requestQueue+= pendingIDs.length;
             getArrayOfUsersAndAdToList(ids, context, new addToList() {
-                public void decrementQueue() {
-                    requestQueue--;
-                }
-
                 @Override
                 public void handle(Object response) {
-                    decrementQueue();
-
+                    requestQueue--;
                     pending.add((User) response);
                     checkIfAsyncDone(callback);
-                    Log.d(TAG, "" + requestQueue);
                 }
             });
         }
         if(teamAIDs.length > 0){
             String ids = arrayToJavaScriptArray(teamAIDs);
-            requestQueue++;
-            Log.d(TAG, ""+requestQueue);
+            requestQueue+= teamAIDs.length;
             getArrayOfUsersAndAdToList(ids, context, new addToList() {
-                public void decrementQueue() {
-                    requestQueue--;
-                }
-
                 @Override
                 public void handle(Object response) {
-                    decrementQueue();
+                    requestQueue--;
                     teamA.add((User) response);
                     checkIfAsyncDone(callback);
-                    Log.d(TAG, "" + requestQueue);
                 }
             });
         }
         if(teamBIDs.length > 0){
             String ids = arrayToJavaScriptArray(teamBIDs);
-            requestQueue++;
-            Log.d(TAG, ""+requestQueue);
+            requestQueue+= teamBIDs.length;
             getArrayOfUsersAndAdToList(ids, context, new addToList() {
-                public void decrementQueue() {
-                    requestQueue--;
-                }
-
                 @Override
                 public void handle(Object response) {
-                    decrementQueue();
+                    requestQueue--;
                     teamB.add((User) response);
                     checkIfAsyncDone(callback);
-                    Log.d(TAG, "" + requestQueue);
                 }
             });
         }
