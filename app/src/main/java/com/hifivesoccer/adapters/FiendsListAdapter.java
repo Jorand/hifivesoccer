@@ -30,6 +30,7 @@ public class FiendsListAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private List<User> userList;
     private List<User> userListAdded;
+    private Bitmap storedBitmap = null;
 
     //ImageLoader imageLoader = AppActivity.getInstance().getImageLoader();
 
@@ -86,6 +87,12 @@ public class FiendsListAdapter extends BaseAdapter {
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
             userPicture.setImageBitmap(decodedByte);
+
+            if(storedBitmap != null){
+                storedBitmap.recycle();
+                storedBitmap = null;
+            }
+            storedBitmap = decodedByte;
         }
 
         name.setText(String.valueOf(userList.get(position).getUsername()));

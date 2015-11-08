@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.hifivesoccer.R;
 import com.hifivesoccer.adapters.GameListAdapter;
+import com.hifivesoccer.adapters.MyGameListAdapter;
 import com.hifivesoccer.models.Game;
 import com.hifivesoccer.utils.ServerHandler;
 
@@ -26,7 +27,7 @@ public class MyGamesTabActivity extends Fragment implements SwipeRefreshLayout.O
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListView listView;
-    private GameListAdapter adapter;
+    private MyGameListAdapter adapter;
     private List<Game> gameList;
 
     private static final String TAG = MyGamesTabActivity.class.getSimpleName();
@@ -53,7 +54,7 @@ public class MyGamesTabActivity extends Fragment implements SwipeRefreshLayout.O
         listView.addHeaderView(textView);
 
         gameList = new ArrayList<>();
-        adapter = new GameListAdapter(getActivity(), gameList);
+        adapter = new MyGameListAdapter(getActivity(), gameList);
         listView.setAdapter(adapter);
 
         swipeRefreshLayout.post(new Runnable() {

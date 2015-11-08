@@ -47,6 +47,7 @@ public class UserSettingsActivity extends AppActivity {
 
     private static int RESULT_LOAD_IMAGE = 1;
     String picturePath;
+    private Bitmap storedBitmap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,12 @@ public class UserSettingsActivity extends AppActivity {
 
                 ImageView imgView = (ImageView) findViewById(R.id.act_settings_picture);
                 imgView.setImageBitmap(decodedByte);
+
+                if(storedBitmap != null){
+                    storedBitmap.recycle();
+                    storedBitmap = null;
+                }
+                storedBitmap = decodedByte;
             }
 
         } else {
@@ -179,13 +186,11 @@ public class UserSettingsActivity extends AppActivity {
     }
 
     public void onClickPicture(View view) {
-        // TODO update profile picture
 
         Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         startActivityForResult(i, RESULT_LOAD_IMAGE);
 
-        //updateProfile();
     }
 
     @Override

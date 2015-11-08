@@ -81,4 +81,7 @@
     <string name="act_profil_matchs_count">Matchs joués</string>
     <string name="act_game_detail_price_msg">€ / participant</string>
     <string name="dialog_game_remove_player">Voulez-vous retirer ce joueur du match ?</string>
+    <string name="act_notifications_remove">Ne pas participer</string>
+    <string name="act_notification_organizer_text">Vous ête invité au match de</string>
+    <string name="act_mygame_organizer_text">Vous participé au match de</string>
 </resources>

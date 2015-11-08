@@ -37,6 +37,8 @@ public class GameListAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private List<Game> gameList;
 
+    private Bitmap storedBitmap = null;
+
     public GameListAdapter(Activity activity, List<Game> gameList) {
         this.activity = activity;
         this.gameList = gameList;
@@ -85,6 +87,12 @@ public class GameListAdapter extends BaseAdapter {
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
             organizerAvatar.setImageBitmap(decodedByte);
+
+            if(storedBitmap != null){
+                storedBitmap.recycle();
+                storedBitmap = null;
+            }
+            storedBitmap = decodedByte;
         }
 
         // player list

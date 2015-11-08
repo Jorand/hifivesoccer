@@ -79,8 +79,8 @@ public class GameDetailActivity extends AppActivity {
     private ArrayList<User> pendingList = new ArrayList<>();
     private Menu myMenu;
 
-    private int requestQueue = 0;
     private String organizerId;
+    private Bitmap storedBitmap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -280,6 +280,12 @@ public class GameDetailActivity extends AppActivity {
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
                 userPicture.setImageBitmap(decodedByte);
+
+                if(storedBitmap != null){
+                    storedBitmap.recycle();
+                    storedBitmap = null;
+                }
+                storedBitmap = decodedByte;
             }
             convertView.setTag(i);
 

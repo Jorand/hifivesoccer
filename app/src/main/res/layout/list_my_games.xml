@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:padding="16dp"
+    android:layout_height="match_parent">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/list_game_organizer_avatar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@color/light_grey"
+        android:layout_marginRight="16dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/list_game_organizer_avatar"
+        android:layout_toEndOf="@+id/list_game_organizer_avatar">
+
+        <TextView
+            android:text="@string/act_mygame_organizer_text"
+            android:id="@+id/list_game_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/grey_text"
+            android:textStyle="italic"
+            android:layout_marginBottom="2dp"
+            android:layout_marginRight="4dp" />
+
+        <TextView
+            android:text="Jorand"
+            android:id="@+id/list_game_organizer_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/grey_text"
+            android:textStyle="bold|italic"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/list_game_msg"
+            android:layout_toEndOf="@+id/list_game_msg" />
+
+        <TextView
+            android:text="dim. 08 nov. 2015"
+            android:id="@+id/list_game_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_below="@+id/list_game_msg"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginRight="5dp" />
+
+        <TextView
+            android:text="18:00"
+            android:id="@+id/list_game_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/primary"
+            android:textStyle="bold"
+            android:layout_above="@+id/list_game_location"
+            android:layout_toRightOf="@+id/list_game_date"
+            android:layout_toEndOf="@+id/list_game_date" />
+
+        <TextView
+            android:text="Une super salle"
+            android:id="@+id/list_game_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_below="@+id/list_game_date"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="2dp" />
+
+        <TextView
+            android:text="Avec Hugo et 2 autres personnes"
+            android:id="@+id/list_game_players"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:layout_below="@+id/list_game_location"/>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
