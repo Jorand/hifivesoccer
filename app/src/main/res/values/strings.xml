@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Hi Five Soccer</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Mon profil</string>
     <string name="action_logout">Déconnexion</string>
 
     <string name="title_activity_login">Connexion</string>
@@ -69,4 +69,7 @@
     <string name="notifications_empty_list">Vous n\'avez pas de match en attente pour le moment.</string>
     <string name="mygames_empty_list">Pas de match prévu pour l\'instant. \nOrganiser un match avec tes amis !</string>
     <string name="friends_empty_list">La liste est vide. Ajoute tes amis pour les inviter.</string>
+    <string name="title_activity_user_settings">Modifier mon profil</string>
+    <string name="act_settings_position">Poste de jeux favoris</string>
+    <string name="act_settings_avatar">Modifier ma photo de profil</string>
 </resources>
