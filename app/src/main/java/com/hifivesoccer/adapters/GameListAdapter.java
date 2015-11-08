@@ -2,10 +2,15 @@ package com.hifivesoccer.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hifivesoccer.R;
@@ -61,6 +66,15 @@ public class GameListAdapter extends BaseAdapter {
         organizerName.setText(String.valueOf(gameList.get(position).getOrganizer().getUsername()));
         location.setText(String.valueOf(gameList.get(position).getPlace()));
         date.setText(String.valueOf(gameList.get(position).getDate()));
+
+        Log.d("TEST", gameList.get(position).getOrganizer().getPicture());
+
+        if (gameList.get(position).getOrganizer().getPicture() != null) {
+            byte[] decodedString = Base64.decode(gameList.get(position).getOrganizer().getPicture(), Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+            organizerAvatar.setImageBitmap(decodedByte);
+        }
 
         // For the avatar: https://developer.android.com/intl/en-us/training/volley/request.html
 

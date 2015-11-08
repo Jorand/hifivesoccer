@@ -2,6 +2,9 @@ package com.hifivesoccer.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,11 +76,15 @@ public class FiendsListAdapter extends BaseAdapter {
             removeButton.setVisibility(View.GONE);
         }
 
-        //if (imageLoader == null)
-        //    imageLoader = AppActivity.getInstance().getImageLoader();
-        //NetworkImageView thumbNail = (NetworkImageView) convertView.findViewById(R.id.user_avatar);
+        CircleImageView userPicture = (CircleImageView) convertView.findViewById(R.id.user_avatar);
 
-        //thumbNail.setImageUrl(userList.get(position).getProfile().getPicture(), imageLoader);
+        if (userList.get(position).getPicture() != null) {
+
+            byte[] decodedString = Base64.decode(userList.get(position).getPicture(), Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+            userPicture.setImageBitmap(decodedByte);
+        }
 
         name.setText(String.valueOf(userList.get(position).getUsername()));
 
