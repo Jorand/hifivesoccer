@@ -24,8 +24,8 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     private int[] imageResId = {
 
-        R.drawable.ic_action_home,
         R.drawable.icon_match,
+        R.drawable.account_check,
         R.drawable.icon_notif
     };
 
@@ -67,7 +67,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         //return Titles[position];
 
         Drawable image = ContextCompat.getDrawable(mContext, imageResId[position]);
-        image.setBounds(0, 0, 55, 55);
+        image.setBounds(0, 0, 80, 80);
         SpannableString sb = new SpannableString(" ");
         ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
         sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
