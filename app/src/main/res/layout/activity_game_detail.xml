@@ -47,7 +47,8 @@
                     android:id="@+id/act_game_detail_organizer_username"
                     android:layout_gravity="center_horizontal"
                     android:textSize="20sp"
-                    android:textIsSelectable="true"
+                    android:clickable="true"
+                    android:onClick="openOrganizerProfil"
                     android:textColor="@color/primary"
                     android:textStyle="italic" />
 

@@ -10,13 +10,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hifivesoccer.R;
 import com.hifivesoccer.models.Game;
+import com.hifivesoccer.models.User;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -63,12 +73,12 @@ public class GameListAdapter extends BaseAdapter {
         TextView location = (TextView) convertView.findViewById(R.id.list_game_location);
         CircleImageView organizerAvatar = (CircleImageView) convertView.findViewById(R.id.list_game_organizer_avatar);
         TextView date = (TextView) convertView.findViewById(R.id.list_game_date);
+        TextView time = (TextView) convertView.findViewById(R.id.list_game_time);
 
         organizerName.setText(String.valueOf(gameList.get(position).getOrganizer().getUsername()));
         location.setText(String.valueOf(gameList.get(position).getPlace()));
         date.setText(String.valueOf(gameList.get(position).getDate()));
-
-//        Log.d("TEST", gameList.get(position).getOrganizer().getPicture());
+        time.setText(String.valueOf(gameList.get(position).getTime()));
 
         if (gameList.get(position).getOrganizer().getPicture() != null) {
             byte[] decodedString = Base64.decode(gameList.get(position).getOrganizer().getPicture(), Base64.DEFAULT);
@@ -77,7 +87,55 @@ public class GameListAdapter extends BaseAdapter {
             organizerAvatar.setImageBitmap(decodedByte);
         }
 
-        // For the avatar: https://developer.android.com/intl/en-us/training/volley/request.html
+        // player list
+        ArrayList<User> teamA = gameList.get(position).getTeamA();
+        ArrayList<User> teamB = gameList.get(position).getTeamB();
+
+        GridLayout gridTeamA = (GridLayout) convertView.findViewById(R.id.list_player_team_a);
+        GridLayout gridTeamB = (GridLayout) convertView.findViewById(R.id.list_player_team_b);
+
+        gridTeamA.removeAllViewsInLayout();
+        gridTeamB.removeAllViewsInLayout();
+
+        for (int i = 0; i < teamA.size(); i++) {
+
+            View userView = inflater.inflate(R.layout.list_player_mini, null);
+
+            CircleImageView userPicture = (CircleImageView) userView.findViewById(R.id.user_picture);
+
+            if (teamA.get(i).getPicture() != null && !teamA.get(i).get_id().equals(gameList.get(position).getOrganizerID())) {
+
+                byte[] decodedString = Base64.decode(teamA.get(i).getPicture(), Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                userPicture.setImageBitmap(decodedByte);
+
+                userView.setTag(teamA.get(i).get_id());
+
+                gridTeamA.addView(userView);
+            }
+
+        }
+
+        for (int i = 0; i < teamB.size(); i++) {
+
+            View userView = inflater.inflate(R.layout.list_player_mini, null);
+
+            CircleImageView userPicture = (CircleImageView) userView.findViewById(R.id.user_picture);
+
+            if (teamB.get(i).getPicture() != null && !teamB.get(i).get_id().equals(gameList.get(position).getOrganizerID())) {
+
+                byte[] decodedString = Base64.decode(teamB.get(i).getPicture(), Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                userPicture.setImageBitmap(decodedByte);
+
+                userView.setTag(teamB.get(i).get_id());
+
+                gridTeamB.addView(userView);
+            }
+
+        }
 
         return convertView;
     }

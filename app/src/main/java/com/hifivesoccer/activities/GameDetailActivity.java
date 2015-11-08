@@ -80,6 +80,7 @@ public class GameDetailActivity extends AppActivity {
     private Menu myMenu;
 
     private int requestQueue = 0;
+    private String organizerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,6 +168,7 @@ public class GameDetailActivity extends AppActivity {
                         public void handle() {
 
                             isOrganizer = game.getOrganizerID().equals(myId);
+                            organizerId = game.getOrganizerID();
                             onPrepareOptionsMenu(myMenu);
 
                             OrganizerName.setText(game.getOrganizer().getUsername());
@@ -630,4 +632,7 @@ public class GameDetailActivity extends AppActivity {
         }
     }
 
+    public void openOrganizerProfil(View view) {
+        openProfil(organizerId);
+    }
 }

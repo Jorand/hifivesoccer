@@ -51,14 +51,31 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/list_game_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textAllCaps="false"
-            android:textColor="@color/primary"
-            android:textStyle="bold" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/list_game_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textAllCaps="false"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/list_game_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textAllCaps="false"
+                android:textColor="@color/primary"
+                android:textStyle="bold"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/list_game_location"
@@ -78,84 +95,64 @@
                 android:text="A"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textColor="@color/primary"
                 android:textAllCaps="true"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="bottom"
                 android:layout_marginRight="10dp"
                 android:textStyle="bold"
                 android:textIsSelectable="false"
-                android:paddingTop="1dp" />
+                android:paddingTop="1dp"
+                android:layout_gravity="top"
+                android:layout_marginTop="2dp" />
 
-            <!--<de.hdodenhof.circleimageview.CircleImageView-->
-                <!--android:layout_width="22dp"-->
-                <!--android:layout_height="22dp"-->
-                <!--android:src="@drawable/test"-->
-                <!--android:layout_marginRight="5dp" />-->
+            <GridLayout
+                android:id="@+id/list_player_team_a"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="5"
+                android:orientation="horizontal">
 
-            <!--<de.hdodenhof.circleimageview.CircleImageView-->
-                <!--android:layout_width="22dp"-->
-                <!--android:layout_height="22dp"-->
-                <!--android:src="@drawable/test"-->
-                <!--android:layout_marginRight="5dp" />-->
+                <!--
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:src="@drawable/test"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"/>
+                    -->
 
-            <!--<de.hdodenhof.circleimageview.CircleImageView-->
-                <!--android:layout_width="22dp"-->
-                <!--android:layout_height="22dp"-->
-                <!--android:src="@drawable/test"-->
-                <!--android:layout_marginRight="5dp" />-->
+            </GridLayout>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <TextView
                 android:text="B"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textColor="@color/primary"
                 android:textAllCaps="true"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="bottom"
                 android:layout_marginRight="10dp"
                 android:textStyle="bold"
                 android:textIsSelectable="false"
-                android:paddingTop="1dp" />
+                android:paddingTop="1dp"
+                android:layout_gravity="top"
+                android:layout_marginTop="2dp" />
 
-            <!--<de.hdodenhof.circleimageview.CircleImageView-->
-                <!--android:layout_width="22dp"-->
-                <!--android:layout_height="22dp"-->
-                <!--android:src="@drawable/test"-->
-                <!--android:layout_marginRight="5dp" />-->
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="5"
+                android:id="@+id/list_player_team_b"
+                android:orientation="horizontal">
 
-            <!--<de.hdodenhof.circleimageview.CircleImageView-->
-                <!--android:layout_width="22dp"-->
-                <!--android:layout_height="22dp"-->
-                <!--android:src="@drawable/test"-->
-                <!--android:layout_marginRight="5dp" />-->
-
-            <!--<de.hdodenhof.circleimageview.CircleImageView-->
-                <!--android:layout_width="22dp"-->
-                <!--android:layout_height="22dp"-->
-                <!--android:src="@drawable/test"-->
-                <!--android:layout_marginRight="5dp" />-->
-
-            <!--<de.hdodenhof.circleimageview.CircleImageView-->
-                <!--android:layout_width="22dp"-->
-                <!--android:layout_height="22dp"-->
-                <!--android:src="@drawable/test"-->
-                <!--android:layout_marginRight="5dp" />-->
-
-            <!--<de.hdodenhof.circleimageview.CircleImageView-->
-                <!--android:layout_width="22dp"-->
-                <!--android:layout_height="22dp"-->
-                <!--android:src="@drawable/test"-->
-                <!--android:layout_marginRight="5dp" />-->
+            </GridLayout>
 
         </LinearLayout>
 
