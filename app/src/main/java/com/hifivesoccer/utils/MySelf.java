@@ -1,5 +1,7 @@
 package com.hifivesoccer.utils;
 
+import android.app.Activity;
+
 import com.hifivesoccer.models.User;
 
 /**
@@ -9,12 +11,13 @@ public class MySelf {
     private MySelf(){}
     private static User self = null;
 
-    public static User getSelf() {
+    public static User getSelf (){
         return self;
     }
 
-    public static synchronized User setSelf(User self) {
+    public static synchronized User setSelf(Activity activity, User self) {
         MySelf.self = self;
+        SharedPref.setMyself(activity, self);
         return self;
     }
 }

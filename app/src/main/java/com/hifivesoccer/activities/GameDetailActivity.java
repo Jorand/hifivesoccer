@@ -246,7 +246,6 @@ public class GameDetailActivity extends AppActivity {
             }
         }
 
-//        final JSONArray pending_list = new JSONArray();
         for (int i = 0; i < game.getPendings().size(); i++) {
             try {
                 JSONObject player = new JSONObject();
