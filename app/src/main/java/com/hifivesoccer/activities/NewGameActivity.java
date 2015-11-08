@@ -7,18 +7,22 @@ import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -27,6 +31,7 @@ import android.widget.Toast;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hifivesoccer.R;
 import com.hifivesoccer.models.Game;
+import com.hifivesoccer.models.User;
 import com.hifivesoccer.utils.MySelf;
 import com.hifivesoccer.utils.ServerHandler;
 
@@ -119,7 +124,7 @@ public class NewGameActivity extends AppActivity {
                         try {
                             player.put("id", MySelf.getSelf().get_id());
                             player.put("team", "A");
-                            json.put("players", player.toString());
+                            json.put("players", player);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -147,6 +152,9 @@ public class NewGameActivity extends AppActivity {
 
                                 try {
                                     String id = res.getString("id");
+
+                                    // TODO Put game in user games
+                                    //putInUserGames(id);
 
                                     Intent intent = new Intent(context, GameDetailActivity.class);
                                     intent.putExtra("GAME_ID", id);
@@ -207,6 +215,34 @@ public class NewGameActivity extends AppActivity {
         showDialogOnButtonClick();
         showTimePickerDialog();
 
+    }
+
+    private void putInUserGames(String id) {
+
+        JSONObject json = new JSONObject();
+        try {
+            json.put("_id", MySelf.getSelf().get_id());
+            JSONArray games = new JSONArray();
+            games.put(id);
+            json.put("games", games);
+
+            server.putDatas("user", json, new ServerHandler.ResponseHandler() {
+                @Override
+                public void onSuccess(Object response) {
+                    Log.d(TAG, response.toString());
+
+
+                }
+
+                @Override
+                public void onError(String error) {
+                    Log.e(TAG, error);
+                }
+            });
+
+        } catch (JSONException e) {
+            Log.e(TAG, e.toString());
+        }
     }
 
     @Override

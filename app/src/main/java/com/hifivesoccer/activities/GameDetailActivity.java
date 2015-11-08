@@ -566,6 +566,7 @@ public class GameDetailActivity extends AppActivity {
             Intent intent = new Intent(context, FriendsListActivity.class);
             intent.putExtra("USERS_LIST_ID", usersIdList);
             intent.putExtra("USERS_LIST_NAME", usersNameList);
+            intent.putExtra("GAME_ID", gameId);
             startActivityForResult(intent, 0);
             return true;
         }

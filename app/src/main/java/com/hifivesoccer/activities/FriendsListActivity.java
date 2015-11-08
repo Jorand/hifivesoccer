@@ -68,6 +68,8 @@ public class FriendsListActivity extends AppActivity {
         String friendsId = getIntent().getStringExtra("USERS_LIST_ID");
         String friendsName = getIntent().getStringExtra("USERS_LIST_NAME");
 
+        final String gameId = getIntent().getStringExtra("GAME_ID");
+
         Log.d(TAG, friendsId);
 
         final String[] friendsIdList = friendsId.split(",");
@@ -128,7 +130,14 @@ public class FriendsListActivity extends AppActivity {
                                         userListAdded.add(user);
                                     }
 
-                                    userList.add(user);
+                                    if (gameId != null) {
+                                        if (!Arrays.asList(user.getGamesIDs()).contains(gameId)) {
+                                            userList.add(user);
+                                        }
+                                    }
+                                    else {
+                                        userList.add(user);
+                                    }
 
                                     adapter.notifyDataSetChanged();
                                 }

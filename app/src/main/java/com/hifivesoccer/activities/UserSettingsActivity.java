@@ -124,6 +124,8 @@ public class UserSettingsActivity extends AppActivity {
                 progress.setMessage(context.getString(R.string.loading));
                 progress.show();
 
+                Log.d(TAG, json.toString());
+
                 server.putDatas("user", json, new ServerHandler.ResponseHandler() {
                     @Override
                     public void onSuccess(Object response) {
@@ -234,6 +236,8 @@ public class UserSettingsActivity extends AppActivity {
             final ProgressDialog progress = new ProgressDialog(context);
             progress.setMessage(context.getString(R.string.loading));
             progress.show();
+
+            Log.d(TAG, json.toString());
 
             server.putDatas("user", json, new ServerHandler.ResponseHandler() {
                 @Override
