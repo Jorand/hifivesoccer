@@ -63,6 +63,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
         </activity>
+        <activity
+            android:name=".activities.ProfilActivity"
+            android:label="@string/title_activity_profil" >
+        </activity>
     </application>
 
 </manifest>

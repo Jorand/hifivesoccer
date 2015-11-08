@@ -76,4 +76,7 @@
     <string name="act_user_settings_picture_done">La photo de profil a bien été modifié.</string>
     <string name="act_game_detail_left_msg">Vous avez quitter le match.</string>
     <string name="action_delete">Supprimer ce match</string>
+    <string name="title_activity_profil">ProfilActivity</string>
+    <string name="act_profil_win">Victoires</string>
+    <string name="act_profil_matchs_count">Matchs joués</string>
 </resources>

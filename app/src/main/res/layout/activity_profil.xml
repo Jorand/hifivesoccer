@@ -1,0 +1,123 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.hifivesoccer.activities.ProfilActivity">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/act_profil_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jorand"
+            android:textSize="30sp"
+            android:textStyle="bold|italic"
+            android:layout_gravity="center_horizontal"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/act_profil_picture"
+            android:layout_toEndOf="@+id/act_profil_picture" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/act_profil_picture"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@color/list_divider"
+            android:layout_marginRight="15dp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/list_divider"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/act_settings_position"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold|italic"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/act_profil_position"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold|italic"
+            android:textSize="18sp"
+            android:textColor="@color/primary" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/list_divider"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/act_profil_matchs_count"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold|italic"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/act_profil_played"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold|italic"
+            android:textSize="28sp"
+            android:textColor="@color/primary" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/list_divider"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/act_profil_win"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold|italic"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/act_profil_wins"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold|italic"
+            android:textSize="28sp"
+            android:textColor="@color/primary" />
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
