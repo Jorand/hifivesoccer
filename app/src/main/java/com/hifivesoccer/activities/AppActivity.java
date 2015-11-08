@@ -144,7 +144,7 @@ public class AppActivity extends AppCompatActivity {
      * Remove user in SharedPref and token
      */
     public void logout() {
-        MySelf.setSelf(null);
+        MySelf.setSelf(this, null);
         SharedPref.deleteMyself((Activity) context);
         Token.deleteToken((Activity) this);
 

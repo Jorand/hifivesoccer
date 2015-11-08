@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.EditText;
 
 import com.hifivesoccer.R;
+import com.hifivesoccer.models.User;
 import com.hifivesoccer.utils.MySelf;
 import com.hifivesoccer.utils.ServerHandler;
 import com.hifivesoccer.utils.SharedPref;
@@ -33,10 +34,12 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         String token = SharedPref.getToken(this);
-        if(MySelf.getSelf() == null){
+        User self = SharedPref.getMyself((Activity) context);
+        if(self == null){
             GoToLogin();
             Log.d(TAG, "MySelf is null");
         } else {
+            MySelf.setSelf((Activity) context, self);
             if(token != ""){
                 Token.getToken(this, token);
                 Intent intent = new Intent(context, MainActivity.class);

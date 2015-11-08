@@ -1,5 +1,6 @@
 package com.hifivesoccer.activities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -138,7 +139,7 @@ public class UserSettingsActivity extends AppActivity {
                                 Log.d(TAG, user.toString());
                                 if (user.get_id().equals(MySelf.getSelf().get_id())) {
 
-                                    MySelf.setSelf(user);
+                                    MySelf.setSelf((Activity) context, user);
 
                                     Intent intent = new Intent(context, MainActivity.class);
                                     startActivity(intent);
@@ -255,7 +256,7 @@ public class UserSettingsActivity extends AppActivity {
                             Log.d(TAG, user.toString());
                             if (user.get_id().equals(MySelf.getSelf().get_id())) {
 
-                                MySelf.setSelf(user);
+                                MySelf.setSelf((Activity) context, user);
 
                                 Intent intent = new Intent(context, MainActivity.class);
                                 startActivity(intent);

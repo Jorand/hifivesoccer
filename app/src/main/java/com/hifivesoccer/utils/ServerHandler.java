@@ -178,34 +178,20 @@ public class ServerHandler {
                     Token.getToken(activity, response.getString("token"));
                     try {
                         SharedPref.setMyself(activity, response.getString("user"));
+                        User myself = SharedPref.getMyself((Activity) context);
 
-                        User myself = new User();
-                        ObjectMapper mapper = new ObjectMapper();
-                        String serializedSelf = SharedPref.getMyself((Activity) context);
-                        Log.d(TAG, serializedSelf);
-                        if(serializedSelf.length() > 0){
-                            try{
-                                myself = mapper.readValue(serializedSelf, User.class);
-                                myself.initGames(context);
-                                MySelf.setSelf(myself);
-                                Log.d(TAG, myself.toString());
-                            } catch (IOException e){
-                                Log.e(TAG, e.toString());
-
-                                Intent intent = new Intent(activity, LoginActivity.class);
-                                activity.startActivity(intent);
-                                activity.finish();
-                            }
-                        } else {
+                        if(myself == null){
                             Intent intent = new Intent(activity, LoginActivity.class);
                             activity.startActivity(intent);
                             activity.finish();
+                        } else {
+                            myself.initGames(context);
+                            MySelf.setSelf(activity, myself);
+
+                            Intent intent = new Intent(context, MainActivity.class);
+                            activity.startActivity(intent);
+                            activity.finish();
                         }
-
-                        Intent intent = new Intent(context, MainActivity.class);
-                        activity.startActivity(intent);
-                        activity.finish();
-
                     } catch (JSONException e){
                         Log.e(TAG, e.toString());
                     }
