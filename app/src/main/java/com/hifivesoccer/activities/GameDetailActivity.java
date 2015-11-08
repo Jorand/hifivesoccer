@@ -222,7 +222,6 @@ public class GameDetailActivity extends AppActivity {
 
         final JSONArray players = new JSONArray();
 
-//        final JSONArray teamA_List = new JSONArray();
         for (int i = 0; i < teamAListIds.size(); i++) {
             try {
                 JSONObject player = new JSONObject();
@@ -234,7 +233,6 @@ public class GameDetailActivity extends AppActivity {
             }
         }
 
-//        final JSONArray teamB_list = new JSONArray();
         for (int i = 0; i < teamBListIds.size(); i++) {
             try {
                 JSONObject player = new JSONObject();
@@ -259,16 +257,6 @@ public class GameDetailActivity extends AppActivity {
 
         Log.d(TAG, players.toString());
 
-//        Log.d(TAG, teamA_List.toString());
-//        Log.d(TAG, teamB_list.toString());
-
-//        ArrayList<String> playersList = new ArrayList<String>();
-//        playersList.addAll(teamA_List);
-//        playersList.addAll(teamB_list);
-//        playersList.addAll(pending_list);
-
-//        JSONArray players = new JSONArray(playersList);
-
         try {
 
             json.put("id", gameId);
@@ -292,7 +280,7 @@ public class GameDetailActivity extends AppActivity {
                         teamBListIds.clear();
                         teamBList.clear();
 
-                        final Game game = mapper.readValue(serializedGame.toString(), Game.class);
+                        game = mapper.readValue(serializedGame.toString(), Game.class);
                         game.initPeoples(context, new Game.initHandler() {
                             @Override
                             public void handle() {
@@ -389,7 +377,7 @@ public class GameDetailActivity extends AppActivity {
                                         teamBListIds.clear();
                                         teamBList.clear();
 
-                                        final Game game = mapper.readValue(serializedGame.toString(), Game.class);
+                                        game = mapper.readValue(serializedGame.toString(), Game.class);
                                         game.initPeoples(context, new Game.initHandler() {
                                             @Override
                                             public void handle() {
@@ -473,7 +461,7 @@ public class GameDetailActivity extends AppActivity {
                 JSONObject serializedGame = (JSONObject) response;
                 ObjectMapper mapper = new ObjectMapper();
                 try {
-                    final Game game = mapper.readValue(serializedGame.toString(), Game.class);
+                    game = mapper.readValue(serializedGame.toString(), Game.class);
                     game.initPeoples(context, new Game.initHandler() {
                         @Override
                         public void handle() {
@@ -540,7 +528,7 @@ public class GameDetailActivity extends AppActivity {
 
         myMenu = menu;
 
-        menu.findItem(R.id.action_edit).setVisible(isOrganizer);
+        menu.findItem(R.id.action_delete).setVisible(isOrganizer);
 
         return true;
     }
@@ -578,9 +566,23 @@ public class GameDetailActivity extends AppActivity {
             return true;
         }
 
-        if (id == R.id.action_edit) {
+        if (id == R.id.action_delete) {
 
-            //TODO Edit or delete game
+            server.deleteGame(gameId, new ServerHandler.ResponseHandler() {
+                @Override
+                public void onSuccess(Object response) {
+                    Toast.makeText(context, "Votre Game a bien été supprimé", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(context, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
+                @Override
+                public void onError(String error) {
+                    Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+                }
+            });
 
             return false;
         }
