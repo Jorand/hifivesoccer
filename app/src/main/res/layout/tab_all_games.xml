@@ -13,6 +13,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/listView"
             android:paddingBottom="80dp"
+            android:clipToPadding="false"
             android:clickable="true">
 
         </ListView>
