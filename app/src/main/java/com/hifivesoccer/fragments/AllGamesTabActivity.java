@@ -12,12 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hifivesoccer.R;
 import com.hifivesoccer.activities.GameDetailActivity;
 import com.hifivesoccer.activities.NewGameActivity;
+import com.hifivesoccer.activities.ProfilActivity;
 import com.hifivesoccer.adapters.GameListAdapter;
 import com.hifivesoccer.models.Game;
 import com.hifivesoccer.utils.ServerHandler;
@@ -169,6 +171,10 @@ public class AllGamesTabActivity extends Fragment implements SwipeRefreshLayout.
             adapter.notifyDataSetChanged();
             swipeRefreshLayout.setRefreshing(false);
         }
+    }
+
+    public void openProfil(View view) {
+        Log.d(TAG, "Onclikck");
     }
 
 }

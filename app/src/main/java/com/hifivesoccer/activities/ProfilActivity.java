@@ -2,6 +2,7 @@ package com.hifivesoccer.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.ActionBar;
@@ -12,6 +13,8 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,7 +57,7 @@ public class ProfilActivity extends AppActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        String userId = getIntent().getStringExtra("USERS_ID");
+        String userId = getIntent().getStringExtra("USER_ID");
 
         getUser(userId);
     }
@@ -107,24 +110,67 @@ public class ProfilActivity extends AppActivity {
 
         if (myUser != null) {
 
-            byte[] decodedString = Base64.decode(myUser.getPicture(), Base64.DEFAULT);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            if (myUser.getPicture() != null) {
 
-            profilPicture.setImageBitmap(decodedByte);
+                byte[] decodedString = Base64.decode(myUser.getPicture(), Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                profilPicture.setImageBitmap(decodedByte);
+            }
+
+            toolbar.setTitle(myUser.getUsername());
+
+            TextView profilUsername = (TextView) findViewById(R.id.act_profil_username);
+            profilUsername.setText(myUser.getUsername());
+
+            LinearLayout profilPositionWrap = (LinearLayout) findViewById(R.id.act_profil_position_wrap);
+            TextView profilPosition = (TextView) findViewById(R.id.act_profil_position);
+            if (myUser.getPosition() != null) {
+                profilPosition.setText(myUser.getPosition());
+            }
+            else {
+                profilPositionWrap.setVisibility(View.GONE);
+            }
+
+            LinearLayout profilPayedWrap = (LinearLayout) findViewById(R.id.act_profil_played_wrap);
+            TextView profilPayed = (TextView) findViewById(R.id.act_profil_played);
+            if (myUser.getPlayed() > 0) {
+                profilPayed.setText(myUser.getPlayed());
+            }
+            else {
+                profilPayedWrap.setVisibility(View.GONE);
+            }
+
+            LinearLayout profilWinsWrap = (LinearLayout) findViewById(R.id.act_profil_wins_wrap);
+            TextView profilWins = (TextView) findViewById(R.id.act_profil_wins);
+            if (myUser.getWins() > 0) {
+                profilWins.setText(myUser.getWins());
+            }
+            else {
+                profilWinsWrap.setVisibility(View.GONE);
+            }
+
         }
 
-        TextView profilUsername = (TextView) findViewById(R.id.act_profil_username);
-        profilUsername.setText(myUser.getUsername());
+    }
 
-        TextView profilPosition = (TextView) findViewById(R.id.act_profil_position);
-        profilPosition.setText(myUser.getPosition());
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_profil, menu);
+        return true;
+    }
 
-        TextView profilPayed = (TextView) findViewById(R.id.act_profil_played);
-        profilPayed.setText(myUser.getPlayed());
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
-        TextView profilWins = (TextView) findViewById(R.id.act_profil_wins);
-        profilWins.setText(myUser.getWins());
+        if (id == android.R.id.home) {
+            finish();
+            return true;
+        }
 
+        return super.onOptionsItemSelected(item);
     }
 
 }

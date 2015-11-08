@@ -246,4 +246,13 @@ public class FriendsListActivity extends AppActivity {
         userListAdded.remove(userList.get(position));
         adapter.notifyDataSetChanged();
     }
+
+    public void openProfil(View view) {
+        String user_id = (String) view.getTag();
+        if (user_id != null) {
+            Intent intent = new Intent(context, ProfilActivity.class);
+            intent.putExtra("USER_ID", user_id);
+            startActivity(intent);
+        }
+    }
 }

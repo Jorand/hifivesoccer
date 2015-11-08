@@ -63,6 +63,7 @@ public class FiendsListAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.list_friends, null);
 
         TextView name = (TextView) convertView.findViewById(R.id.user_fullname);
+        name.setTag(userList.get(position).get_id());
 
         ImageButton addButton = (ImageButton) convertView.findViewById(R.id.addToList);
         ImageButton removeButton = (ImageButton) convertView.findViewById(R.id.removeToList);
@@ -77,6 +78,7 @@ public class FiendsListAdapter extends BaseAdapter {
         }
 
         CircleImageView userPicture = (CircleImageView) convertView.findViewById(R.id.user_avatar);
+        userPicture.setTag(userList.get(position).get_id());
 
         if (userList.get(position).getPicture() != null) {
 

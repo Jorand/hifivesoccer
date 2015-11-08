@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hifivesoccer.R;
@@ -20,9 +21,6 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * Created by jorand on 03/11/2015.
- */
 public class GameListAdapter extends BaseAdapter {
 
     private Activity activity;
@@ -57,6 +55,9 @@ public class GameListAdapter extends BaseAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null)
             convertView = inflater.inflate(R.layout.list_game, null);
+
+        RelativeLayout profile = (RelativeLayout) convertView.findViewById(R.id.list_game_profil);
+        profile.setTag(gameList.get(position).getOrganizerID());
 
         TextView organizerName = (TextView) convertView.findViewById(R.id.list_game_organizer_name);
         TextView location = (TextView) convertView.findViewById(R.id.list_game_location);

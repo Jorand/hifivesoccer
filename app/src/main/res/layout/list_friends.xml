@@ -9,6 +9,7 @@
         android:id="@+id/user_avatar"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:onClick="openProfil"
         android:src="@color/light_grey"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="10dp"/>
@@ -39,6 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="17sp"
+        android:onClick="openProfil"
         android:textStyle="bold"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/user_avatar"

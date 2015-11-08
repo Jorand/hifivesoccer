@@ -57,7 +57,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp">
 
                 <TextView
                     android:id="@+id/act_game_detail_description"
@@ -65,7 +67,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:textStyle="italic"
-                    android:textSize="12sp" />
+                    android:textSize="16sp"
+                    android:textColor="@color/primary"
+                    android:textIsSelectable="true"
+                    android:layout_marginBottom="10dp" />
 
                 <TextView
                     android:id="@+id/act_game_detail_date"

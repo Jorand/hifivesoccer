@@ -6,11 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.internal.widget.AdapterViewCompat;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -19,17 +16,13 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hifivesoccer.R;
-import com.hifivesoccer.adapters.GameListAdapter;
 import com.hifivesoccer.adapters.TeamListAdapter;
 import com.hifivesoccer.models.Game;
 import com.hifivesoccer.models.User;
@@ -42,7 +35,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -85,6 +77,7 @@ public class GameDetailActivity extends AppActivity {
     private ArrayList<String> pendingListNames = new ArrayList<>();
 
     private ArrayList<User> pendingList = new ArrayList<>();
+    private Menu myMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +94,8 @@ public class GameDetailActivity extends AppActivity {
         }
 
         gameId = getIntent().getStringExtra("GAME_ID");
+
+        getMatch();
 
         gameButton = (Button) findViewById(R.id.act_game_detail_button);
 
@@ -147,12 +142,16 @@ public class GameDetailActivity extends AppActivity {
             }
         });
 
+
+
     }
 
     private void updateTeamList() {
 
         teamA.removeAllViews();
         teamB.removeAllViews();
+        teamA.removeAllViewsInLayout();
+        teamB.removeAllViewsInLayout();
 
         if (inflater == null)
             inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -173,8 +172,9 @@ public class GameDetailActivity extends AppActivity {
 
                 userPicture.setImageBitmap(decodedByte);
             }
-
+            convertView.setTag(i);
             teamA.addView(convertView);
+
         }
 
         for (int i = 0; i < teamBList.size(); i++) {
@@ -193,7 +193,7 @@ public class GameDetailActivity extends AppActivity {
 
                 userPicture.setImageBitmap(decodedByte);
             }
-
+            convertView.setTag(i);
             teamB.addView(convertView);
         }
     }
@@ -454,15 +454,14 @@ public class GameDetailActivity extends AppActivity {
 
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(final Menu menu) {
-        super.onPrepareOptionsMenu(menu);
+    private void getMatch() {
 
         final TextView OrganizerName = (TextView) findViewById(R.id.act_game_detail_organizer_username);
         final TextView GameDate = (TextView) findViewById(R.id.act_game_detail_date);
         final TextView GameTime = (TextView) findViewById(R.id.act_game_detail_time);
         final TextView GamePlace = (TextView) findViewById(R.id.act_game_detail_place);
         final TextView GamePrice = (TextView) findViewById(R.id.act_game_detail_price);
+        final TextView GameDescrition = (TextView) findViewById(R.id.act_game_detail_description);
 
         final LinearLayout OrganizerInfos = (LinearLayout) findViewById(R.id.act_game_detail_organizer_infos);
 
@@ -482,10 +481,8 @@ public class GameDetailActivity extends AppActivity {
 //                            Collections.addAll(pendingListIds, game.getPlayersIDs("pending"));
                             pendingList = game.getPendings();
 
-                            if (game.getOrganizerID().equals(myId)) {
-                                isOrganizer = true;
-                                menu.findItem(R.id.action_edit).setVisible(isOrganizer);
-                            }
+                            isOrganizer = game.getOrganizerID().equals(myId);
+                            onPrepareOptionsMenu(myMenu);
 
                             OrganizerName.setText(game.getOrganizer().getUsername());
                             GameDate.setText(game.getDate());
@@ -493,6 +490,7 @@ public class GameDetailActivity extends AppActivity {
                             GamePlace.setText(game.getPlace());
                             String price = String.format("%s", game.getPrice());
                             GamePrice.setText(price + "€ / participant");
+                            GameDescrition.setText(game.getDescription());
 
                             for (int i = 0; i < game.getTeamA().size(); i++) {
 
@@ -534,6 +532,16 @@ public class GameDetailActivity extends AppActivity {
                 toast.show();
             }
         });
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(final Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        myMenu = menu;
+
+        menu.findItem(R.id.action_edit).setVisible(isOrganizer);
+
         return true;
     }
 
@@ -574,7 +582,7 @@ public class GameDetailActivity extends AppActivity {
 
             //TODO Edit or delete game
 
-            return true;
+            return false;
         }
 
         return super.onOptionsItemSelected(item);
@@ -603,6 +611,25 @@ public class GameDetailActivity extends AppActivity {
                 // TODO Update pending list game
 
             }
+        }
+    }
+
+    public void openProfilTeamA(View view) {
+        int position = (Integer) view.getTag();
+        openProfil(teamAList.get(position).get_id());
+    }
+
+    public void openProfilTeamB(View view) {
+        int position = (Integer) view.getTag();
+        openProfil(teamBList.get(position).get_id());
+    }
+
+    public void openProfil(String id) {
+
+        if (id != null) {
+            Intent intent = new Intent(context, ProfilActivity.class);
+            intent.putExtra("USER_ID", id);
+            startActivity(intent);
         }
     }
 
