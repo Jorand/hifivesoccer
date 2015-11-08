@@ -84,4 +84,7 @@
     <string name="act_notifications_remove">Ne pas participer</string>
     <string name="act_notification_organizer_text">Vous ête invité au match de</string>
     <string name="act_mygame_organizer_text">Vous participé au match de</string>
+    <string name="act_mygame_end">FINI</string>
+    <string name="game_detail_delete">Votre match a bien été supprimé</string>
+    <string name="dialog_game_delete">Êtes-vous sur de vouloir supprimer match ?</string>
 </resources>

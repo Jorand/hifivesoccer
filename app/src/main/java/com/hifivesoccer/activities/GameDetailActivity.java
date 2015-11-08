@@ -570,22 +570,40 @@ public class GameDetailActivity extends AppActivity {
 
         if (id == R.id.action_delete) {
 
-            server.deleteGame(gameId, new ServerHandler.ResponseHandler() {
-                @Override
-                public void onSuccess(Object response) {
-                    Toast.makeText(context, "Votre match a bien été supprimé", Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+            alertDialogBuilder.setMessage(R.string.dialog_game_delete);
 
-                    Intent intent = new Intent(context, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
 
-                @Override
-                public void onError(String error) {
+                            server.deleteGame(gameId, new ServerHandler.ResponseHandler() {
+                                @Override
+                                public void onSuccess(Object response) {
+                                    Toast.makeText(context, R.string.game_detail_delete, Toast.LENGTH_SHORT).show();
 
-                    Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT).show();
-                }
-            });
+                                    Intent intent = new Intent(context, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+
+                                @Override
+                                public void onError(String error) {
+
+                                    Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
 
             return false;
         }
