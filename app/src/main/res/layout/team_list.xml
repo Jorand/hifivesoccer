@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
+    android:id="@+id/profil_button"
+    android:longClickable="true"
     android:onClick="openProfilTeamB"
     android:padding="10dp">
 

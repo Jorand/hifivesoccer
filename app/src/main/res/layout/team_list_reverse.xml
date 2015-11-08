@@ -4,6 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="right"
+    android:longClickable="true"
+    android:id="@+id/profil_button"
+    android:clickable="true"
     android:onClick="openProfilTeamA"
     android:gravity="right"
     android:padding="10dp">

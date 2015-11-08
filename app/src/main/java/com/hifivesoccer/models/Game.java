@@ -47,6 +47,8 @@ public class Game extends AppBaseModel {
 
     public void initPeoples(Context context, final initHandler callback){
 
+        //Log.d(TAG, "initPeoples");
+
         requestQueue = 0;
 
         if(organizerID != null){
@@ -55,8 +57,7 @@ public class Game extends AppBaseModel {
                 @Override
                 public void handle(Object response) {
                     setOrganizer((User) response);
-                    Log.d(TAG, response.toString());
-                    Log.d(TAG, getOrganizer().toString());
+                    //Log.d(TAG, response.toString());
                     requestQueue--;
                     checkIfAsyncDone(callback);
                 }
@@ -65,11 +66,13 @@ public class Game extends AppBaseModel {
         if(playersIDs != null){
             if(playersIDs.size() > 0){
                 String ids = getPlayersIDsFormatted();
-                requestQueue++;
+                requestQueue+= playersIDs.size();
                 getArrayOfUsersAndAdToList(ids, context, new addToList() {
                     @Override
                     public void handle(Object response) {
                         players.add((User) response);
+                        //Log.d(TAG, response.toString());
+                        requestQueue--;
                         checkIfAsyncDone(callback);
                     }
                 });
@@ -87,7 +90,7 @@ public class Game extends AppBaseModel {
     }
 
     void checkIfAsyncDone (initHandler callback){
-        Log.d(TAG, "requestQueue: " + requestQueue);
+        //Log.d(TAG, "requestQueue: " + requestQueue);
         if(requestQueue < 1){
             callback.handle();
         }
@@ -119,7 +122,7 @@ public class Game extends AppBaseModel {
         server.getArrayOfUsers(id, new ServerHandler.ResponseHandler() {
             @Override
             public void onSuccess(Object response) {
-                requestQueue--;
+
                 JSONArray serializedUsers = (JSONArray) response;
                 for (int i = 0; i < serializedUsers.length(); i++) {
                     ObjectMapper mapper = new ObjectMapper();

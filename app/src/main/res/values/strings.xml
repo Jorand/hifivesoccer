@@ -79,4 +79,6 @@
     <string name="title_activity_profil">Profil</string>
     <string name="act_profil_win">Victoires</string>
     <string name="act_profil_matchs_count">Matchs joués</string>
+    <string name="act_game_detail_price_msg">€ / participant</string>
+    <string name="dialog_game_remove_player">Voulez-vous retirer ce joueur du match ?</string>
 </resources>

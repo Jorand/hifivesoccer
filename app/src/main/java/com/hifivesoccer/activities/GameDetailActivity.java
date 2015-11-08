@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -58,7 +60,8 @@ public class GameDetailActivity extends AppActivity {
 
     private String gameId;
 
-    private String status = "";
+    private LinearLayout teamA;
+    private LinearLayout teamB;
 
     private List<User> teamAList = new ArrayList<>();
     private List<User> teamBList = new ArrayList<>();
@@ -66,18 +69,17 @@ public class GameDetailActivity extends AppActivity {
     private List<String> teamAListIds = new ArrayList<>();
     private List<String> teamBListIds = new ArrayList<>();
 
-    private TeamListAdapter adapterTeamA;
-    private TeamListAdapter adapterTeamB;
     private String[] myGamesIds;
 
-    private LinearLayout teamA;
-    private LinearLayout teamB;
+    private String status;
 
     private ArrayList<String> pendingListIds = new ArrayList<>();
     private ArrayList<String> pendingListNames = new ArrayList<>();
 
     private ArrayList<User> pendingList = new ArrayList<>();
     private Menu myMenu;
+
+    private int requestQueue = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,21 +95,18 @@ public class GameDetailActivity extends AppActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        gameId = getIntent().getStringExtra("GAME_ID");
-
-        getMatch();
-
-        gameButton = (Button) findViewById(R.id.act_game_detail_button);
-
-        teamA = (LinearLayout) findViewById(R.id.act_game_detail_team_a_list);
-        teamB = (LinearLayout) findViewById(R.id.act_game_detail_team_b_list);
-
         if(MySelf.getSelf() != null){
             me = MySelf.getSelf();
             myId = MySelf.getSelf().get_id();
             myGamesIds = MySelf.getSelf().getGamesIDs();
 
         }
+        gameId = getIntent().getStringExtra("GAME_ID");
+        getMatch();
+
+        teamA = (LinearLayout) findViewById(R.id.act_game_detail_team_a_list);
+        teamB = (LinearLayout) findViewById(R.id.act_game_detail_team_b_list);
+        gameButton = (Button) findViewById(R.id.act_game_detail_button);
 
         gameButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,7 +117,6 @@ public class GameDetailActivity extends AppActivity {
 
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        //Toast.makeText(context, "You Clicked : " + item.getTitle(), Toast.LENGTH_SHORT).show();
 
                         int id = item.getItemId();
 
@@ -146,6 +144,81 @@ public class GameDetailActivity extends AppActivity {
 
     }
 
+    private void getMatch() {
+
+        final TextView OrganizerName = (TextView) findViewById(R.id.act_game_detail_organizer_username);
+        final TextView GameDate = (TextView) findViewById(R.id.act_game_detail_date);
+        final TextView GameTime = (TextView) findViewById(R.id.act_game_detail_time);
+        final TextView GamePlace = (TextView) findViewById(R.id.act_game_detail_place);
+        final TextView GamePrice = (TextView) findViewById(R.id.act_game_detail_price);
+        final TextView GameDescrition = (TextView) findViewById(R.id.act_game_detail_description);
+
+        server.getGame(gameId, new ServerHandler.ResponseHandler() {
+            @Override
+            public void onSuccess(Object response) {
+                Log.d(TAG, response.toString());
+
+                JSONObject serializedGame = (JSONObject) response;
+                ObjectMapper mapper = new ObjectMapper();
+                try {
+                    game = mapper.readValue(serializedGame.toString(), Game.class);
+                    game.initPeoples(context, new Game.initHandler() {
+                        @Override
+                        public void handle() {
+
+                            isOrganizer = game.getOrganizerID().equals(myId);
+                            onPrepareOptionsMenu(myMenu);
+
+                            OrganizerName.setText(game.getOrganizer().getUsername());
+                            GameDate.setText(game.getDate());
+                            GameTime.setText(game.getTime());
+                            GamePlace.setText(game.getPlace());
+                            String price = String.format("%s", game.getPrice());
+                            GamePrice.setText(price + getString(R.string.act_game_detail_price_msg));
+                            GameDescrition.setText(game.getDescription());
+
+                            for (int i = 0; i < game.getTeamA().size(); i++) {
+
+                                teamAListIds.add(game.getTeamA().get(i).get_id());
+                                teamAList.add(game.getTeamA().get(i));
+
+                                if (game.getTeamA().get(i).get_id().equals(me.get_id())) {
+                                    status = "teamA";
+                                    gameButton.setText(R.string.game_menu_team_a);
+                                }
+                            }
+
+                            for (int i = 0; i < game.getTeamB().size(); i++) {
+
+                                teamBListIds.add(game.getTeamB().get(i).get_id());
+                                teamBList.add(game.getTeamB().get(i));
+
+                                if (game.getTeamB().get(i).get_id().equals(me.get_id())) {
+                                    status = "teamB";
+                                    gameButton.setText(R.string.game_menu_team_b);
+                                }
+                            }
+
+                            updateTeamList();
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.e(TAG, error);
+                Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+    }
+
     private void updateTeamList() {
 
         teamA.removeAllViews();
@@ -157,7 +230,7 @@ public class GameDetailActivity extends AppActivity {
             inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         for (int i = 0; i < teamAList.size(); i++) {
-            User user = teamAList.get(i);
+
             View convertView = inflater.inflate(R.layout.team_list_reverse, null);
 
             CircleImageView userPicture = (CircleImageView) convertView.findViewById(R.id.teamlist_picture);
@@ -173,6 +246,19 @@ public class GameDetailActivity extends AppActivity {
                 userPicture.setImageBitmap(decodedByte);
             }
             convertView.setTag(i);
+
+            if (isOrganizer) {
+
+                convertView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        int position = (Integer) v.getTag();
+                        removePlayer(teamAList.get(position).get_id());
+                        return true;
+                    }
+                });
+            }
+
             teamA.addView(convertView);
 
         }
@@ -194,29 +280,69 @@ public class GameDetailActivity extends AppActivity {
                 userPicture.setImageBitmap(decodedByte);
             }
             convertView.setTag(i);
+
+            if (isOrganizer) {
+
+                convertView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        int position = (Integer) v.getTag();
+                        removePlayer(teamBList.get(position).get_id());
+                        return true;
+                    }
+                });
+            }
+
             teamB.addView(convertView);
         }
+
     }
 
-    private void joinTeam(final String team) {
+    public void joinTeam(final String team) {
+        joinTeam(team, null);
+    }
+
+    private void joinTeam(final String team, String id) {
 
         JSONObject json = new JSONObject();
 
         if (team.equals("teamA")) {
+            Log.d(TAG, "TEAMA");
             if (!teamAListIds.contains(myId)){
                 teamAListIds.add(myId);
-                teamBListIds.remove(myId);
             } else {
                 return;
             }
+            teamBListIds.remove(myId);
         }
 
         if (team.equals("teamB")) {
             if (!teamBListIds.contains(myId)){
                 teamBListIds.add(myId);
-                teamAListIds.remove(myId);
             } else {
                 return;
+            }
+            teamAListIds.remove(myId);
+        }
+
+        if (team.equals("exit")) {
+            if (teamBListIds.contains(myId)){
+                teamBListIds.remove(myId);
+            }
+            if (teamAListIds.contains(myId)){
+                teamAListIds.remove(myId);
+            }
+        }
+
+        if (team.equals("delete")) {
+
+            if (id != null) {
+                if (teamBListIds.contains(id)) {
+                    teamBListIds.remove(myId);
+                }
+                if (teamAListIds.contains(id)) {
+                    teamAListIds.remove(myId);
+                }
             }
         }
 
@@ -262,28 +388,30 @@ public class GameDetailActivity extends AppActivity {
             json.put("id", gameId);
             json.put("players", players);
 
-            Log.d(TAG, "JSON: " + json.toString());
+            Log.d(TAG, json.toString());
 
             server.updateGameTeams(json, new ServerHandler.ResponseHandler() {
                 @Override
                 public void onSuccess(Object response) {
                     Log.d(TAG, response.toString());
 
-                    Toast.makeText(context, "You join Team " + team, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "You join Team " + team, Toast.LENGTH_SHORT).show();
 
                     JSONObject serializedGame = (JSONObject) response;
                     ObjectMapper mapper = new ObjectMapper();
+
+                    teamAListIds.clear();
+                    teamAList.clear();
+                    teamBListIds.clear();
+                    teamBList.clear();
+
                     try {
-
-                        teamAListIds.clear();
-                        teamAList.clear();
-                        teamBListIds.clear();
-                        teamBList.clear();
-
                         game = mapper.readValue(serializedGame.toString(), Game.class);
                         game.initPeoples(context, new Game.initHandler() {
                             @Override
                             public void handle() {
+
+                                status = "";
 
                                 for (int i = 0; i < game.getTeamA().size(); i++) {
 
@@ -307,7 +435,13 @@ public class GameDetailActivity extends AppActivity {
                                     }
                                 }
 
+                                if (status.equals("")){
+                                    status = "exit";
+                                    gameButton.setText(R.string.game_menu_default);
+                                }
+
                                 updateTeamList();
+
                             }
                         });
                     } catch (IOException e) {
@@ -315,7 +449,6 @@ public class GameDetailActivity extends AppActivity {
                         Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
                         toast.show();
                     }
-
                 }
 
                 @Override
@@ -345,90 +478,7 @@ public class GameDetailActivity extends AppActivity {
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        JSONObject json = new JSONObject();
-
-                        final List<String> teamA_List = teamAListIds;
-                        final List<String> teamB_list = teamBListIds;
-
-                        teamA_List.remove(myId);
-                        teamB_list.remove(myId);
-
-                        try {
-
-                            json.put("_id", gameId);
-                            json.put("teamA", new JSONArray(teamA_List));
-                            json.put("teamB", new JSONArray(teamB_list));
-
-                            server.putDatas("game", json, new ServerHandler.ResponseHandler() {
-                                @Override
-                                public void onSuccess(Object response) {
-                                    Log.d(TAG, response.toString());
-
-                                    Toast.makeText(context, R.string.act_game_detail_left_msg, Toast.LENGTH_SHORT).show();
-
-                                    gameButton.setText(R.string.game_menu_default);
-
-                                    JSONObject serializedGame = (JSONObject) response;
-                                    ObjectMapper mapper = new ObjectMapper();
-                                    try {
-
-                                        teamAListIds.clear();
-                                        teamAList.clear();
-                                        teamBListIds.clear();
-                                        teamBList.clear();
-
-                                        game = mapper.readValue(serializedGame.toString(), Game.class);
-                                        game.initPeoples(context, new Game.initHandler() {
-                                            @Override
-                                            public void handle() {
-
-                                                for (int i = 0; i < game.getTeamA().size(); i++) {
-
-                                                    teamAListIds.add(game.getTeamA().get(i).get_id());
-                                                    teamAList.add(game.getTeamA().get(i));
-
-                                                    if (game.getTeamA().get(i).get_id().equals(me.get_id())) {
-                                                        status = "teamA";
-                                                        gameButton.setText(R.string.game_menu_team_a);
-                                                    }
-                                                }
-
-                                                for (int i = 0; i < game.getTeamB().size(); i++) {
-
-                                                    teamBListIds.add(game.getTeamB().get(i).get_id());
-                                                    teamBList.add(game.getTeamB().get(i));
-
-                                                    if (game.getTeamB().get(i).get_id().equals(me.get_id())) {
-                                                        status = "teamB";
-                                                        gameButton.setText(R.string.game_menu_team_b);
-                                                    }
-                                                }
-
-                                                updateTeamList();
-                                            }
-                                        });
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                        Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
-                                        toast.show();
-                                    }
-
-
-                                }
-
-                                @Override
-                                public void onError(String error) {
-                                    Log.e(TAG, error);
-                                    Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
-                                    toast.show();
-                                }
-                            });
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
-                            toast.show();
-                        }
+                        joinTeam("exit");
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -442,84 +492,28 @@ public class GameDetailActivity extends AppActivity {
 
     }
 
-    private void getMatch() {
+    private void removePlayer(final String id_user) {
 
-        final TextView OrganizerName = (TextView) findViewById(R.id.act_game_detail_organizer_username);
-        final TextView GameDate = (TextView) findViewById(R.id.act_game_detail_date);
-        final TextView GameTime = (TextView) findViewById(R.id.act_game_detail_time);
-        final TextView GamePlace = (TextView) findViewById(R.id.act_game_detail_place);
-        final TextView GamePrice = (TextView) findViewById(R.id.act_game_detail_price);
-        final TextView GameDescrition = (TextView) findViewById(R.id.act_game_detail_description);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setMessage(R.string.dialog_game_remove_player);
 
-        final LinearLayout OrganizerInfos = (LinearLayout) findViewById(R.id.act_game_detail_organizer_infos);
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
 
-        server.getGame(gameId, new ServerHandler.ResponseHandler() {
-            @Override
-            public void onSuccess(Object response) {
-                Log.d(TAG, response.toString());
+                        joinTeam("delete", id_user);
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
 
-                JSONObject serializedGame = (JSONObject) response;
-                ObjectMapper mapper = new ObjectMapper();
-                try {
-                    game = mapper.readValue(serializedGame.toString(), Game.class);
-                    game.initPeoples(context, new Game.initHandler() {
-                        @Override
-                        public void handle() {
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
 
-//                            Collections.addAll(pendingListIds, game.getPlayersIDs("pending"));
-                            pendingList = game.getPendings();
-
-                            isOrganizer = game.getOrganizerID().equals(myId);
-                            onPrepareOptionsMenu(myMenu);
-
-                            OrganizerName.setText(game.getOrganizer().getUsername());
-                            GameDate.setText(game.getDate());
-                            GameTime.setText(game.getTime());
-                            GamePlace.setText(game.getPlace());
-                            String price = String.format("%s", game.getPrice());
-                            GamePrice.setText(price + "€ / participant");
-                            GameDescrition.setText(game.getDescription());
-
-                            for (int i = 0; i < game.getTeamA().size(); i++) {
-
-                                teamAListIds.add(game.getTeamA().get(i).get_id());
-                                teamAList.add(game.getTeamA().get(i));
-
-                                if (game.getTeamA().get(i).get_id().equals(me.get_id())) {
-                                    status = "teamA";
-                                    gameButton.setText(R.string.game_menu_team_a);
-                                }
-                            }
-
-                            for (int i = 0; i < game.getTeamB().size(); i++) {
-
-                                teamBListIds.add(game.getTeamB().get(i).get_id());
-                                teamBList.add(game.getTeamB().get(i));
-
-                                if (game.getTeamB().get(i).get_id().equals(me.get_id())) {
-                                    status = "teamB";
-                                    gameButton.setText(R.string.game_menu_team_b);
-                                }
-                            }
-
-                            updateTeamList();
-                        }
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-
-            }
-
-            @Override
-            public void onError(String error) {
-                Log.e(TAG, error);
-                Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
     }
 
     @Override
@@ -571,7 +565,7 @@ public class GameDetailActivity extends AppActivity {
             server.deleteGame(gameId, new ServerHandler.ResponseHandler() {
                 @Override
                 public void onSuccess(Object response) {
-                    Toast.makeText(context, "Votre Game a bien été supprimé", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Votre match a bien été supprimé", Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(context, MainActivity.class);
                     startActivity(intent);
@@ -580,7 +574,7 @@ public class GameDetailActivity extends AppActivity {
 
                 @Override
                 public void onError(String error) {
-                    Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+                    Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT).show();
                 }
             });
 
