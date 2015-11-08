@@ -5,11 +5,11 @@
     android:layout_height="match_parent"
     android:padding="10dp">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/teamlist_picture"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/test"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@color/light_grey"
         android:layout_marginRight="16dp"
         android:layout_gravity="center_vertical" />
 
@@ -17,7 +17,6 @@
         android:id="@+id/teamlist_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TEST"
         android:textSize="18sp"
         android:textStyle="bold|italic"
         android:layout_gravity="center_vertical" />

@@ -32,6 +32,8 @@ public class MainActivity extends AppActivity {
     CharSequence Titles[]={"Tous les matchs","Mes matchs", "Notifications"};
     int Numboftabs =3;
 
+    String username;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +79,7 @@ public class MainActivity extends AppActivity {
 
         if(MySelf.getSelf() != null){
             Log.d(TAG, MySelf.getSelf().get_id());
-            String username = MySelf.getSelf().getUsername();
+            username = MySelf.getSelf().getUsername();
             Snackbar.make(coordinatorLayout, "Bienvenue " + username + " !", Snackbar.LENGTH_SHORT).show();
         } else {
             Log.d(TAG, "MySelf is null");
@@ -89,6 +91,9 @@ public class MainActivity extends AppActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem profileMenuItem = menu.findItem(R.id.action_settings);
+        if (username != null)
+            profileMenuItem.setTitle(username);
         return true;
     }
 
@@ -101,6 +106,8 @@ public class MainActivity extends AppActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(context, UserSettingsActivity.class);
+            startActivity(intent);
             return true;
         }
 

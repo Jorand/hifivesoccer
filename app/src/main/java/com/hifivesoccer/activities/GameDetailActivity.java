@@ -3,6 +3,9 @@ package com.hifivesoccer.activities;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.internal.widget.AdapterViewCompat;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,7 +43,10 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class GameDetailActivity extends AppActivity {
 
@@ -74,6 +81,11 @@ public class GameDetailActivity extends AppActivity {
     private LinearLayout teamA;
     private LinearLayout teamB;
 
+    private ArrayList<String> pendingListIds = new ArrayList<>();
+    private ArrayList<String> pendingListNames = new ArrayList<>();
+
+    private ArrayList<User> pendingList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,12 +102,6 @@ public class GameDetailActivity extends AppActivity {
 
         gameId = getIntent().getStringExtra("GAME_ID");
 
-        final TextView OrganizerName = (TextView) findViewById(R.id.act_game_detail_organizer_username);
-        final TextView GameDate = (TextView) findViewById(R.id.act_game_detail_date);
-        final TextView GameTime = (TextView) findViewById(R.id.act_game_detail_time);
-        final TextView GamePlace = (TextView) findViewById(R.id.act_game_detail_place);
-        final TextView GamePrice = (TextView) findViewById(R.id.act_game_detail_price);
-
         gameButton = (Button) findViewById(R.id.act_game_detail_button);
 
         teamA = (LinearLayout) findViewById(R.id.act_game_detail_team_a_list);
@@ -107,75 +113,6 @@ public class GameDetailActivity extends AppActivity {
             myGamesIds = MySelf.getSelf().getGamesIDs();
 
         }
-
-        server.getGame(gameId, new ServerHandler.ResponseHandler() {
-            @Override
-            public void onSuccess(Object response) {
-                Log.d(TAG, "getGame: " + response.toString());
-
-                JSONObject serializedGame = (JSONObject) response;
-                ObjectMapper mapper = new ObjectMapper();
-                try {
-                    game = mapper.readValue(serializedGame.toString(), Game.class);
-
-                    GameDate.setText(game.getDate());
-                    GameTime.setText(game.getTime());
-                    GamePlace.setText(game.getPlace());
-                    String price = String.format("%s", game.getPrice());
-                    GamePrice.setText(price+"€ / participant");
-
-                    game.initPeoples(context, new Game.initHandler() {
-                        @Override
-                        public void handle() {
-                            if (game.getOrganizerID().equals(myId)) {
-                                isOrganizer = true;
-                            }
-
-                            OrganizerName.setText(game.getOrganizer().getUsername());
-
-                            Log.d(TAG, "teamA size: "+game.getTeamA().size());
-
-                            for (int i = 0; i < game.getTeamA().size(); i++) {
-                                Log.d(TAG, game.getTeamA().get(i).getUsername());
-
-                                teamAListIds.add(game.getTeamA().get(i).get_id());
-                                teamAList.add(game.getTeamA().get(i));
-
-                                if (game.getTeamA().get(i).get_id().equals(me.get_id())) {
-                                    status = "teamA";
-                                    gameButton.setText(R.string.game_menu_team_a);
-                                }
-                            }
-
-                            for (int i = 0; i < game.getTeamB().size(); i++) {
-
-                                teamBListIds.add(game.getTeamB().get(i).get_id());
-                                teamBList.add(game.getTeamB().get(i));
-
-                                if (game.getTeamB().get(i).get_id().equals(me.get_id())) {
-                                    status = "teamB";
-                                    gameButton.setText(R.string.game_menu_team_b);
-                                }
-                            }
-
-                            updateTeamList();
-                        }
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-
-            }
-
-            @Override
-            public void onError(String error) {
-                Log.e(TAG, error);
-                Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
 
         gameButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,10 +161,18 @@ public class GameDetailActivity extends AppActivity {
             User user = teamAList.get(i);
             View convertView = inflater.inflate(R.layout.team_list_reverse, null);
 
-            ImageView userPicture = (ImageView) convertView.findViewById(R.id.teamlist_picture);
+            CircleImageView userPicture = (CircleImageView) convertView.findViewById(R.id.teamlist_picture);
             TextView userName = (TextView) convertView.findViewById(R.id.teamlist_username);
 
             userName.setText(teamAList.get(i).getUsername());
+
+            if (teamAList.get(i).getPicture() != null) {
+
+                byte[] decodedString = Base64.decode(teamAList.get(i).getPicture(), Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                userPicture.setImageBitmap(decodedByte);
+            }
 
             teamA.addView(convertView);
         }
@@ -236,10 +181,18 @@ public class GameDetailActivity extends AppActivity {
             User user = teamBList.get(i);
             View convertView = inflater.inflate(R.layout.team_list, null);
 
-            ImageView userPicture = (ImageView) convertView.findViewById(R.id.teamlist_picture);
+            CircleImageView userPicture = (CircleImageView) convertView.findViewById(R.id.teamlist_picture);
             TextView userName = (TextView) convertView.findViewById(R.id.teamlist_username);
 
             userName.setText(teamBList.get(i).getUsername());
+
+            if (teamBList.get(i).getPicture() != null) {
+
+                byte[] decodedString = Base64.decode(teamBList.get(i).getPicture(), Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                userPicture.setImageBitmap(decodedByte);
+            }
 
             teamB.addView(convertView);
         }
@@ -424,7 +377,7 @@ public class GameDetailActivity extends AppActivity {
                                 public void onSuccess(Object response) {
                                     Log.d(TAG, response.toString());
 
-                                    Toast.makeText(context, "You join left the game !", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, R.string.act_game_detail_left_msg, Toast.LENGTH_SHORT).show();
 
                                     gameButton.setText(R.string.game_menu_default);
 
@@ -503,9 +456,85 @@ public class GameDetailActivity extends AppActivity {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+    public boolean onPrepareOptionsMenu(final Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.action_edit).setVisible(isOrganizer);
+
+        final TextView OrganizerName = (TextView) findViewById(R.id.act_game_detail_organizer_username);
+        final TextView GameDate = (TextView) findViewById(R.id.act_game_detail_date);
+        final TextView GameTime = (TextView) findViewById(R.id.act_game_detail_time);
+        final TextView GamePlace = (TextView) findViewById(R.id.act_game_detail_place);
+        final TextView GamePrice = (TextView) findViewById(R.id.act_game_detail_price);
+
+        final LinearLayout OrganizerInfos = (LinearLayout) findViewById(R.id.act_game_detail_organizer_infos);
+
+        server.getGame(gameId, new ServerHandler.ResponseHandler() {
+            @Override
+            public void onSuccess(Object response) {
+                Log.d(TAG, response.toString());
+
+                JSONObject serializedGame = (JSONObject) response;
+                ObjectMapper mapper = new ObjectMapper();
+                try {
+                    final Game game = mapper.readValue(serializedGame.toString(), Game.class);
+                    game.initPeoples(context, new Game.initHandler() {
+                        @Override
+                        public void handle() {
+
+//                            Collections.addAll(pendingListIds, game.getPlayersIDs("pending"));
+                            pendingList = game.getPendings();
+
+                            if (game.getOrganizerID().equals(myId)) {
+                                isOrganizer = true;
+                                menu.findItem(R.id.action_edit).setVisible(isOrganizer);
+                            }
+
+                            OrganizerName.setText(game.getOrganizer().getUsername());
+                            GameDate.setText(game.getDate());
+                            GameTime.setText(game.getTime());
+                            GamePlace.setText(game.getPlace());
+                            String price = String.format("%s", game.getPrice());
+                            GamePrice.setText(price + "€ / participant");
+
+                            for (int i = 0; i < game.getTeamA().size(); i++) {
+
+                                teamAListIds.add(game.getTeamA().get(i).get_id());
+                                teamAList.add(game.getTeamA().get(i));
+
+                                if (game.getTeamA().get(i).get_id().equals(me.get_id())) {
+                                    status = "teamA";
+                                    gameButton.setText(R.string.game_menu_team_a);
+                                }
+                            }
+
+                            for (int i = 0; i < game.getTeamB().size(); i++) {
+
+                                teamBListIds.add(game.getTeamB().get(i).get_id());
+                                teamBList.add(game.getTeamB().get(i));
+
+                                if (game.getTeamB().get(i).get_id().equals(me.get_id())) {
+                                    status = "teamB";
+                                    gameButton.setText(R.string.game_menu_team_b);
+                                }
+                            }
+
+                            updateTeamList();
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.e(TAG, error);
+                Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
         return true;
     }
 
@@ -518,17 +547,63 @@ public class GameDetailActivity extends AppActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_game_add_player) {
+
+            String usersIdList = "";
+            String usersNameList = "";
+
+            for (int i = 0; i < pendingList.size(); i++) {
+                if (i != 0) {
+                    usersIdList += ",";
+                    usersNameList += ",";
+                }
+                usersIdList += pendingList.get(i).get_id();
+                usersNameList += pendingList.get(i).getUsername();
+            }
+
+            Intent intent = new Intent(context, FriendsListActivity.class);
+            intent.putExtra("USERS_LIST_ID", usersIdList);
+            intent.putExtra("USERS_LIST_NAME", usersNameList);
+            startActivityForResult(intent, 0);
+            return true;
+        }
+
+        if (id == R.id.action_edit) {
+
+            //TODO Edit or delete game
+
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.e(TAG, String.valueOf(requestCode));
+        Log.e(TAG, String.valueOf(resultCode));
+
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+
+                pendingListIds = new ArrayList<>();
+                pendingListNames = new ArrayList<>();
+
+                String pending_ids = data.getStringExtra("USERS_LIST_ID");
+                String pending_names = data.getStringExtra("USERS_LIST_NAME");
+
+                String[] friendsIdList = pending_ids.split(",");
+                String[] friendsNameList = pending_names.split(",");
+
+                Collections.addAll(pendingListIds, friendsIdList);
+                Collections.addAll(pendingListNames, friendsNameList);
+
+                // TODO Update pending list game
+
+            }
+        }
     }
 
 }

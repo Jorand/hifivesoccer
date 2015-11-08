@@ -41,6 +41,8 @@ public class AllGamesTabActivity extends Fragment implements SwipeRefreshLayout.
     private final Context context = getActivity();
     private final ServerHandler server = ServerHandler.getInstance(context);
 
+    private int requestQueue = 0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View v =inflater.inflate(R.layout.tab_all_games,container,false);
@@ -51,7 +53,7 @@ public class AllGamesTabActivity extends Fragment implements SwipeRefreshLayout.
         swipeRefreshLayout.setOnRefreshListener(this);
 
         gameList = new ArrayList<>();
-        //listView.setEmptyView( v.findViewById( R.id.empty_list_view ) );
+        listView.setEmptyView( v.findViewById( R.id.empty_list_view ) );
         adapter = new GameListAdapter(getActivity(), gameList);
         listView.setAdapter(adapter);
 
@@ -159,6 +161,14 @@ public class AllGamesTabActivity extends Fragment implements SwipeRefreshLayout.
             }
         });
 
+    }
+
+    private void updateGameList(Game game) {
+        gameList.add(game);
+        if(requestQueue < 1){
+            adapter.notifyDataSetChanged();
+            swipeRefreshLayout.setRefreshing(false);
+        }
     }
 
 }
