@@ -581,6 +581,7 @@ public class GameDetailActivity extends AppActivity {
                 @Override
                 public void onError(String error) {
                     Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+                    toast.show();
                 }
             });
 
