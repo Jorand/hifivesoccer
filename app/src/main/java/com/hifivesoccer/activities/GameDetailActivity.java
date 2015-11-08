@@ -472,7 +472,7 @@ public class GameDetailActivity extends AppActivity {
 
                             if (game.getOrganizerID().equals(myId)) {
                                 isOrganizer = true;
-                                menu.findItem(R.id.action_edit).setVisible(isOrganizer);
+                                menu.findItem(R.id.action_delete).setVisible(isOrganizer);
                             }
 
                             OrganizerName.setText(game.getOrganizer().getUsername());
@@ -558,9 +558,23 @@ public class GameDetailActivity extends AppActivity {
             return true;
         }
 
-        if (id == R.id.action_edit) {
+        if (id == R.id.action_delete) {
 
-            //TODO Edit or delete game
+            server.deleteGame(gameId, new ServerHandler.ResponseHandler() {
+                @Override
+                public void onSuccess(Object response) {
+                    Toast.makeText(context, "Votre Game a bien été supprimé", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(context, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
+                @Override
+                public void onError(String error) {
+                    Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
+                }
+            });
 
             return true;
         }

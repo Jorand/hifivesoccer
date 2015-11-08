@@ -69,6 +69,10 @@ public class ServerHandler {
         this.getData("game", id, handler);
     }
 
+    public void deleteGame(String id, final ResponseHandler handler){
+        this.deleteData("game", id, handler);
+    }
+
     public void getAllUsers(final ResponseHandler handler){
         this.getDatas("user", handler);
     }
@@ -113,6 +117,12 @@ public class ServerHandler {
         String url = API_BASE_URL + route;
         url += "?token=" + Token.getToken();
         this.performRequest(url, Request.Method.PUT, json, handler);
+    }
+
+    private void deleteData(String route, String id, final ResponseHandler handler){
+        String url = API_BASE_URL + route + '/' + id;
+        url += "?token=" + Token.getToken();
+        this.performRequest(url, Request.Method.DELETE, new JSONObject(), handler);
     }
 
     private void performRequest (String url, int verb, JSONObject json, final ResponseHandler handler){
