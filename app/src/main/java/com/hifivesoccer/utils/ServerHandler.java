@@ -81,6 +81,10 @@ public class ServerHandler {
         this.getArrayOfDatas("user", ids, handler);
     }
 
+    public void updateGameTeams (JSONObject json, final ResponseHandler handler){
+        this.putDatas("game/team/update", json, handler);
+    }
+
     private void getData(String route, String id, final ResponseHandler handler){
         String url = API_BASE_URL + route + '/' + id;
         url += "?token=" + Token.getToken();

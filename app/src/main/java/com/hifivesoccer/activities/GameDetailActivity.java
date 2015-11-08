@@ -54,6 +54,7 @@ public class GameDetailActivity extends AppActivity {
 
     private Boolean isOrganizer = false;
     private User me;
+    private Game game;
     private String myId;
 
     private String gameId;
@@ -110,28 +111,32 @@ public class GameDetailActivity extends AppActivity {
         server.getGame(gameId, new ServerHandler.ResponseHandler() {
             @Override
             public void onSuccess(Object response) {
-                Log.d(TAG, response.toString());
+                Log.d(TAG, "getGame: " + response.toString());
 
                 JSONObject serializedGame = (JSONObject) response;
                 ObjectMapper mapper = new ObjectMapper();
                 try {
-                    final Game game = mapper.readValue(serializedGame.toString(), Game.class);
+                    game = mapper.readValue(serializedGame.toString(), Game.class);
+
+                    GameDate.setText(game.getDate());
+                    GameTime.setText(game.getTime());
+                    GamePlace.setText(game.getPlace());
+                    String price = String.format("%s", game.getPrice());
+                    GamePrice.setText(price+"€ / participant");
+
                     game.initPeoples(context, new Game.initHandler() {
                         @Override
                         public void handle() {
-
                             if (game.getOrganizerID().equals(myId)) {
                                 isOrganizer = true;
                             }
 
                             OrganizerName.setText(game.getOrganizer().getUsername());
-                            GameDate.setText(game.getDate());
-                            GameTime.setText(game.getTime());
-                            GamePlace.setText(game.getPlace());
-                            String price = String.format("%s", game.getPrice());
-                            GamePrice.setText(price+"€ / participant");
+
+                            Log.d(TAG, "teamA size: "+game.getTeamA().size());
 
                             for (int i = 0; i < game.getTeamA().size(); i++) {
+                                Log.d(TAG, game.getTeamA().get(i).getUsername());
 
                                 teamAListIds.add(game.getTeamA().get(i).get_id());
                                 teamAList.add(game.getTeamA().get(i));
@@ -244,46 +249,82 @@ public class GameDetailActivity extends AppActivity {
 
         JSONObject json = new JSONObject();
 
-        final List<String> teamA_List = teamAListIds;
-        final List<String> teamB_list = teamBListIds;
-
         if (team.equals("teamA")) {
-
-            if (!teamA_List.contains(myId))
-                teamA_List.add(myId);
-
-            teamB_list.remove(myId);
+            if (!teamAListIds.contains(myId)){
+                teamAListIds.add(myId);
+                teamBListIds.remove(myId);
+            } else {
+                return;
+            }
         }
 
         if (team.equals("teamB")) {
-
-            teamA_List.remove(myId);
-
-            if (!teamB_list.contains(myId))
-                teamB_list.add(myId);
+            if (!teamBListIds.contains(myId)){
+                teamBListIds.add(myId);
+                teamAListIds.remove(myId);
+            } else {
+                return;
+            }
         }
 
-        Log.d(TAG, teamA_List.toString());
-        Log.d(TAG, teamB_list.toString());
+        final JSONArray players = new JSONArray();
 
-        JSONArray jsonTeamA = new JSONArray(teamA_List);
-        JSONArray jsonTeamB = new JSONArray(teamB_list);
+//        final JSONArray teamA_List = new JSONArray();
+        for (int i = 0; i < teamAListIds.size(); i++) {
+            try {
+                JSONObject player = new JSONObject();
+                player.put("id", teamAListIds.get(i));
+                player.put("team", "A");
+                players.put(player);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
-        if (jsonTeamA.length() <= 0)
-            jsonTeamA = null;
+//        final JSONArray teamB_list = new JSONArray();
+        for (int i = 0; i < teamBListIds.size(); i++) {
+            try {
+                JSONObject player = new JSONObject();
+                player.put("id", teamBListIds.get(i));
+                player.put("team", "B");
+                players.put(player);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
-        if (jsonTeamB.length() <= 0)
-            jsonTeamB = null;
+//        final JSONArray pending_list = new JSONArray();
+        for (int i = 0; i < game.getPendings().size(); i++) {
+            try {
+                JSONObject player = new JSONObject();
+                player.put("id", game.getPendings().get(i).get_id());
+                player.put("team", "pending");
+                players.put(player);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Log.d(TAG, players.toString());
+
+//        Log.d(TAG, teamA_List.toString());
+//        Log.d(TAG, teamB_list.toString());
+
+//        ArrayList<String> playersList = new ArrayList<String>();
+//        playersList.addAll(teamA_List);
+//        playersList.addAll(teamB_list);
+//        playersList.addAll(pending_list);
+
+//        JSONArray players = new JSONArray(playersList);
 
         try {
 
-            json.put("_id", gameId);
-            json.put("teamA", jsonTeamA);
-            json.put("teamB", jsonTeamB);
+            json.put("id", gameId);
+            json.put("players", players);
 
-            Log.d(TAG, "JSON: "+json.toString());
+            Log.d(TAG, "JSON: " + json.toString());
 
-            server.putDatas("game", json, new ServerHandler.ResponseHandler() {
+            server.updateGameTeams(json, new ServerHandler.ResponseHandler() {
                 @Override
                 public void onSuccess(Object response) {
                     Log.d(TAG, response.toString());

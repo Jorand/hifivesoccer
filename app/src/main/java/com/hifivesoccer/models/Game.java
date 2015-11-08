@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hifivesoccer.utils.ServerHandler;
@@ -16,7 +17,9 @@ import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Created by hugohil on 31/10/15.
@@ -38,19 +41,9 @@ public class Game extends AppBaseModel {
     private String organizerID;
 
     @JsonIgnore
-    private ArrayList<User> teamA = new ArrayList<User>();
-    @JsonProperty("teamA")
-    private String[] teamAIDs;
-
-    @JsonIgnore
-    private ArrayList<User> teamB = new ArrayList<User>();
-    @JsonProperty("teamB")
-    private String[] teamBIDs;
-
-    @JsonIgnore
-    private ArrayList<User> pending = new ArrayList<User>();
-    @JsonProperty("pending")
-    private String[] pendingIDs;
+    private ArrayList<User> players = new ArrayList<User>();
+    @JsonProperty("players")
+    private List<Player> playersIDs;
 
     public void initPeoples(Context context, final initHandler callback){
         requestQueue++;
@@ -66,70 +59,36 @@ public class Game extends AppBaseModel {
                 }
             });
         }
-        if(pendingIDs.length > 0){
-            String ids = arrayToJavaScriptArray(pendingIDs);
-            requestQueue++;
-            Log.d(TAG, ""+requestQueue);
-            getArrayOfUsersAndAdToList(ids, context, new addToList() {
-                public void decrementQueue() {
-                    requestQueue--;
-                }
+        if(playersIDs != null){
+            if(playersIDs.size() > 0){
+                String ids = getPlayersIDsFormatted();
+                requestQueue++;
+                Log.d(TAG, ""+requestQueue);
+                getArrayOfUsersAndAdToList(ids, context, new addToList() {
+                    public void decrementQueue() {
+                        requestQueue--;
+                    }
 
-                @Override
-                public void handle(Object response) {
-                    decrementQueue();
+                    @Override
+                    public void handle(Object response) {
+                        decrementQueue();
 
-                    pending.add((User) response);
-                    checkIfAsyncDone(callback);
-                    Log.d(TAG, "" + requestQueue);
-                }
-            });
-        }
-        if(teamAIDs.length > 0){
-            String ids = arrayToJavaScriptArray(teamAIDs);
-            requestQueue++;
-            Log.d(TAG, ""+requestQueue);
-            getArrayOfUsersAndAdToList(ids, context, new addToList() {
-                public void decrementQueue() {
-                    requestQueue--;
-                }
-
-                @Override
-                public void handle(Object response) {
-                    decrementQueue();
-                    teamA.add((User) response);
-                    checkIfAsyncDone(callback);
-                    Log.d(TAG, "" + requestQueue);
-                }
-            });
-        }
-        if(teamBIDs.length > 0){
-            String ids = arrayToJavaScriptArray(teamBIDs);
-            requestQueue++;
-            Log.d(TAG, ""+requestQueue);
-            getArrayOfUsersAndAdToList(ids, context, new addToList() {
-                public void decrementQueue() {
-                    requestQueue--;
-                }
-
-                @Override
-                public void handle(Object response) {
-                    decrementQueue();
-                    teamB.add((User) response);
-                    checkIfAsyncDone(callback);
-                    Log.d(TAG, "" + requestQueue);
-                }
-            });
+                        players.add((User) response);
+                        checkIfAsyncDone(callback);
+                        Log.d(TAG, "" + requestQueue);
+                    }
+                });
+            }
         }
     }
 
-    private String arrayToJavaScriptArray (String[] array){
-        String ids = "[";
-        for (String id : array){
-            ids += id + ",";
+    private String getPlayersIDsFormatted(){
+        String result = "[";
+        for (Player p : playersIDs){
+            result += p.getId() + ",";
         }
-        ids += "]";
-        return ids;
+        result += "]";
+        return result;
     }
 
     void checkIfAsyncDone (initHandler callback){
@@ -146,7 +105,6 @@ public class Game extends AppBaseModel {
                 ObjectMapper mapper = new ObjectMapper();
                 try {
                     User user = mapper.readValue(response.toString(), User.class);
-                    Log.d(TAG, user.toString());
                     handler.handle(user);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -195,6 +153,14 @@ public class Game extends AppBaseModel {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public List<Player> getPlayersIDs() {
+        return playersIDs;
+    }
+
+    public void setPlayersIDs(List<Player> playersIDs) {
+        this.playersIDs = playersIDs;
     }
 
     public interface addToList {
@@ -253,29 +219,6 @@ public class Game extends AppBaseModel {
         this.organizerID = organizerID;
     }
 
-    public String[] getTeamAIDs() {
-        return teamAIDs;
-    }
-
-    public void setTeamAIDs(String[] teamAIDs) {
-        this.teamAIDs = teamAIDs;
-    }
-
-    public String[] getTeamBIDs() {
-        return teamBIDs;
-    }
-
-    public void setTeamBIDs(String[] teamBIDs) {
-        this.teamBIDs = teamBIDs;
-    }
-
-    public String[] getPendingIDs() {
-        return pendingIDs;
-    }
-
-    public void setPendingIDs(String[] pendingIDs) {
-        this.pendingIDs = pendingIDs;
-    }
 
     public User getOrganizer() {
         return organizer;
@@ -285,39 +228,69 @@ public class Game extends AppBaseModel {
         this.organizer = organizer;
     }
 
-    public ArrayList<User> getTeamA() {
-        return teamA;
+    public ArrayList<User> getPlayers (){
+        return players;
     }
 
-    public void setTeamA(ArrayList<User> teamA) {
-        this.teamA = teamA;
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    static class Player {
+        private String id;
+        private String team;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getTeam() {
+            return team;
+        }
+
+        public void setTeam(String team) {
+            this.team = team;
+        }
     }
 
-    public void addTeamA(User user){
-        this.teamA.add(user);
+    public ArrayList<User> getTeamA(){
+        ArrayList<User> result = new ArrayList<User>();
+        for (Player p : playersIDs){
+            if(p.getTeam().equals("A")){
+                for (User u : players){
+                    if(u.get_id().equals(p.getId())){
+                        result.add(u);
+                    }
+                }
+            }
+        }
+        return result;
     }
-
-    public ArrayList<User> getTeamB() {
-        return teamB;
+    public ArrayList<User> getTeamB(){
+        ArrayList<User> result = new ArrayList<User>();
+        for (Player p : playersIDs){
+            if(p.getTeam().equals("B")){
+                for (User u : players){
+                    if(u.get_id().equals(p.getId())){
+                        result.add(u);
+                    }
+                }
+            }
+        }
+        return result;
     }
-
-    public void setTeamB(ArrayList<User> teamB) {
-        this.teamB = teamB;
-    }
-
-    public void addTeamB(User user){
-        this.teamB.add(user);
-    }
-
-    public ArrayList<User> getPending() {
-        return pending;
-    }
-
-    public void setPending(ArrayList<User> pending) {
-        this.pending = pending;
-    }
-
-    public void addPending(User user){
-        this.pending.add(user);
+    public ArrayList<User> getPendings(){
+        ArrayList<User> result = new ArrayList<User>();
+        for (Player p : playersIDs){
+            if(p.getTeam().equals("pending")){
+                for (User u : players){
+                    if(u.get_id().equals(p.getId())){
+                        result.add(u);
+                    }
+                }
+            }
+        }
+        return result;
     }
 }

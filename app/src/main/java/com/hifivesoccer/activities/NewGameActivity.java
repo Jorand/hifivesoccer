@@ -114,9 +114,16 @@ public class NewGameActivity extends AppActivity {
                         json.put("place", placeName);
                         json.put("price", Float.parseFloat(gamePrice));
                         json.put("private", isPrivate);
-                        JSONArray teamA = new JSONArray();
-                        teamA.put(MySelf.getSelf().get_id());
-                        json.put("teamA", teamA);
+
+                        JSONObject player = new JSONObject();
+                        try {
+                            player.put("id", MySelf.getSelf().get_id());
+                            player.put("team", "A");
+                            json.put("players", player.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
 
                         Log.d(TAG, "PENDING "+pendingList.toString());
 
