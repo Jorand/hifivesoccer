@@ -1,5 +1,6 @@
 package com.hifivesoccer.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -63,8 +64,10 @@ public class MyGamesTabActivity extends Fragment implements SwipeRefreshLayout.O
         textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
         textView.setPadding(30, 30, 30, 30);
 
+        View headerView = inflater.inflate(R.layout.listview_header, null);
+
         listView.setEmptyView(v.findViewById(R.id.empty_list_view ));
-        listView.addHeaderView(textView);
+        listView.addHeaderView(headerView);
 
         gameList = new ArrayList<>();
         adapter = new MyGameListAdapter(getActivity(), gameList);
@@ -141,7 +144,27 @@ public class MyGamesTabActivity extends Fragment implements SwipeRefreshLayout.O
 
     }
 
-    public static void removeToList(View view, final Context context, final List<Game> gameList, final MyGameListAdapter adapter, String game_id) {
+    public static void removeToList(View v, Activity context, List<Game> gameList, MyGameListAdapter adapter, String game_id) {
+
+        if (game_id != null) {
+
+            //TODO end game
+            Toast toast = Toast.makeText(context, "Game end", Toast.LENGTH_SHORT);
+            toast.show();
+
+        }
+    }
+
+    public static void openGame(View v, Activity context, List<Game> gameList, MyGameListAdapter adapter, String game_id) {
+
+        if (game_id != null) {
+            Intent intent = new Intent(context, GameDetailActivity.class);
+            intent.putExtra("GAME_ID", game_id);
+            context.startActivity(intent);
+        }
+    }
+
+    /*public static void removeToList(View view, final Context context, final List<Game> gameList, final MyGameListAdapter adapter, String game_id) {
 
         final ServerHandler server = ServerHandler.getInstance(context);
 
@@ -152,5 +175,5 @@ public class MyGamesTabActivity extends Fragment implements SwipeRefreshLayout.O
             toast.show();
 
         }
-    }
+    }*/
 }

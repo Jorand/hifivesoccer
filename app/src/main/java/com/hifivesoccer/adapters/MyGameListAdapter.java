@@ -26,11 +26,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyGameListAdapter extends BaseAdapter {
 
+    private Activity context;
     private Activity activity;
     private LayoutInflater inflater;
     private List<Game> gameList;
-
-    private final Context context;
 
     public MyGameListAdapter(Activity activity, List<Game> gameList) {
         this.activity = activity;
@@ -106,7 +105,8 @@ public class MyGameListAdapter extends BaseAdapter {
             playersText.setVisibility(View.GONE);
         }
 
-        /*
+        TextView gameEnd = (TextView) convertView.findViewById(R.id.list_game_end);
+        // TODO game end
 
         ImageView button = (ImageView) convertView.findViewById(R.id.removeToList);
 
@@ -120,7 +120,13 @@ public class MyGameListAdapter extends BaseAdapter {
 
         });
 
-        */
+        convertView.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                MyGamesTabActivity.openGame(v, context, gameList, adapter, game_id);
+            }
+
+        });
 
         return convertView;
     }

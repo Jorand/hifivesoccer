@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -59,22 +60,22 @@ public class NotificationsTabActivity extends Fragment implements SwipeRefreshLa
         swipeRefreshLayout.setColorSchemeResources(R.color.primary);
         swipeRefreshLayout.setOnRefreshListener(this);
 
+        View headerView = inflater.inflate(R.layout.listview_header, null);
+
+        TextView title = (TextView) headerView.findViewById(R.id.listview_header);
+
+        title.setText(R.string.notifications_title);
+
+        listView.addHeaderView(headerView);
+
         adapter = new NotificationListAdapter(getActivity(), gameList);
+
         listView.setAdapter(adapter);
 
         swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
                 updateList();
-            }
-        });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), GameDetailActivity.class);
-                intent.putExtra("GAME_ID", gameList.get(position).get_id());
-                startActivity(intent);
             }
         });
 
@@ -161,4 +162,13 @@ public class NotificationsTabActivity extends Fragment implements SwipeRefreshLa
         }
     }
 
+    public static void openGame(View v, Context context, List<Game> gameList, NotificationListAdapter adapter, String game_id) {
+
+        if (game_id != null) {
+            Intent intent = new Intent(context, GameDetailActivity.class);
+            intent.putExtra("GAME_ID", game_id);
+            context.startActivity(intent);
+        }
+
+    }
 }

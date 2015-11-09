@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hifivesoccer.R;
+import com.hifivesoccer.fragments.MyGamesTabActivity;
 import com.hifivesoccer.fragments.NotificationsTabActivity;
 import com.hifivesoccer.models.Game;
 import com.hifivesoccer.models.User;
@@ -121,6 +122,14 @@ public class NotificationListAdapter extends BaseAdapter {
 
             public void onClick(View v) {
                 NotificationsTabActivity.removeToList(v, context, gameList, adapter, game_id);
+            }
+
+        });
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                NotificationsTabActivity.openGame(v, context, gameList, adapter, game_id);
             }
 
         });
