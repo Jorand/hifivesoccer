@@ -408,4 +408,27 @@ public class ServerHandler {
         }
     }
 
+    public void removeUserInGame(final String userId, final String gameId){
+        final JSONObject json = new JSONObject();
+        try {
+            json.put("player", userId);
+            json.put("game", gameId);
+
+            this.putDatas("game/team/delete", json, new ResponseHandler() {
+                @Override
+                public void onSuccess(Object response) {
+                    Log.d(TAG, response.toString());
+                    Log.d(TAG, "User "+userId+" quit Game "+gameId);
+                }
+
+                @Override
+                public void onError(String error) {
+                    Log.e(TAG, error);
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

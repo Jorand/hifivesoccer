@@ -90,12 +90,12 @@ public class NotificationsTabActivity extends Fragment implements SwipeRefreshLa
 
         swipeRefreshLayout.setRefreshing(true);
 
-        gameList.clear();
-
         server.getUser(MySelf.getSelf().get_id(), new ServerHandler.ResponseHandler() {
             @Override
             public void onSuccess(Object response) {
                 Log.d(TAG, response.toString());
+
+                gameList.clear();
 
                 JSONObject serializedUser = (JSONObject) response;
 
@@ -147,9 +147,17 @@ public class NotificationsTabActivity extends Fragment implements SwipeRefreshLa
 
         if (game_id != null) {
 
-            // TODO remove game in user pending and user in game pending
-            Toast toast = Toast.makeText(context, game_id, Toast.LENGTH_SHORT);
-            toast.show();
+
+            for (int i = 0; i < gameList.size(); i++) {
+                if (gameList.get(i).get_id().equals(game_id)) {
+                    gameList.remove(i);
+                }
+            }
+            adapter.notifyDataSetChanged();
+
+            server.quitGame(MySelf.getSelf().get_id(), game_id);
+            server.removeUserInGame(MySelf.getSelf().get_id(), game_id);
+
         }
     }
 

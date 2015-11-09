@@ -5,14 +5,19 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hifivesoccer.R;
+import com.hifivesoccer.fragments.MyGamesTabActivity;
+import com.hifivesoccer.fragments.NotificationsTabActivity;
 import com.hifivesoccer.models.Game;
+import com.hifivesoccer.models.User;
 import com.hifivesoccer.utils.base64ToBitmap;
 
 import java.util.List;
@@ -25,9 +30,12 @@ public class MyGameListAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private List<Game> gameList;
 
+    private final Context context;
+
     public MyGameListAdapter(Activity activity, List<Game> gameList) {
         this.activity = activity;
         this.gameList = gameList;
+        this.context = activity;
     }
 
     @Override
@@ -48,16 +56,20 @@ public class MyGameListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        final MyGameListAdapter adapter = this;
+
         if (inflater == null)
             inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null)
-            convertView = inflater.inflate(R.layout.list_notification, null);
+            convertView = inflater.inflate(R.layout.list_my_games, null);
 
         TextView organizerName = (TextView) convertView.findViewById(R.id.list_game_organizer_name);
         TextView location = (TextView) convertView.findViewById(R.id.list_game_location);
         CircleImageView organizerAvatar = (CircleImageView) convertView.findViewById(R.id.list_game_organizer_avatar);
         TextView date = (TextView) convertView.findViewById(R.id.list_game_date);
         TextView time = (TextView) convertView.findViewById(R.id.list_game_time);
+
+        TextView playersText = (TextView) convertView.findViewById(R.id.list_game_players);
 
         organizerName.setText(String.valueOf(gameList.get(position).getOrganizer().getUsername()));
         location.setText(String.valueOf(gameList.get(position).getPlace()));
@@ -68,7 +80,47 @@ public class MyGameListAdapter extends BaseAdapter {
 
             Bitmap bm = base64ToBitmap.getBitmap(gameList.get(position).getOrganizer().getPicture());
             organizerAvatar.setImageBitmap(bm);
+
         }
+
+        List<User> players = gameList.get(position).getPlayers();
+        String playerString = "";
+
+        if (players.size() > 0) {
+            playerString += "Avec ";
+            playerString += players.get(0).getUsername();
+
+            if (players.size() == 2 ) {
+                playerString += " et ";
+                playerString += players.get(1).getUsername();
+            }
+            else if (players.size() > 2) {
+                playerString += " et ";
+                playerString += (players.size()-1);
+                playerString += " autres personnes";
+            }
+
+            playersText.setText(playerString);
+        }
+        else {
+            playersText.setVisibility(View.GONE);
+        }
+
+        /*
+
+        ImageView button = (ImageView) convertView.findViewById(R.id.removeToList);
+
+        final String game_id = gameList.get(position).get_id();
+
+        button.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                MyGamesTabActivity.removeToList(v, context, gameList, adapter, game_id);
+            }
+
+        });
+
+        */
 
         return convertView;
     }

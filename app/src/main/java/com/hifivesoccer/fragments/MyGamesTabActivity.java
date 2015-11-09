@@ -1,6 +1,7 @@
 package com.hifivesoccer.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -12,14 +13,16 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hifivesoccer.R;
-import com.hifivesoccer.adapters.GameListAdapter;
+import com.hifivesoccer.activities.GameDetailActivity;
 import com.hifivesoccer.adapters.MyGameListAdapter;
+import com.hifivesoccer.adapters.NotificationListAdapter;
 import com.hifivesoccer.models.Game;
 import com.hifivesoccer.models.User;
 import com.hifivesoccer.utils.MySelf;
@@ -91,6 +94,8 @@ public class MyGamesTabActivity extends Fragment implements SwipeRefreshLayout.O
             public void onSuccess(Object response) {
                 Log.d(TAG, response.toString());
 
+                gameList.clear();
+
                 JSONObject serializedUser = (JSONObject) response;
 
                 ObjectMapper mapper = new ObjectMapper();
@@ -134,5 +139,18 @@ public class MyGamesTabActivity extends Fragment implements SwipeRefreshLayout.O
             }
         });
 
+    }
+
+    public static void removeToList(View view, final Context context, final List<Game> gameList, final MyGameListAdapter adapter, String game_id) {
+
+        final ServerHandler server = ServerHandler.getInstance(context);
+
+        if (game_id != null) {
+
+            //TODO end game
+            Toast toast = Toast.makeText(context, "Game end", Toast.LENGTH_SHORT);
+            toast.show();
+
+        }
     }
 }
