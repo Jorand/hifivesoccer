@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hifivesoccer.utils.ServerHandler;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -36,36 +38,85 @@ public class User extends AppBaseModel {
     private int notificationsLevel;
     private float maxDistance;
     private boolean isPrivate;
+    private int requestQueue = 0;
 
     @JsonIgnore
-    private ArrayList<Game> games;
+    private ArrayList<Game> games = new ArrayList<Game>();
     @JsonProperty("games")
     private String[] gamesIDs;
 
-    public void initGames(Context context){
-        // Add a front-end cache
-        ServerHandler server = ServerHandler.getInstance(context);
-        if(gamesIDs == null){
-            return;
+    @JsonIgnore
+    private ArrayList<Game> pendings = new ArrayList<Game>();
+    @JsonProperty("pending")
+    private String[] pendingsIDs;
+
+    public void initGames(Context context,  final initHandler callback) {
+        if (gamesIDs != null) {
+            if (gamesIDs.length > 0) {
+                String ids = getGamesIDsFormatted();
+                requestQueue += gamesIDs.length;
+                getArrayOfGamesAndAdToList(ids, context, new addToList() {
+                    @Override
+                    public void handle(Object response) {
+                        games.add((Game) response);
+                        requestQueue--;
+                        checkIfAsyncDone(callback);
+                    }
+                });
+            }
         }
+    }
+
+    private String getGamesIDsFormatted(){
+        String result = "[";
         for (String id : gamesIDs){
-            server.getGame(id, new ServerHandler.ResponseHandler() {
-                @Override
-                public void onSuccess(Object response) {
+            result += id + ",";
+        }
+        result += "]";
+        return result;
+    }
+
+    void checkIfAsyncDone (initHandler callback){
+        if(requestQueue < 1){
+            callback.handle();
+        }
+    }
+
+    private void getArrayOfGamesAndAdToList(String id, Context context, final addToList handler) {
+        ServerHandler server = ServerHandler.getInstance(context);
+        server.getArrayOfGames(id, new ServerHandler.ResponseHandler() {
+            @Override
+            public void onSuccess(Object response) {
+                JSONArray serializedGames = (JSONArray) response;
+                for (int i = 0; i < serializedGames.length(); i++) {
                     ObjectMapper mapper = new ObjectMapper();
                     try {
-                        addGame(mapper.readValue(response.toString(), Game.class));
+                        Game game = null;
+                        try {
+                            game = mapper.readValue(serializedGames.getJSONObject(i).toString(), Game.class);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        handler.handle(game);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
+            }
 
-                @Override
-                public void onError(String error) {
-                    Log.e(TAG, error);
-                }
-            });
-        }
+            @Override
+            public void onError(String error) {
+                Log.e(TAG, error);
+            }
+        });
+    }
+
+    public interface addToList {
+        void handle(Object response);
+    }
+
+    public interface initHandler {
+        void handle();
     }
 
     public boolean isPrivate() {
@@ -190,5 +241,21 @@ public class User extends AppBaseModel {
 
     public void setMaxDistance(float maxDistance) {
         this.maxDistance = maxDistance;
+    }
+
+    public ArrayList<Game> getPendings() {
+        return pendings;
+    }
+
+    public void setPendings(ArrayList<Game> pendings) {
+        this.pendings = pendings;
+    }
+
+    public String[] getPendingsIDs() {
+        return pendingsIDs;
+    }
+
+    public void setPendingsIDs(String[] pendingsIDs) {
+        this.pendingsIDs = pendingsIDs;
     }
 }

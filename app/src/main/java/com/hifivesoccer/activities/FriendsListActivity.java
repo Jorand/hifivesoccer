@@ -111,8 +111,6 @@ public class FriendsListActivity extends AppActivity {
         server.getAllUsers(new ServerHandler.ResponseHandler() {
             @Override
             public void onSuccess(Object response) {
-                Log.d(TAG, response.toString());
-
                 JSONArray serializedUsers = (JSONArray) response;
 
                 for (int i = 0; i < serializedUsers.length(); i++) {
@@ -123,7 +121,6 @@ public class FriendsListActivity extends AppActivity {
                             final User user = mapper.readValue(serializedUser.toString(), User.class);
 
                             if(user != null){
-                                Log.d(TAG, user.toString());
                                 if (!user.get_id().equals(MySelf.getSelf().get_id())) {
 
                                     if (Arrays.asList(friendsIdList).contains(user.get_id())) {

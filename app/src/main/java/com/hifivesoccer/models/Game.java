@@ -161,9 +161,11 @@ public class Game extends AppBaseModel {
 
     public ArrayList<String> getPlayersIDs(String filter) {
         ArrayList<String> result = new ArrayList<String>();
-        for (Player p : playersIDs) {
-            if (p.getTeam().equals(filter)) {
-                result.add(p.getId());
+        if(playersIDs.size() > 0){
+            for (Player p : playersIDs) {
+                if (p.getTeam().equals(filter)) {
+                    result.add(p.getId());
+                }
             }
         }
         return result;
@@ -240,6 +242,10 @@ public class Game extends AppBaseModel {
 
     public ArrayList<User> getPlayers (){
         return players;
+    }
+
+    public void addPlayer(User player){
+        players.add(player);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)

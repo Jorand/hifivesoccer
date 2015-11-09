@@ -29,6 +29,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.hifivesoccer.R;
 import com.hifivesoccer.models.Game;
 import com.hifivesoccer.models.User;
@@ -120,20 +121,35 @@ public class NewGameActivity extends AppActivity {
                         json.put("price", Float.parseFloat(gamePrice));
                         json.put("private", isPrivate);
 
-                        JSONObject player = new JSONObject();
+                        JSONArray players = new JSONArray();
+
                         try {
+                            JSONObject player = new JSONObject();
                             player.put("id", MySelf.getSelf().get_id());
                             player.put("team", "A");
-                            json.put("players", player);
+                            players.put(player);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
+                        if (pendingList.length() > 0){
+                            for (int i = 0; i < pendingList.length(); i++) {
+                                JSONObject player = new JSONObject();
+                                try {
+                                    player.put("id", pendingList.get(i));
+                                    player.put("team", "pending");
+                                    players.put(player);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
 
-                        Log.d(TAG, "PENDING "+pendingList.toString());
+                        if(players.length() > 0){
+                            json.put("players", players);
+                        }
 
-                        if (pendingList.length() > 0)
-                            json.put("pending", pendingList);
+                        Log.d(TAG, "PENDING " + pendingList.toString());
 
                         Log.d(TAG, json.toString());
 
@@ -158,6 +174,7 @@ public class NewGameActivity extends AppActivity {
 
                                     Intent intent = new Intent(context, GameDetailActivity.class);
                                     intent.putExtra("GAME_ID", id);
+                                    intent.putExtra("NOTIFY", true);
                                     startActivity(intent);
                                     finish();
 

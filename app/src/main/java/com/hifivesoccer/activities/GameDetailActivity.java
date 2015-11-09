@@ -197,6 +197,7 @@ public class GameDetailActivity extends AppActivity {
                             }
 
                             updateTeamList();
+                            server.notifyPlayers(game);
                         }
                     });
                 } catch (IOException e) {
@@ -302,7 +303,6 @@ public class GameDetailActivity extends AppActivity {
         JSONObject json = new JSONObject();
 
         if (team.equals("teamA")) {
-            Log.d(TAG, "TEAMA");
             if (!teamAListIds.contains(myId)){
                 teamAListIds.add(myId);
             } else {
@@ -436,6 +436,10 @@ public class GameDetailActivity extends AppActivity {
                                 }
 
                                 updateTeamList();
+                                if(getIntent().getBooleanExtra("NOTIFY", false)){
+                                    Log.d(TAG, "notifying players");
+                                    server.notifyPlayers(game);
+                                }
 
                             }
                         });
@@ -605,21 +609,8 @@ public class GameDetailActivity extends AppActivity {
 
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
-
-                pendingListIds = new ArrayList<>();
-                pendingListNames = new ArrayList<>();
-
-                String pending_ids = data.getStringExtra("USERS_LIST_ID");
-                String pending_names = data.getStringExtra("USERS_LIST_NAME");
-
-                String[] friendsIdList = pending_ids.split(",");
-                String[] friendsNameList = pending_names.split(",");
-
-                Collections.addAll(pendingListIds, friendsIdList);
-                Collections.addAll(pendingListNames, friendsNameList);
-
-                // TODO Update pending list game
-
+                String[] pending_ids = data.getStringExtra("USERS_LIST_ID").split(",");
+                server.notifyPlayers(game, pending_ids);
             }
         }
     }

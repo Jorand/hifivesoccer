@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hifivesoccer.R;
 import com.hifivesoccer.activities.LoginActivity;
 import com.hifivesoccer.activities.MainActivity;
+import com.hifivesoccer.models.Game;
 import com.hifivesoccer.models.User;
 
 import org.apache.http.client.ResponseHandler;
@@ -31,6 +32,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 /**
  * Created by hugohil on 31/10/15.
@@ -68,6 +70,10 @@ public class ServerHandler {
 
     public void getGame(String id, final ResponseHandler handler){
         this.getData("game", id, handler);
+    }
+
+    public void getArrayOfGames(String ids, final ResponseHandler handler){
+        this.getArrayOfDatas("game", ids, handler);
     }
 
     public void deleteGame(String id, final ResponseHandler handler){
@@ -196,7 +202,7 @@ public class ServerHandler {
                             activity.startActivity(intent);
                             activity.finish();
                         } else {
-                            myself.initGames(context);
+                            myself.initGames(context, null);
                             MySelf.setSelf(activity, myself);
 
                             Intent intent = new Intent(context, MainActivity.class);
@@ -278,5 +284,53 @@ public class ServerHandler {
                 activity.finish();
             }
         };
+    }
+
+    public void notifyPlayers(Game game, String[] ids){
+        for (String id : ids){
+            JSONObject json = new JSONObject();
+            try {
+                json.put("_id", id);
+                json.put("pending", game.get_id());
+                this.putDatas("user", json, new ServerHandler.ResponseHandler() {
+                    @Override
+                    public void onSuccess(Object response) {
+                        Log.d(TAG, response.toString());
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        Log.e(TAG, error);
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void notifyPlayers(Game game){
+        ArrayList<String> pendingIDs = game.getPlayersIDs("pending");
+        Log.d(TAG, "ids: "+game.getPlayersIDs().toString());
+        for (String id : pendingIDs){
+            JSONObject json = new JSONObject();
+            try {
+                json.put("_id", id);
+                json.put("pending", game.get_id());
+                this.putDatas("user", json, new ServerHandler.ResponseHandler() {
+                    @Override
+                    public void onSuccess(Object response) {
+                        Log.d(TAG, response.toString());
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        Log.e(TAG, error);
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

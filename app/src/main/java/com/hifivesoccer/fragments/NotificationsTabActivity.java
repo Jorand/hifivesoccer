@@ -60,6 +60,8 @@ public class NotificationsTabActivity extends Fragment implements SwipeRefreshLa
             }
         });
 
+        
+
         return v;
     }
 
