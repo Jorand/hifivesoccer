@@ -13,4 +13,19 @@
         android:src="@drawable/hifive_white_line"
         android:contentDescription="Hi Five Soccer" />
 
+    <TextView
+        android:id="@+id/act_splash_network"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/act_splash_network"
+        android:layout_below="@+id/imgLogo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:padding="20dp"
+        android:textColor="@color/white"
+        android:textStyle="italic"
+        android:textSize="18sp"
+        android:gravity="center" />
+
 </RelativeLayout>

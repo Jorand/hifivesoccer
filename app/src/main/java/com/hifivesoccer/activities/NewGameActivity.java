@@ -1,39 +1,25 @@
 package com.hifivesoccer.activities;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
-import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.hifivesoccer.R;
-import com.hifivesoccer.models.Game;
-import com.hifivesoccer.models.User;
 import com.hifivesoccer.utils.MySelf;
 import com.hifivesoccer.utils.ServerHandler;
 
@@ -41,9 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -87,6 +71,7 @@ public class NewGameActivity extends AppActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_game);
 
+        // TOOLBAR
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
@@ -158,10 +143,6 @@ public class NewGameActivity extends AppActivity {
                         if(players.length() > 0){
                             json.put("players", players);
                         }
-
-                        Log.d(TAG, "PENDING " + pendingList.toString());
-
-                        Log.d(TAG, json.toString());
 
                         final ProgressDialog progress = new ProgressDialog(context);
                         progress.setMessage(context.getString(R.string.loading));
@@ -289,7 +270,6 @@ public class NewGameActivity extends AppActivity {
             year_x = year;
             month_x = monthOfYear + 1;
             day_x = dayOfMonth;
-            //Toast.makeText(context, "Date " + year_x +"/"+month_x+"/"+day_x,Toast.LENGTH_SHORT).show();
 
             Calendar calendar = Calendar.getInstance();
             calendar.set(year,monthOfYear,dayOfMonth);
@@ -330,8 +310,6 @@ public class NewGameActivity extends AppActivity {
 
             button_time.setText(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(gameTime));
 
-            //Toast.makeText(context, "Heure " + hours_x +":"+min_x,Toast.LENGTH_SHORT).show();
-            //button_time.setText(hours_x+":"+min_x);
         }
     };
 

@@ -87,4 +87,5 @@
     <string name="act_mygame_end">FINI</string>
     <string name="game_detail_delete">Votre match a bien été supprimé</string>
     <string name="dialog_game_delete">Êtes-vous sur de vouloir supprimer match ?</string>
+    <string name="act_splash_network">Réseau indisponible. \nEn attente de connexion…</string>
 </resources>

@@ -113,7 +113,7 @@ public class ProfilActivity extends AppActivity {
 
             if (myUser.getPicture() != null) {
 
-                Bitmap bm = base64ToBitmap.getBitmap(myUser.getPicture(), 3);
+                Bitmap bm = base64ToBitmap.getBitmap(myUser.getPicture(), 6);
 
                 profilPicture.setImageBitmap(bm);
 

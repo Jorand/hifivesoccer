@@ -69,9 +69,6 @@ public class GameDetailActivity extends AppActivity {
 
     private String status;
 
-    private ArrayList<String> pendingListIds = new ArrayList<>();
-    private ArrayList<String> pendingListNames = new ArrayList<>();
-
     private ArrayList<User> pendingList = new ArrayList<>();
     private Menu myMenu;
 
@@ -82,6 +79,7 @@ public class GameDetailActivity extends AppActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_detail);
 
+        // TOOLBAR
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
@@ -153,7 +151,6 @@ public class GameDetailActivity extends AppActivity {
             @Override
             public void onSuccess(Object response) {
                 Log.d(TAG, response.toString());
-
                 JSONObject serializedGame = (JSONObject) response;
                 ObjectMapper mapper = new ObjectMapper();
                 try {
@@ -376,21 +373,15 @@ public class GameDetailActivity extends AppActivity {
             }
         }
 
-        Log.d(TAG, players.toString());
-
         try {
 
             json.put("id", gameId);
             json.put("players", players);
 
-            Log.d(TAG, json.toString());
-
             server.updateGameTeams(json, new ServerHandler.ResponseHandler() {
                 @Override
                 public void onSuccess(Object response) {
                     Log.d(TAG, response.toString());
-
-                    //Toast.makeText(context, "You join Team " + team, Toast.LENGTH_SHORT).show();
 
                     JSONObject serializedGame = (JSONObject) response;
                     ObjectMapper mapper = new ObjectMapper();

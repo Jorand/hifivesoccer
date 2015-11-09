@@ -13,7 +13,7 @@ public class base64ToBitmap {
     }
 
     public static Bitmap getBitmap(String base64image) {
-        return getBitmap(base64image, 6);
+        return getBitmap(base64image, 8);
     }
 
     public static Bitmap getBitmap(String base64image, int inSampleSize) {

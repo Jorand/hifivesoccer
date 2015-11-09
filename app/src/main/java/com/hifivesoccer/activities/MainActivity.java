@@ -30,7 +30,7 @@ public class MainActivity extends AppActivity {
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
     CharSequence Titles[]={"Tous les matchs","Mes matchs", "Notifications"};
-    int Numboftabs =3;
+    int Numboftabs = 3;
 
     String username;
 

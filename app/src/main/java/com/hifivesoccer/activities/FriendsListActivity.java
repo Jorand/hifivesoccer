@@ -56,6 +56,7 @@ public class FriendsListActivity extends AppActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_list);
 
+        // TOOLBAR
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
@@ -70,33 +71,9 @@ public class FriendsListActivity extends AppActivity {
 
         final String gameId = getIntent().getStringExtra("GAME_ID");
 
-        Log.d(TAG, friendsId);
 
         final String[] friendsIdList = friendsId.split(",");
         String[] friendsNameList = friendsName.split(",");
-
-        /*
-        String friendsString = "";
-        TextView friendsListText = (TextView) findViewById(R.id.friends_list);
-
-        if (friendsIdList.length > 0) {
-
-            for (int i = 0; i < friendsNameList.length; i++) {
-                if (i != 0)
-                    friendsString += ", ";
-                friendsString += friendsNameList[i];
-            }
-
-
-            friendsListText.setText("Personnes déjà invité : " + friendsString);
-
-            friendsListText.setVisibility(View.VISIBLE);
-        }
-        else {
-            friendsListText.setText("");
-            friendsListText.setVisibility(View.GONE);
-        }
-        */
 
         listView = (ListView) findViewById(R.id.users_list);
         listView.setEmptyView(findViewById(R.id.empty_list_view ));
@@ -176,7 +153,7 @@ public class FriendsListActivity extends AppActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
+
             case android.R.id.home:
                 finish();
             case R.id.action_done:
@@ -211,7 +188,6 @@ public class FriendsListActivity extends AppActivity {
     }
 
     public void sendList(View view) {
-
         done();
     }
 

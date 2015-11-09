@@ -245,10 +245,13 @@ public class UserSettingsActivity extends AppActivity {
                 public void onSuccess(Object response) {
                     Log.d(TAG, response.toString());
 
-                    Bitmap bm = base64ToBitmap.getBitmap(encodedImage);
+                    //Bitmap bm = base64ToBitmap.getBitmap(encodedImage);
+
+                    byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
                     ImageView imgView = (ImageView) findViewById(R.id.act_settings_picture);
-                    imgView.setImageBitmap(bm);
+                    imgView.setImageBitmap(decodedByte);
 
                     JSONObject serializedUser = (JSONObject) response;
                     ObjectMapper mapper = new ObjectMapper();
