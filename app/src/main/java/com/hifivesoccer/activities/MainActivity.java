@@ -118,13 +118,4 @@ public class MainActivity extends AppActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void openProfil(View view) {
-        String user_id = (String) view.getTag();
-        if (user_id != null) {
-            Intent intent = new Intent(context, ProfilActivity.class);
-            intent.putExtra("USER_ID", user_id);
-            startActivity(intent);
-        }
-    }
-
 }
