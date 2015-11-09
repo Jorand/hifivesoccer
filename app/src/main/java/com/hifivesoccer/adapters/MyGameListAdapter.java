@@ -19,9 +19,6 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * Created by jorand on 08/11/2015.
- */
 public class MyGameListAdapter extends BaseAdapter {
 
     private Activity activity;

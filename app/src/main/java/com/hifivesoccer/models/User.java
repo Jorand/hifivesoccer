@@ -51,9 +51,10 @@ public class User extends AppBaseModel {
     private String[] pendingsIDs;
 
     public void initGames(Context context,  final initHandler callback) {
+        requestQueue = 0;
         if (gamesIDs != null) {
             if (gamesIDs.length > 0) {
-                String ids = getGamesIDsFormatted();
+                String ids = getGamesIDsFormatted(gamesIDs);
                 requestQueue += gamesIDs.length;
                 getArrayOfGamesAndAdToList(ids, context, new addToList() {
                     @Override
@@ -65,11 +66,25 @@ public class User extends AppBaseModel {
                 });
             }
         }
+        if (pendingsIDs != null) {
+            if (pendingsIDs.length > 0) {
+                String ids = getGamesIDsFormatted(pendingsIDs);
+                requestQueue += pendingsIDs.length;
+                getArrayOfGamesAndAdToList(ids, context, new addToList() {
+                    @Override
+                    public void handle(Object response) {
+                        pendings.add((Game) response);
+                        requestQueue--;
+                        checkIfAsyncDone(callback);
+                    }
+                });
+            }
+        }
     }
 
-    private String getGamesIDsFormatted(){
+    private String getGamesIDsFormatted(String[] listId){
         String result = "[";
-        for (String id : gamesIDs){
+        for (String id : listId){
             result += id + ",";
         }
         result += "]";
@@ -82,7 +97,7 @@ public class User extends AppBaseModel {
         }
     }
 
-    private void getArrayOfGamesAndAdToList(String id, Context context, final addToList handler) {
+    private void getArrayOfGamesAndAdToList(String id, final Context context, final addToList handler) {
         ServerHandler server = ServerHandler.getInstance(context);
         server.getArrayOfGames(id, new ServerHandler.ResponseHandler() {
             @Override
@@ -94,10 +109,17 @@ public class User extends AppBaseModel {
                         Game game = null;
                         try {
                             game = mapper.readValue(serializedGames.getJSONObject(i).toString(), Game.class);
+                            final Game finalGame = game;
+                            game.initPeoples(context, new Game.initHandler() {
+                                @Override
+                                public void handle() {
+                                    handler.handle(finalGame);
+                                }
+                            });
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        handler.handle(game);
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

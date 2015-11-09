@@ -179,9 +179,8 @@ public class FriendsListActivity extends AppActivity {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
                 finish();
-                return true;
             case R.id.action_done:
-                finish();
+                done();
                 return true;
             default:
                 finish();
@@ -189,8 +188,7 @@ public class FriendsListActivity extends AppActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void finish() {
+    public void done() {
 
         Intent intent = new Intent();
         String usersIdList = "";
@@ -209,19 +207,12 @@ public class FriendsListActivity extends AppActivity {
         intent.putExtra("USERS_LIST_NAME", usersNameList);
         setResult(RESULT_OK, intent);
 
-        super.finish();
-    }
-
-    @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
-
         finish();
     }
 
     public void sendList(View view) {
 
-        finish();
+        done();
     }
 
     public void addToList(View view) {

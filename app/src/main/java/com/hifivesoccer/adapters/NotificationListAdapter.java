@@ -76,6 +76,8 @@ public class NotificationListAdapter extends BaseAdapter {
 
         TextView playersText = (TextView) convertView.findViewById(R.id.list_game_players);
 
+        Log.d("LOL", gameList.get(position).getOrganizer().toString());
+
         organizerName.setText(String.valueOf(gameList.get(position).getOrganizer().getUsername()));
         location.setText(String.valueOf(gameList.get(position).getPlace()));
         date.setText(String.valueOf(gameList.get(position).getDate()));

@@ -90,6 +90,8 @@ public class NotificationsTabActivity extends Fragment implements SwipeRefreshLa
 
         swipeRefreshLayout.setRefreshing(true);
 
+        gameList.clear();
+
         server.getUser(MySelf.getSelf().get_id(), new ServerHandler.ResponseHandler() {
             @Override
             public void onSuccess(Object response) {
@@ -105,17 +107,20 @@ public class NotificationsTabActivity extends Fragment implements SwipeRefreshLa
                         Log.d(TAG, user.toString());
 
                         myUser = user;
+                        user.initGames(context, new User.initHandler() {
+                            @Override
+                            public void handle() {
 
-                        String gameListString = "";
+                                for (int i = 0; i < myUser.getPendings().size(); i++) {
+                                    gameList.add(myUser.getPendings().get(i));
+                                }
+                                
+                                Log.d(TAG, "LOL "+gameList.toString());
 
-                        for (int i = 0; i < myUser.getPendings().size(); i++) {
-                            if (i != 0) {
-                                gameListString += ",";
+                                adapter.notifyDataSetChanged();
+                                swipeRefreshLayout.setRefreshing(false);
                             }
-                            gameListString += myUser.getPendings().get(i).get_id();
-                        }
-
-                        getMatchs(gameListString);
+                        });
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -132,57 +137,6 @@ public class NotificationsTabActivity extends Fragment implements SwipeRefreshLa
                 swipeRefreshLayout.setRefreshing(false);
                 //Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
                 //toast.show();
-            }
-        });
-    }
-
-    private void getMatchs(String games) {
-
-        server.getArrayOfGames(games, new ServerHandler.ResponseHandler() {
-            @Override
-            public void onSuccess(Object response) {
-                Log.d(TAG, response.toString());
-
-                JSONArray serializedGames = (JSONArray) response;
-
-                gameList.clear();
-
-                for (int i = 0; i < serializedGames.length(); i++) {
-                    try {
-                        JSONObject serializedGame = serializedGames.getJSONObject(i);
-                        ObjectMapper mapper = new ObjectMapper();
-                        try {
-                            final Game game = mapper.readValue(serializedGame.toString(), Game.class);
-                            game.initPeoples(context, new Game.initHandler() {
-                                @Override
-                                public void handle() {
-                                    gameList.add(game);
-                                    adapter.notifyDataSetChanged();
-                                    swipeRefreshLayout.setRefreshing(false);
-                                }
-                            });
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            swipeRefreshLayout.setRefreshing(false);
-                            Toast toast = Toast.makeText(getActivity(), R.string.hifive_generic_error, Toast.LENGTH_SHORT);
-                            toast.show();
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        swipeRefreshLayout.setRefreshing(false);
-                        Toast toast = Toast.makeText(getActivity(), R.string.hifive_generic_error, Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
-                }
-                swipeRefreshLayout.setRefreshing(false);
-            }
-
-            @Override
-            public void onError(String error) {
-                Log.e(TAG, error);
-                swipeRefreshLayout.setRefreshing(false);
-                Toast toast = Toast.makeText(getActivity(), R.string.hifive_generic_error, Toast.LENGTH_SHORT);
-                toast.show();
             }
         });
     }
