@@ -89,6 +89,7 @@
 
     </RelativeLayout>
 
+    <!--
     <ImageView
         android:contentDescription="@string/act_notifications_remove"
         android:layout_width="wrap_content"
@@ -102,6 +103,7 @@
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+        -->
 
     <TextView
         android:text="@string/act_mygame_end"
@@ -113,7 +115,7 @@
         android:textStyle="bold"
         android:layout_centerVertical="true"
         android:visibility="gone"
-        android:layout_alignRight="@+id/removeToList"
-        android:layout_alignEnd="@+id/removeToList" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

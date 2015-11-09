@@ -144,17 +144,6 @@ public class MyGamesTabActivity extends Fragment implements SwipeRefreshLayout.O
 
     }
 
-    public static void removeToList(View v, Activity context, List<Game> gameList, MyGameListAdapter adapter, String game_id) {
-
-        if (game_id != null) {
-
-            //TODO end game
-            Toast toast = Toast.makeText(context, "Game end", Toast.LENGTH_SHORT);
-            toast.show();
-
-        }
-    }
-
     public static void openGame(View v, Activity context, List<Game> gameList, MyGameListAdapter adapter, String game_id) {
 
         if (game_id != null) {

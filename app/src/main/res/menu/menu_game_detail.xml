@@ -3,9 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.hifivesoccer.activities.GameDetailActivity">
 
+    <item android:id="@+id/action_done" android:title="@string/action_done"
+        android:orderInCategory="90" app:showAsAction="never"
+        android:visible="false"/>
+
     <item android:id="@+id/action_delete" android:title="@string/action_delete"
         android:orderInCategory="100" app:showAsAction="never"
         android:visible="false"/>
+
 
     <item
         android:id="@+id/action_game_add_player"

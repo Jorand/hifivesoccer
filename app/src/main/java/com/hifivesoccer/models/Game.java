@@ -32,6 +32,7 @@ public class Game extends AppBaseModel {
     private String time;
     private String place;
     private float price;
+    private boolean done;
     @JsonProperty("private")
     private boolean privacy;
 
@@ -175,6 +176,14 @@ public class Game extends AppBaseModel {
 
     public void setPlayersIDs(List<Player> playersIDs) {
         this.playersIDs = playersIDs;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
 
     public interface addToList {

@@ -89,4 +89,6 @@
     <string name="dialog_game_delete">Êtes-vous sur de vouloir supprimer match ?</string>
     <string name="act_splash_network">Réseau indisponible. \nEn attente de connexion…</string>
     <string name="notifications_title">Invitations</string>
+    <string name="action_done">Match termier</string>
+    <string name="game_done_msg">Quelle équipe a remporté ce match ?</string>
 </resources>

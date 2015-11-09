@@ -118,17 +118,9 @@ public class MyGameListAdapter extends BaseAdapter {
         TextView gameEnd = (TextView) convertView.findViewById(R.id.list_game_end);
         // TODO game end
 
-        ImageView button = (ImageView) convertView.findViewById(R.id.removeToList);
 
         final String game_id = gameList.get(position).get_id();
 
-        button.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                MyGamesTabActivity.removeToList(v, context, gameList, adapter, game_id);
-            }
-
-        });
 
         convertView.setOnClickListener(new View.OnClickListener() {
 

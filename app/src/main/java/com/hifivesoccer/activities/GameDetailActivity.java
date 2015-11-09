@@ -573,6 +573,7 @@ public class GameDetailActivity extends AppActivity {
         myMenu = menu;
 
         menu.findItem(R.id.action_delete).setVisible(isOrganizer);
+        menu.findItem(R.id.action_done).setVisible(isOrganizer);
 
         return true;
     }
@@ -603,6 +604,32 @@ public class GameDetailActivity extends AppActivity {
             intent.putExtra("USERS_LIST_ID", usersIdList);
             intent.putExtra("GAME_ID", gameId);
             startActivityForResult(intent, 0);
+            return true;
+        }
+
+        if (id == R.id.action_done) {
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+            alertDialogBuilder.setMessage(R.string.game_done_msg);
+            alertDialogBuilder.setTitle(R.string.action_done);
+
+            alertDialogBuilder
+                    .setCancelable(true)
+                    .setPositiveButton(R.string.act_game_detail_team_b, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                            Toast.makeText(context, "équipe b", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton(R.string.act_game_detail_team_a, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Toast.makeText(context, "équipe a", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
             return true;
         }
 
