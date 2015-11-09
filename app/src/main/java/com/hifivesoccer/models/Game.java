@@ -32,7 +32,9 @@ public class Game extends AppBaseModel {
     private String time;
     private String place;
     private float price;
+    @JsonProperty("private")
     private boolean privacy;
+
     private int requestQueue = 0;
 
     @JsonIgnore

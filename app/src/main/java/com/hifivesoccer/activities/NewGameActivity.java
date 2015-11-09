@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -79,6 +80,8 @@ public class NewGameActivity extends AppActivity {
     private Date gameDate;
     private Date gameTime;
 
+    boolean isPrivate = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +96,15 @@ public class NewGameActivity extends AppActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        Switch isPrivateSwitch = (Switch) findViewById(R.id.private_game);
+
+        isPrivateSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                isPrivate = isChecked;
+            }
+        });
+
         final Button createButton = (Button) findViewById(R.id.new_match);
 
         createButton.setOnClickListener(new View.OnClickListener() {
@@ -103,8 +115,6 @@ public class NewGameActivity extends AppActivity {
                 final String placeAddress = getEditTextValue(R.id.place_address);
                 final String gamePrice = getEditTextValue(R.id.game_price);
                 final String gameDescription = getEditTextValue(R.id.game_description);
-                Switch isPrivateSwitch = (Switch) findViewById(R.id.private_game);
-                final boolean isPrivate = isPrivateSwitch.isEnabled();
 
                 String postGameDate = new SimpleDateFormat("EEE dd MMM yyyy", Locale.getDefault()).format(gameDate);
                 String postGameTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(gameTime);

@@ -114,6 +114,7 @@ public class User extends AppBaseModel {
                                 @Override
                                 public void handle() {
                                     handler.handle(finalGame);
+
                                 }
                             });
                         } catch (JSONException e) {

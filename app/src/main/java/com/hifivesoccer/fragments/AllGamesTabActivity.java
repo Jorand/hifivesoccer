@@ -22,6 +22,7 @@ import com.hifivesoccer.activities.NewGameActivity;
 import com.hifivesoccer.activities.ProfilActivity;
 import com.hifivesoccer.adapters.GameListAdapter;
 import com.hifivesoccer.models.Game;
+import com.hifivesoccer.utils.MySelf;
 import com.hifivesoccer.utils.ServerHandler;
 
 import org.json.JSONArray;
@@ -133,9 +134,45 @@ public class AllGamesTabActivity extends Fragment implements SwipeRefreshLayout.
                             game.initPeoples(context, new Game.initHandler() {
                                 @Override
                                 public void handle() {
-                                    gameList.add(game);
-                                    adapter.notifyDataSetChanged();
-                                    swipeRefreshLayout.setRefreshing(false);
+
+                                    Boolean display = false;
+
+                                    if (game.isPrivacy()) {
+
+                                        if (game.getOrganizerID().equals(MySelf.getSelf().get_id())) {
+                                            display = true;
+                                        }
+
+                                        if (!display) {
+                                            for (int i = 0; i < game.getPlayers().size(); i++) {
+
+                                                if (game.getPlayers().get(i).get_id().equals(MySelf.getSelf().get_id())) {
+                                                    display = true;
+                                                }
+                                            }
+
+                                        }
+
+                                        if (!display) {
+                                            for (int i = 0; i < game.getPendings().size(); i++) {
+
+                                                if (game.getPendings().get(i).get_id().equals(MySelf.getSelf().get_id())) {
+                                                    display = true;
+                                                }
+                                            }
+
+                                        }
+
+                                    }
+                                    else {
+                                        display = true;
+                                    }
+
+                                    if (display) {
+                                        gameList.add(game);
+                                        adapter.notifyDataSetChanged();
+                                        swipeRefreshLayout.setRefreshing(false);
+                                    }
                                 }
                             });
                         } catch (IOException e) {

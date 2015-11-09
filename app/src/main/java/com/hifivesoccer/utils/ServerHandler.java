@@ -195,14 +195,20 @@ public class ServerHandler {
                     Token.getToken(activity, response.getString("token"));
                     try {
                         SharedPref.setMyself(activity, response.getString("user"));
-                        User myself = SharedPref.getMyself((Activity) context);
+                        final User myself = SharedPref.getMyself((Activity) context);
 
                         if(myself == null){
                             Intent intent = new Intent(activity, LoginActivity.class);
                             activity.startActivity(intent);
                             activity.finish();
                         } else {
-                            myself.initGames(context, null);
+                            myself.initGames(context, new User.initHandler() {
+                                @Override
+                                public void handle() {
+                                    MySelf.setSelf(activity, myself);
+                                }
+                            });
+
                             MySelf.setSelf(activity, myself);
 
                             Intent intent = new Intent(context, MainActivity.class);

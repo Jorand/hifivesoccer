@@ -107,7 +107,7 @@ public class GameListAdapter extends BaseAdapter {
 
             CircleImageView userPicture = (CircleImageView) userView.findViewById(R.id.user_picture);
 
-            if (teamA.get(i).getPicture() != null && !teamA.get(i).get_id().equals(gameList.get(position).getOrganizerID())) {
+            if (teamA.get(i).getPicture() != null) {
 
                 byte[] decodedString = Base64.decode(teamA.get(i).getPicture(), Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
@@ -127,7 +127,7 @@ public class GameListAdapter extends BaseAdapter {
 
             CircleImageView userPicture = (CircleImageView) userView.findViewById(R.id.user_picture);
 
-            if (teamB.get(i).getPicture() != null && !teamB.get(i).get_id().equals(gameList.get(position).getOrganizerID())) {
+            if (teamB.get(i).getPicture() != null) {
 
                 byte[] decodedString = Base64.decode(teamB.get(i).getPicture(), Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
