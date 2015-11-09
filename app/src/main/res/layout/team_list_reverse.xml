@@ -23,7 +23,7 @@
         android:id="@+id/teamlist_picture"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@color/light_grey"
+        android:src="@drawable/avatar"
         android:layout_marginLeft="16dp"
         android:layout_gravity="center_vertical" />
 

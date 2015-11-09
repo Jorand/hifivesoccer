@@ -318,6 +318,7 @@ public class GameDetailActivity extends AppActivity {
                     return;
                 }
                 teamBListIds.remove(myId);
+                pendingListIds.remove(myId);
                 break;
 
             case "teamB":
@@ -327,6 +328,7 @@ public class GameDetailActivity extends AppActivity {
                     return;
                 }
                 teamAListIds.remove(myId);
+                pendingListIds.remove(myId);
                 break;
 
             case "exit":

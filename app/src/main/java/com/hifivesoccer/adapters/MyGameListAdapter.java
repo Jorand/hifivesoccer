@@ -18,6 +18,7 @@ import com.hifivesoccer.fragments.MyGamesTabActivity;
 import com.hifivesoccer.fragments.NotificationsTabActivity;
 import com.hifivesoccer.models.Game;
 import com.hifivesoccer.models.User;
+import com.hifivesoccer.utils.MySelf;
 import com.hifivesoccer.utils.base64ToBitmap;
 
 import java.util.List;
@@ -82,8 +83,17 @@ public class MyGameListAdapter extends BaseAdapter {
 
         }
 
-        List<User> players = gameList.get(position).getPlayers();
+        List<User> players = gameList.get(position).getTeamA();
+        List<User> playersB = gameList.get(position).getTeamB();
+        players.addAll(playersB);
         String playerString = "";
+
+        for (int i = 0; i < players.size(); i++) {
+
+            if (players.get(i).get_id().equals(MySelf.getSelf().get_id())) {
+                players.remove(i);
+            }
+        }
 
         if (players.size() > 0) {
             playerString += "Avec ";

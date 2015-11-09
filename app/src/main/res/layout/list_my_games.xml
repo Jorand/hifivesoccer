@@ -10,7 +10,7 @@
         android:id="@+id/list_game_organizer_avatar"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@color/light_grey"
+        android:src="@drawable/avatar"
         android:layout_marginRight="16dp" />
 
     <RelativeLayout

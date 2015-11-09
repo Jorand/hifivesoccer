@@ -34,6 +34,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class GameListAdapter extends BaseAdapter {
 
+    private Activity context;
     private Activity activity;
     private LayoutInflater inflater;
     private List<Game> gameList;
@@ -41,6 +42,7 @@ public class GameListAdapter extends BaseAdapter {
     public GameListAdapter(Activity activity, List<Game> gameList) {
         this.activity = activity;
         this.gameList = gameList;
+        this.context = activity;
     }
 
     @Override
@@ -118,6 +120,15 @@ public class GameListAdapter extends BaseAdapter {
 
                 gridTeamA.addView(userView);
             }
+            else {
+                Bitmap img = BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar);
+
+                userPicture.setImageBitmap(img);
+
+                userView.setTag(teamA.get(i).get_id());
+
+                gridTeamA.addView(userView);
+            }
 
         }
 
@@ -133,6 +144,16 @@ public class GameListAdapter extends BaseAdapter {
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
                 userPicture.setImageBitmap(decodedByte);
+
+                userView.setTag(teamB.get(i).get_id());
+
+                gridTeamB.addView(userView);
+
+            }
+            else {
+                Bitmap img = BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar);
+
+                userPicture.setImageBitmap(img);
 
                 userView.setTag(teamB.get(i).get_id());
 
