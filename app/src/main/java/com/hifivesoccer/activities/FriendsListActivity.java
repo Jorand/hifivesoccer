@@ -67,13 +67,11 @@ public class FriendsListActivity extends AppActivity {
         }
 
         String friendsId = getIntent().getStringExtra("USERS_LIST_ID");
-        String friendsName = getIntent().getStringExtra("USERS_LIST_NAME");
 
         final String gameId = getIntent().getStringExtra("GAME_ID");
 
 
         final String[] friendsIdList = friendsId.split(",");
-        String[] friendsNameList = friendsName.split(",");
 
         listView = (ListView) findViewById(R.id.users_list);
         listView.setEmptyView(findViewById(R.id.empty_list_view ));
@@ -98,16 +96,42 @@ public class FriendsListActivity extends AppActivity {
                             final User user = mapper.readValue(serializedUser.toString(), User.class);
 
                             if(user != null){
+                                // if is not myself
                                 if (!user.get_id().equals(MySelf.getSelf().get_id())) {
 
                                     if (Arrays.asList(friendsIdList).contains(user.get_id())) {
                                         userListAdded.add(user);
                                     }
 
+                                    Log.d(TAG, "Game id: "+gameId);
+
                                     if (gameId != null) {
-                                        if (!Arrays.asList(user.getGamesIDs()).contains(gameId)) {
+
+                                        boolean isInGame = false;
+
+                                        //Log.d(TAG, "getGamesIDs: "+user.getGamesIDs().length);
+                                        //Log.d(TAG, "getGamesIDs: "+user.getPendingsIDs().length);
+
+                                        if (user.getGamesIDs().length > 0) {
+                                            for (String id : user.getGamesIDs()){
+                                                if (id.equals(gameId)) {
+                                                    isInGame = true;
+                                                }
+                                            }
+                                        }
+
+                                        if (user.getPendingsIDs().length > 0) {
+                                            for (String id : user.getPendingsIDs()){
+                                                if (id.equals(gameId)) {
+                                                    isInGame = true;
+                                                }
+                                            }
+                                        }
+
+                                        if (!isInGame) {
                                             userList.add(user);
                                         }
+
                                     }
                                     else {
                                         userList.add(user);

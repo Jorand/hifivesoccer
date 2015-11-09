@@ -69,7 +69,7 @@ public class GameDetailActivity extends AppActivity {
 
     private String status;
 
-    private ArrayList<User> pendingList = new ArrayList<>();
+    private List<String> pendingListIds = new ArrayList<>();
     private Menu myMenu;
 
     private String organizerId;
@@ -193,6 +193,15 @@ public class GameDetailActivity extends AppActivity {
                                 }
                             }
 
+                            for (int i = 0; i < game.getPendings().size(); i++) {
+
+                                pendingListIds.add(game.getPendings().get(i).get_id());
+
+                                if (game.getPendings().get(i).get_id().equals(me.get_id())) {
+                                    status = "pending";
+                                }
+                            }
+
                             updateTeamList();
                             if(game.getPlayersIDs().size() > 0){
                                 server.notifyPlayers(game);
@@ -297,48 +306,59 @@ public class GameDetailActivity extends AppActivity {
         joinTeam(team, null);
     }
 
-    private void joinTeam(final String team, String id) {
+    private void joinTeam(final String action, String id) {
 
-        JSONObject json = new JSONObject();
-
-        if (team.equals("teamA")) {
-            if (!teamAListIds.contains(myId)){
-                teamAListIds.add(myId);
-            } else {
-                return;
-            }
-            teamBListIds.remove(myId);
-        }
-
-        if (team.equals("teamB")) {
-            if (!teamBListIds.contains(myId)){
-                teamBListIds.add(myId);
-            } else {
-                return;
-            }
-            teamAListIds.remove(myId);
-        }
-
-        if (team.equals("exit")) {
-            if (teamBListIds.contains(myId)){
+        switch (action) {
+            case "teamA":
+                if (!teamAListIds.contains(myId)){
+                    teamAListIds.add(myId);
+                } else {
+                    return;
+                }
                 teamBListIds.remove(myId);
-            }
-            if (teamAListIds.contains(myId)){
+                break;
+
+            case "teamB":
+                if (!teamBListIds.contains(myId)){
+                    teamBListIds.add(myId);
+                } else {
+                    return;
+                }
                 teamAListIds.remove(myId);
-            }
-        }
+                break;
 
-        if (team.equals("delete")) {
-
-            if (id != null) {
-                if (teamBListIds.contains(id)) {
+            case "exit":
+                if (teamBListIds.contains(myId)){
                     teamBListIds.remove(myId);
                 }
-                if (teamAListIds.contains(id)) {
+                if (teamAListIds.contains(myId)){
                     teamAListIds.remove(myId);
                 }
-            }
+                break;
+
+            case "delete":
+                if (id != null) {
+                    if (teamBListIds.contains(id)) {
+                        teamBListIds.remove(myId);
+                    }
+                    if (teamAListIds.contains(id)) {
+                        teamAListIds.remove(myId);
+                    }
+                }
+                break;
+
+            default:
+
+                break;
         }
+
+        updateGameTeams(action, id);
+
+    }
+
+    private void updateGameTeams(final String action, final String user_id) {
+
+        JSONObject json = new JSONObject();
 
         final JSONArray players = new JSONArray();
 
@@ -364,10 +384,10 @@ public class GameDetailActivity extends AppActivity {
             }
         }
 
-        for (int i = 0; i < game.getPendings().size(); i++) {
+        for (int i = 0; i < pendingListIds.size(); i++) {
             try {
                 JSONObject player = new JSONObject();
-                player.put("id", game.getPendings().get(i).get_id());
+                player.put("id", pendingListIds.get(i));
                 player.put("team", "pending");
                 players.put(player);
             } catch (JSONException e) {
@@ -380,6 +400,9 @@ public class GameDetailActivity extends AppActivity {
             json.put("id", gameId);
             json.put("players", players);
 
+            Log.d(TAG, "Update : "+json.toString());
+
+            // Update Game
             server.updateGameTeams(json, new ServerHandler.ResponseHandler() {
                 @Override
                 public void onSuccess(Object response) {
@@ -392,6 +415,8 @@ public class GameDetailActivity extends AppActivity {
                     teamAList.clear();
                     teamBListIds.clear();
                     teamBList.clear();
+
+                    pendingListIds.clear();
 
                     try {
                         game = mapper.readValue(serializedGame.toString(), Game.class);
@@ -423,17 +448,47 @@ public class GameDetailActivity extends AppActivity {
                                     }
                                 }
 
-                                if (status.equals("")){
-                                    status = "exit";
-                                    gameButton.setText(R.string.game_menu_default);
+                                for (int i = 0; i < game.getPendings().size(); i++) {
+
+                                    pendingListIds.add(game.getPendings().get(i).get_id());
+
+                                    if (game.getPendings().get(i).get_id().equals(me.get_id())) {
+                                        status = "pending";
+                                    }
                                 }
 
-                                updateTeamList();
-                                if(getIntent().getBooleanExtra("NOTIFY", false)){
+                                if (!status.equals("")) {
+                                    Log.d(TAG, "addGameToPlayer");
+                                    server.addGameToPlayer(MySelf.getSelf().get_id(), gameId);
+                                }
+
+                                if (action.equals("exit")) {
+                                    status = "exit";
+                                    gameButton.setText(R.string.game_menu_default);
+                                    server.quitGame(MySelf.getSelf().get_id(), gameId);
+                                }
+
+                                if (action.equals("delete")) {
+                                    status = "delete";
+                                    server.quitGame(user_id, gameId);
+                                }
+
+                                if (action.equals("newPending")) {
+                                    server.addPendingGameToPlayer(user_id, gameId);
+                                }
+                                else {
+                                    //server.notifyPlayers(game);
+                                }
+
+                                /*
+                                if (getIntent().getBooleanExtra("NOTIFY", false)) {
                                     Log.d(TAG, "notifying players");
                                     server.notifyPlayers(game);
                                 }
-                                server.addGameToPlayer(MySelf.getSelf().get_id(), gameId);
+                                */
+                                //Log.d(TAG, "notifying players");
+
+                                updateTeamList();
                             }
                         });
                     } catch (IOException e) {
@@ -456,7 +511,6 @@ public class GameDetailActivity extends AppActivity {
             Toast toast = Toast.makeText(context, R.string.hifive_generic_error, Toast.LENGTH_SHORT);
             toast.show();
         }
-
     }
 
     private void exitGame() {
@@ -469,7 +523,7 @@ public class GameDetailActivity extends AppActivity {
                 .setCancelable(false)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        server.quitGame(MySelf.getSelf().get_id(), gameId);
+
                         joinTeam("exit");
                     }
                 })
@@ -533,20 +587,16 @@ public class GameDetailActivity extends AppActivity {
         if (id == R.id.action_game_add_player) {
 
             String usersIdList = "";
-            String usersNameList = "";
 
-            for (int i = 0; i < pendingList.size(); i++) {
+            for (int i = 0; i < pendingListIds.size(); i++) {
                 if (i != 0) {
                     usersIdList += ",";
-                    usersNameList += ",";
                 }
-                usersIdList += pendingList.get(i).get_id();
-                usersNameList += pendingList.get(i).getUsername();
+                usersIdList += pendingListIds.get(i);
             }
 
             Intent intent = new Intent(context, FriendsListActivity.class);
             intent.putExtra("USERS_LIST_ID", usersIdList);
-            intent.putExtra("USERS_LIST_NAME", usersNameList);
             intent.putExtra("GAME_ID", gameId);
             startActivityForResult(intent, 0);
             return true;
@@ -607,11 +657,20 @@ public class GameDetailActivity extends AppActivity {
 
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
-                String[] pending_ids = data.getStringExtra("USERS_LIST_ID").split(",");
-                if(pending_ids.length > 0){
-//                    server.notifyPlayers(game, pending_ids);
-                    for (String id : pending_ids){
-                        server.addPendingGameToPlayer(id, gameId);
+                String resultString = data.getStringExtra("USERS_LIST_ID");
+                //Log.d(TAG, "resultString "+resultString);
+                if (!resultString.equals("")) {
+
+                    String[] pending_ids = resultString.split(",");
+                    Log.d(TAG, "pending ids: " + pending_ids.length);
+
+                    if(pending_ids.length > 0){
+                        // server.notifyPlayers(game, pending_ids);
+                        for (String id : pending_ids){
+
+                            pendingListIds.add(id);
+                            joinTeam("newPending", id);
+                        }
                     }
                 }
             }

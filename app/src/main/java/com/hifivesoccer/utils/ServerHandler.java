@@ -385,8 +385,8 @@ public class ServerHandler {
         }
     }
 
-    public void quitGame(String userId, String gameId){
-        JSONObject json = new JSONObject();
+    public void quitGame(final String userId, final String gameId){
+        final JSONObject json = new JSONObject();
         try {
             json.put("user", userId);
             json.put("game", gameId);
@@ -395,6 +395,7 @@ public class ServerHandler {
                 @Override
                 public void onSuccess(Object response) {
                     Log.d(TAG, response.toString());
+                    Log.d(TAG, "User "+userId+" quit Game "+gameId);
                 }
 
                 @Override
