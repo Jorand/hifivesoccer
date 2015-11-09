@@ -360,10 +360,13 @@ public class NewGameActivity extends AppActivity {
 
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
+                friendsId = data.getStringExtra("USERS_LIST_ID");
+                if(friendsId.equals("")){
+                    return;
+                }
 
                 pendingList = new JSONArray();
 
-                friendsId = data.getStringExtra("USERS_LIST_ID");
                 friendsName = data.getStringExtra("USERS_LIST_NAME");
                 Log.e(TAG, "List id: "+ friendsId);
 

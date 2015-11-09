@@ -44,6 +44,7 @@ public class ServerHandler {
     private static ServerHandler instance;
 //    private final String API_BASE_URL = "http://46.101.44.136:8080/api/"; // production server
     private final String API_BASE_URL = "http://192.168.56.1:8080/api/"; // development server
+//    private final String API_BASE_URL = "http://10.0.2.2:8080/api/"; // development server
 
     private ServerHandler(Context context){
         this.context = context;
