@@ -22,7 +22,6 @@ import com.hifivesoccer.activities.NewGameActivity;
 import com.hifivesoccer.activities.ProfilActivity;
 import com.hifivesoccer.adapters.GameListAdapter;
 import com.hifivesoccer.models.Game;
-import com.hifivesoccer.utils.MySelf;
 import com.hifivesoccer.utils.ServerHandler;
 
 import org.json.JSONArray;
@@ -134,7 +133,6 @@ public class AllGamesTabActivity extends Fragment implements SwipeRefreshLayout.
                             game.initPeoples(context, new Game.initHandler() {
                                 @Override
                                 public void handle() {
-
                                     gameList.add(game);
                                     adapter.notifyDataSetChanged();
                                     swipeRefreshLayout.setRefreshing(false);

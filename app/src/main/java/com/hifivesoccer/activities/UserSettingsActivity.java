@@ -28,6 +28,7 @@ import com.hifivesoccer.R;
 import com.hifivesoccer.models.User;
 import com.hifivesoccer.utils.MySelf;
 import com.hifivesoccer.utils.ServerHandler;
+import com.hifivesoccer.utils.base64ToBitmap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,7 +48,6 @@ public class UserSettingsActivity extends AppActivity {
 
     private static int RESULT_LOAD_IMAGE = 1;
     String picturePath;
-    private Bitmap storedBitmap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,17 +73,12 @@ public class UserSettingsActivity extends AppActivity {
 
             if (MySelf.getSelf().getPicture() != null) {
 
-                byte[] decodedString = Base64.decode(MySelf.getSelf().getPicture(), Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                Bitmap bm = base64ToBitmap.getBitmap(MySelf.getSelf().getPicture(), 3);
 
                 ImageView imgView = (ImageView) findViewById(R.id.act_settings_picture);
-                imgView.setImageBitmap(decodedByte);
+                imgView.setImageBitmap(bm);
 
-                if(storedBitmap != null){
-                    storedBitmap.recycle();
-                    storedBitmap = null;
-                }
-                storedBitmap = decodedByte;
             }
 
         } else {
@@ -250,11 +245,10 @@ public class UserSettingsActivity extends AppActivity {
                 public void onSuccess(Object response) {
                     Log.d(TAG, response.toString());
 
-                    byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
-                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    Bitmap bm = base64ToBitmap.getBitmap(encodedImage);
 
                     ImageView imgView = (ImageView) findViewById(R.id.act_settings_picture);
-                    imgView.setImageBitmap(decodedByte);
+                    imgView.setImageBitmap(bm);
 
                     JSONObject serializedUser = (JSONObject) response;
                     ObjectMapper mapper = new ObjectMapper();

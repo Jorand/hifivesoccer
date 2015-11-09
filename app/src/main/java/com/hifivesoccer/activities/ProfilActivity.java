@@ -23,6 +23,7 @@ import com.hifivesoccer.R;
 import com.hifivesoccer.models.User;
 import com.hifivesoccer.utils.MySelf;
 import com.hifivesoccer.utils.ServerHandler;
+import com.hifivesoccer.utils.base64ToBitmap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,7 +43,6 @@ public class ProfilActivity extends AppActivity {
     private Toolbar toolbar;
 
     private User myUser;
-    private Bitmap storedBitmap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,16 +113,10 @@ public class ProfilActivity extends AppActivity {
 
             if (myUser.getPicture() != null) {
 
-                byte[] decodedString = Base64.decode(myUser.getPicture(), Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                Bitmap bm = base64ToBitmap.getBitmap(myUser.getPicture(), 3);
 
-                profilPicture.setImageBitmap(decodedByte);
+                profilPicture.setImageBitmap(bm);
 
-                if(storedBitmap != null){
-                    storedBitmap.recycle();
-                    storedBitmap = null;
-                }
-                storedBitmap = decodedByte;
             }
 
             toolbar.setTitle(myUser.getUsername());

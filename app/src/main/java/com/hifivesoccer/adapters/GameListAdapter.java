@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hifivesoccer.R;
 import com.hifivesoccer.models.Game;
 import com.hifivesoccer.models.User;
+import com.hifivesoccer.utils.base64ToBitmap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,8 +37,6 @@ public class GameListAdapter extends BaseAdapter {
     private Activity activity;
     private LayoutInflater inflater;
     private List<Game> gameList;
-
-    private Bitmap storedBitmap = null;
 
     public GameListAdapter(Activity activity, List<Game> gameList) {
         this.activity = activity;
@@ -82,17 +81,14 @@ public class GameListAdapter extends BaseAdapter {
         date.setText(String.valueOf(gameList.get(position).getDate()));
         time.setText(String.valueOf(gameList.get(position).getTime()));
 
+
+
         if (gameList.get(position).getOrganizer().getPicture() != null) {
-            byte[] decodedString = Base64.decode(gameList.get(position).getOrganizer().getPicture(), Base64.DEFAULT);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
-            organizerAvatar.setImageBitmap(decodedByte);
+            Bitmap bm = base64ToBitmap.getBitmap(gameList.get(position).getOrganizer().getPicture());
 
-            if(storedBitmap != null){
-                storedBitmap.recycle();
-                storedBitmap = null;
-            }
-            storedBitmap = decodedByte;
+            organizerAvatar.setImageBitmap(bm);
+
         }
 
         // player list
@@ -147,4 +143,5 @@ public class GameListAdapter extends BaseAdapter {
 
         return convertView;
     }
+
 }

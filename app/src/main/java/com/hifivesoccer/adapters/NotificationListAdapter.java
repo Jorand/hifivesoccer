@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.hifivesoccer.R;
 import com.hifivesoccer.models.Game;
 import com.hifivesoccer.models.User;
+import com.hifivesoccer.utils.base64ToBitmap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +28,6 @@ public class NotificationListAdapter extends BaseAdapter {
     private Activity activity;
     private LayoutInflater inflater;
     private List<Game> gameList;
-
-    private Bitmap storedBitmap = null;
 
     public NotificationListAdapter(Activity activity, List<Game> gameList) {
         this.activity = activity;
@@ -70,16 +69,10 @@ public class NotificationListAdapter extends BaseAdapter {
         time.setText(String.valueOf(gameList.get(position).getTime()));
 
         if (gameList.get(position).getOrganizer().getPicture() != null) {
-            byte[] decodedString = Base64.decode(gameList.get(position).getOrganizer().getPicture(), Base64.DEFAULT);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
-            organizerAvatar.setImageBitmap(decodedByte);
+            Bitmap bm = base64ToBitmap.getBitmap(gameList.get(position).getOrganizer().getPicture());
+            organizerAvatar.setImageBitmap(bm);
 
-            if(storedBitmap != null){
-                storedBitmap.recycle();
-                storedBitmap = null;
-            }
-            storedBitmap = decodedByte;
         }
 
         return convertView;

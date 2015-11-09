@@ -19,6 +19,7 @@ import com.hifivesoccer.R;
 import com.hifivesoccer.activities.AppActivity;
 import com.hifivesoccer.models.Game;
 import com.hifivesoccer.models.User;
+import com.hifivesoccer.utils.base64ToBitmap;
 
 import java.util.List;
 
@@ -83,16 +84,9 @@ public class FiendsListAdapter extends BaseAdapter {
 
         if (userList.get(position).getPicture() != null) {
 
-            byte[] decodedString = Base64.decode(userList.get(position).getPicture(), Base64.DEFAULT);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            Bitmap bm = base64ToBitmap.getBitmap(userList.get(position).getPicture(), 3);
+            userPicture.setImageBitmap(bm);
 
-            userPicture.setImageBitmap(decodedByte);
-
-            if(storedBitmap != null){
-                storedBitmap.recycle();
-                storedBitmap = null;
-            }
-            storedBitmap = decodedByte;
         }
 
         name.setText(String.valueOf(userList.get(position).getUsername()));

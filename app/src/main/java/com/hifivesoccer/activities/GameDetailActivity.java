@@ -5,18 +5,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,11 +21,11 @@ import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hifivesoccer.R;
-import com.hifivesoccer.adapters.TeamListAdapter;
 import com.hifivesoccer.models.Game;
 import com.hifivesoccer.models.User;
 import com.hifivesoccer.utils.MySelf;
 import com.hifivesoccer.utils.ServerHandler;
+import com.hifivesoccer.utils.base64ToBitmap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,7 +35,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -80,7 +76,6 @@ public class GameDetailActivity extends AppActivity {
     private Menu myMenu;
 
     private String organizerId;
-    private Bitmap storedBitmap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -242,10 +237,9 @@ public class GameDetailActivity extends AppActivity {
 
             if (teamAList.get(i).getPicture() != null) {
 
-                byte[] decodedString = Base64.decode(teamAList.get(i).getPicture(), Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                Bitmap bm = base64ToBitmap.getBitmap(teamAList.get(i).getPicture());
 
-                userPicture.setImageBitmap(decodedByte);
+                userPicture.setImageBitmap(bm);
             }
             convertView.setTag(i);
 
@@ -276,16 +270,9 @@ public class GameDetailActivity extends AppActivity {
 
             if (teamBList.get(i).getPicture() != null) {
 
-                byte[] decodedString = Base64.decode(teamBList.get(i).getPicture(), Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                Bitmap bm = base64ToBitmap.getBitmap(teamBList.get(i).getPicture());
+                userPicture.setImageBitmap(bm);
 
-                userPicture.setImageBitmap(decodedByte);
-
-                if(storedBitmap != null){
-                    storedBitmap.recycle();
-                    storedBitmap = null;
-                }
-                storedBitmap = decodedByte;
             }
             convertView.setTag(i);
 
