@@ -340,4 +340,71 @@ public class ServerHandler {
             }
         }
     }
+
+    public void addGameToPlayer(String userId, String gameId){
+        JSONObject json = new JSONObject();
+        try {
+            json.put("user", userId);
+            json.put("game", gameId);
+
+            this.putDatas("user/add/game", json, new ResponseHandler() {
+                @Override
+                public void onSuccess(Object response) {
+                    Log.d(TAG, response.toString());
+                }
+
+                @Override
+                public void onError(String error) {
+                    Log.e(TAG, error);
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addPendingGameToPlayer(String userId, String gameId){
+        JSONObject json = new JSONObject();
+        try {
+            json.put("user", userId);
+            json.put("game", gameId);
+
+            this.putDatas("user/add/pending", json, new ResponseHandler() {
+                @Override
+                public void onSuccess(Object response) {
+                    Log.d(TAG, response.toString());
+                }
+
+                @Override
+                public void onError(String error) {
+                    Log.e(TAG, error);
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void quitGame(String userId, String gameId){
+        JSONObject json = new JSONObject();
+        try {
+            json.put("user", userId);
+            json.put("game", gameId);
+
+            this.putDatas("user/quit/game", json, new ResponseHandler() {
+                @Override
+                public void onSuccess(Object response) {
+                    Log.d(TAG, response.toString());
+                }
+
+                @Override
+                public void onError(String error) {
+                    Log.e(TAG, error);
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

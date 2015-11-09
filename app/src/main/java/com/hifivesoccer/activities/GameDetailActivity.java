@@ -197,7 +197,9 @@ public class GameDetailActivity extends AppActivity {
                             }
 
                             updateTeamList();
-                            server.notifyPlayers(game);
+                            if(game.getPlayersIDs().size() > 0){
+                                server.notifyPlayers(game);
+                            }
                         }
                     });
                 } catch (IOException e) {
@@ -440,7 +442,7 @@ public class GameDetailActivity extends AppActivity {
                                     Log.d(TAG, "notifying players");
                                     server.notifyPlayers(game);
                                 }
-
+                                server.addGameToPlayer(MySelf.getSelf().get_id(), gameId);
                             }
                         });
                     } catch (IOException e) {
@@ -476,7 +478,7 @@ public class GameDetailActivity extends AppActivity {
                 .setCancelable(false)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
+                        server.quitGame(MySelf.getSelf().get_id(), gameId);
                         joinTeam("exit");
                     }
                 })
@@ -574,6 +576,11 @@ public class GameDetailActivity extends AppActivity {
                                 public void onSuccess(Object response) {
                                     Toast.makeText(context, R.string.game_detail_delete, Toast.LENGTH_SHORT).show();
 
+                                    ArrayList<User> players = game.getPlayers();
+                                    for (User p : players){
+                                        server.quitGame(p.get_id(), gameId);
+                                    }
+
                                     Intent intent = new Intent(context, MainActivity.class);
                                     startActivity(intent);
                                     finish();
@@ -610,7 +617,12 @@ public class GameDetailActivity extends AppActivity {
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 String[] pending_ids = data.getStringExtra("USERS_LIST_ID").split(",");
-                server.notifyPlayers(game, pending_ids);
+                if(pending_ids.length > 0){
+//                    server.notifyPlayers(game, pending_ids);
+                    for (String id : pending_ids){
+                        server.addPendingGameToPlayer(id, gameId);
+                    }
+                }
             }
         }
     }

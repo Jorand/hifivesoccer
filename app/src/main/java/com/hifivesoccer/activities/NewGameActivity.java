@@ -179,6 +179,8 @@ public class NewGameActivity extends AppActivity {
                                 try {
                                     String id = res.getString("id");
 
+                                    server.addGameToPlayer(MySelf.getSelf().get_id(), id);
+
                                     // TODO Put game in user games
                                     //putInUserGames(id);
 
