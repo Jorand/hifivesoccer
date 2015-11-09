@@ -162,8 +162,11 @@ public class NewGameActivity extends AppActivity {
 
                                     server.addGameToPlayer(MySelf.getSelf().get_id(), id);
 
-                                    // TODO Put game in user games
-                                    //putInUserGames(id);
+                                    for (int i = 0; i < pendingList.length(); i++) {
+
+                                        server.addPendingGameToPlayer(pendingList.get(i).toString(), id);
+
+                                    }
 
                                     Intent intent = new Intent(context, GameDetailActivity.class);
                                     intent.putExtra("GAME_ID", id);

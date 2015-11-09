@@ -203,9 +203,11 @@ public class GameDetailActivity extends AppActivity {
                             }
 
                             updateTeamList();
+                            /*
                             if(game.getPlayersIDs().size() > 0){
                                 server.notifyPlayers(game);
                             }
+                            */
                         }
                     });
                 } catch (IOException e) {
