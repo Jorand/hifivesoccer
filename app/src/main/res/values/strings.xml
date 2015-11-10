@@ -27,10 +27,10 @@
     <string name="yes">Oui</string>
     <string name="cancel">Non</string>
 
-    <string name="from_empty">Veuillez remplire tous les champs</string>
+    <string name="from_empty">Veuillez remplir tous les champs</string>
 
-    <string name="act_login_fail">Une erreur c\'est produite pendant la connexion. \nVeuillez réessayer ultérieurement.</string>
-    <string name="act_login_error">les informations renseignées ne correspondent pas. \nVeuillez vérifier et réessayer.</string>
+    <string name="act_login_fail">Une erreur s\'est produite pendant la connexion. \nVeuillez réessayer ultérieurement.</string>
+    <string name="act_login_error">Les informations renseignées ne correspondent pas. \nVeuillez vérifier et réessayer.</string>
     <string name="act_mygames_label">Mes matchs</string>
     <string name="title_activity_new_game">Organiser un match</string>
 
@@ -67,14 +67,14 @@
     <string name="act_newgame_time">Heure</string>
     <string name="match_empty_list">Il n\'y a pas de match pour le moment.</string>
     <string name="notifications_empty_list">Vous n\'avez pas de match en attente pour le moment.</string>
-    <string name="mygames_empty_list">Pas de match prévu pour l\'instant. \nOrganiser un match avec tes amis !</string>
+    <string name="mygames_empty_list">Pas de match prévu pour l\'instant. \nOrganise un match avec tes amis !</string>
     <string name="friends_empty_list">Il n\'y a personne à inviter.</string>
     <string name="title_activity_user_settings">Modifier mon profil</string>
     <string name="act_settings_position">Poste de jeux favoris</string>
     <string name="act_settings_avatar">Modifier ma photo de profil</string>
     <string name="act_user_settings_picture_empty">Vous n\'avez pas choisi d\'image</string>
     <string name="act_user_settings_picture_done">La photo de profil a bien été modifié.</string>
-    <string name="act_game_detail_left_msg">Vous avez quitter le match.</string>
+    <string name="act_game_detail_left_msg">Vous avez quitté le match.</string>
     <string name="action_delete">Supprimer ce match</string>
     <string name="title_activity_profil">Profil</string>
     <string name="act_profil_win">Victoires</string>
@@ -82,14 +82,14 @@
     <string name="act_game_detail_price_msg">€ / participant</string>
     <string name="dialog_game_remove_player">Voulez-vous retirer ce joueur du match ?</string>
     <string name="act_notifications_remove">Ne pas participer</string>
-    <string name="act_notification_organizer_text">Vous ête invité au match de</string>
-    <string name="act_mygame_organizer_text">Vous participé au match de</string>
+    <string name="act_notification_organizer_text">Vous êtes invitez au match de</string>
+    <string name="act_mygame_organizer_text">Vous participez au match de</string>
     <string name="act_mygame_end">FINI</string>
     <string name="game_detail_delete">Votre match a bien été supprimé</string>
-    <string name="dialog_game_delete">Êtes-vous sur de vouloir supprimer match ?</string>
+    <string name="dialog_game_delete">Êtes-vous sûr de vouloir supprimer ce match ?</string>
     <string name="act_splash_network">Réseau indisponible. \nEn attente de connexion…</string>
     <string name="notifications_title">Invitations</string>
-    <string name="action_done">Match termier</string>
+    <string name="action_done">Match terminé</string>
     <string name="game_done_msg">Quelle équipe a remporté ce match ?</string>
     <string name="act_mygame_organizer_done">Vous avez participé au match de</string>
     <string name="list_game_winner_label">Vainqueur :</string>
