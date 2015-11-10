@@ -33,6 +33,7 @@ public class Game extends AppBaseModel {
     private String place;
     private float price;
     private boolean done;
+    private String winner;
     @JsonProperty("private")
     private boolean privacy;
 
@@ -184,6 +185,14 @@ public class Game extends AppBaseModel {
 
     public void setDone(boolean done) {
         this.done = done;
+    }
+
+    public String getWinner() {
+        return winner;
+    }
+
+    public void setWinner(String winner) {
+        this.winner = winner;
     }
 
     public interface addToList {

@@ -91,4 +91,6 @@
     <string name="notifications_title">Invitations</string>
     <string name="action_done">Match termier</string>
     <string name="game_done_msg">Quelle équipe a remporté ce match ?</string>
+    <string name="act_mygame_organizer_done">Vous avez participé au match de</string>
+    <string name="list_game_winner_label">Vainqueur :</string>
 </resources>

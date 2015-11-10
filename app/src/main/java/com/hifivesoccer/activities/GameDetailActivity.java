@@ -618,12 +618,31 @@ public class GameDetailActivity extends AppActivity {
                     .setPositiveButton(R.string.act_game_detail_team_b, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
 
-                            Toast.makeText(context, "équipe b", Toast.LENGTH_SHORT).show();
+                            server.doneGame(gameId, "B");
+
+                            for (int i = 0; i < pendingListIds.size(); i++) {
+
+                                String id_player = pendingListIds.get(i).toString();
+                                server.removePendingGameToPlayer(id_player, gameId);
+                                Intent intent = new Intent(context, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
                         }
                     })
                     .setNegativeButton(R.string.act_game_detail_team_a, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            Toast.makeText(context, "équipe a", Toast.LENGTH_SHORT).show();
+
+                            server.doneGame(gameId, "A");
+
+                            for (int i = 0; i < pendingListIds.size(); i++) {
+
+                                String id_player = pendingListIds.get(i).toString();
+                                server.removePendingGameToPlayer(id_player, gameId);
+                                Intent intent = new Intent(context, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
                         }
                     });
 

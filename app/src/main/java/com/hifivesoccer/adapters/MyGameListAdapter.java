@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hifivesoccer.R;
@@ -68,6 +69,7 @@ public class MyGameListAdapter extends BaseAdapter {
         CircleImageView organizerAvatar = (CircleImageView) convertView.findViewById(R.id.list_game_organizer_avatar);
         TextView date = (TextView) convertView.findViewById(R.id.list_game_date);
         TextView time = (TextView) convertView.findViewById(R.id.list_game_time);
+        TextView textIntro = (TextView) convertView.findViewById(R.id.list_game_msg);
 
         TextView playersText = (TextView) convertView.findViewById(R.id.list_game_players);
 
@@ -116,19 +118,31 @@ public class MyGameListAdapter extends BaseAdapter {
         }
 
         TextView gameEnd = (TextView) convertView.findViewById(R.id.list_game_end);
-        // TODO game end
 
 
         final String game_id = gameList.get(position).get_id();
 
+        RelativeLayout winner_wrap = (RelativeLayout) convertView.findViewById(R.id.list_game_winner_text);
+        TextView winnerTeam = (TextView) convertView.findViewById(R.id.list_game_winner);
 
-        convertView.setOnClickListener(new View.OnClickListener() {
+        if (gameList.get(position).isDone()) {
+            gameEnd.setVisibility(View.VISIBLE);
+            winner_wrap.setVisibility(View.VISIBLE);
+            if (gameList.get(position).getWinner().equals("A"))
+                winnerTeam.setText(R.string.act_game_detail_team_a);
+            if (gameList.get(position).getWinner().equals("B"))
+                winnerTeam.setText(R.string.act_game_detail_team_b);
+            textIntro.setText(R.string.act_mygame_organizer_done);
+        }
+        else {
+            convertView.setOnClickListener(new View.OnClickListener() {
 
-            public void onClick(View v) {
-                MyGamesTabActivity.openGame(v, context, gameList, adapter, game_id);
-            }
+                public void onClick(View v) {
+                    MyGamesTabActivity.openGame(v, context, gameList, adapter, game_id);
+                }
 
-        });
+            });
+        }
 
         return convertView;
     }

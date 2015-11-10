@@ -431,4 +431,49 @@ public class ServerHandler {
         }
     }
 
+    public void doneGame(final String gameId, final String winner){
+        final JSONObject json = new JSONObject();
+        try {
+            json.put("game", gameId);
+            json.put("winner", winner);
+
+            this.putDatas("game/done", json, new ResponseHandler() {
+                @Override
+                public void onSuccess(Object response) {
+                    Log.d(TAG, response.toString());
+                    Log.d(TAG, "Winner team "+winner+". Game "+gameId+" is done !");
+                }
+
+                @Override
+                public void onError(String error) {
+                    Log.e(TAG, error);
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removePendingGameToPlayer(String userId, String gameId){
+        JSONObject json = new JSONObject();
+        try {
+            json.put("user", userId);
+            json.put("game", gameId);
+
+            this.putDatas("user/quit/game", json, new ResponseHandler() {
+                @Override
+                public void onSuccess(Object response) {
+                    Log.d(TAG, response.toString());
+                }
+
+                @Override
+                public void onError(String error) {
+                    Log.e(TAG, error);
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

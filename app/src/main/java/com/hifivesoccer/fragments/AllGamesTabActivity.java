@@ -137,35 +137,37 @@ public class AllGamesTabActivity extends Fragment implements SwipeRefreshLayout.
 
                                     Boolean display = false;
 
-                                    if (game.isPrivacy()) {
+                                    if (!game.isDone()) {
 
-                                        if (game.getOrganizerID().equals(MySelf.getSelf().get_id())) {
+                                        if (game.isPrivacy()) {
+
+                                            if (game.getOrganizerID().equals(MySelf.getSelf().get_id())) {
+                                                display = true;
+                                            }
+
+                                            if (!display) {
+                                                for (int i = 0; i < game.getPlayers().size(); i++) {
+
+                                                    if (game.getPlayers().get(i).get_id().equals(MySelf.getSelf().get_id())) {
+                                                        display = true;
+                                                    }
+                                                }
+
+                                            }
+
+                                            if (!display) {
+                                                for (int i = 0; i < game.getPendings().size(); i++) {
+
+                                                    if (game.getPendings().get(i).get_id().equals(MySelf.getSelf().get_id())) {
+                                                        display = true;
+                                                    }
+                                                }
+
+                                            }
+
+                                        } else {
                                             display = true;
                                         }
-
-                                        if (!display) {
-                                            for (int i = 0; i < game.getPlayers().size(); i++) {
-
-                                                if (game.getPlayers().get(i).get_id().equals(MySelf.getSelf().get_id())) {
-                                                    display = true;
-                                                }
-                                            }
-
-                                        }
-
-                                        if (!display) {
-                                            for (int i = 0; i < game.getPendings().size(); i++) {
-
-                                                if (game.getPendings().get(i).get_id().equals(MySelf.getSelf().get_id())) {
-                                                    display = true;
-                                                }
-                                            }
-
-                                        }
-
-                                    }
-                                    else {
-                                        display = true;
                                     }
 
                                     if (display) {
