@@ -30,6 +30,7 @@ public class Game extends AppBaseModel {
     private String description;
     private String date;
     private String time;
+    private String address;
     private String place;
     private float price;
     private boolean done;
@@ -193,6 +194,14 @@ public class Game extends AppBaseModel {
 
     public void setWinner(String winner) {
         this.winner = winner;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public interface addToList {

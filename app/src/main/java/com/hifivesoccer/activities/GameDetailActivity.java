@@ -147,6 +147,8 @@ public class GameDetailActivity extends AppActivity {
         final TextView GamePrice = (TextView) findViewById(R.id.act_game_detail_price);
         final TextView GameDescrition = (TextView) findViewById(R.id.act_game_detail_description);
 
+        final TextView GamePlaceAddress = (TextView) findViewById(R.id.act_game_detail_place_address);
+
         server.getGame(gameId, new ServerHandler.ResponseHandler() {
             @Override
             public void onSuccess(Object response) {
@@ -170,6 +172,14 @@ public class GameDetailActivity extends AppActivity {
                             String price = String.format("%s", game.getPrice());
                             GamePrice.setText(price + getString(R.string.act_game_detail_price_msg));
                             GameDescrition.setText(game.getDescription());
+
+                            if (!game.getAddress().equals("")) {
+
+                                GamePlaceAddress.setText(game.getAddress());
+                            }
+                            else {
+                                GamePlaceAddress.setVisibility(View.GONE);
+                            }
 
                             for (int i = 0; i < game.getTeamA().size(); i++) {
 

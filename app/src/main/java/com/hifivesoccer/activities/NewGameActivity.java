@@ -115,6 +115,7 @@ public class NewGameActivity extends AppActivity {
                         json.put("place", placeName);
                         json.put("price", Float.parseFloat(gamePrice));
                         json.put("private", isPrivate);
+                        json.put("address", placeAddress);
 
                         JSONArray players = new JSONArray();
 
