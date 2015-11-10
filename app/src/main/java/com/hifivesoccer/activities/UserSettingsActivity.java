@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.RectF;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
@@ -205,7 +207,14 @@ public class UserSettingsActivity extends AppActivity {
                 picturePath = cursor.getString(columnIndex);
                 cursor.close();
 
-                String encodedImageData = getEncoded64ImageStringFromBitmap(BitmapFactory.decodeFile(picturePath));
+                Bitmap b = BitmapFactory.decodeFile(picturePath);
+
+                Matrix m = new Matrix();
+                m.setRectToRect(new RectF(0, 0, b.getWidth(), b.getHeight()), new RectF(0, 0, 600, 600), Matrix.ScaleToFit.CENTER);
+
+                Bitmap bm = Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), m, true);
+
+                String encodedImageData = getEncoded64ImageStringFromBitmap(bm);
 
                 updateUserPicture(encodedImageData);
 

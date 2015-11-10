@@ -2,6 +2,8 @@ package com.hifivesoccer.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.RectF;
 import android.util.Base64;
 
 public class base64ToBitmap {
@@ -23,15 +25,18 @@ public class base64ToBitmap {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = inSampleSize;
 
-        Bitmap bm = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length, options);
+        Bitmap b = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length, options);
 
         if(storedBitmap != null){
             storedBitmap.recycle();
             storedBitmap = null;
         }
-        storedBitmap = bm;
+        storedBitmap = b;
 
-        return bm;
+        Matrix m = new Matrix();
+        m.setRectToRect(new RectF(0, 0, b.getWidth(), b.getHeight()), new RectF(0, 0, 600, 600), Matrix.ScaleToFit.CENTER);
+
+        return Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), m, true);
     }
 
 }
